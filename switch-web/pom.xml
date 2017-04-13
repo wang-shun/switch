@@ -381,6 +381,14 @@
             <groupId>com.caucho</groupId>
             <artifactId>hessian</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.bozhong</groupId>
+            <artifactId>configCenter-client</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>switch-web</finalName>
