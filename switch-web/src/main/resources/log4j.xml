@@ -6,7 +6,7 @@
     <!-- ===================================================================== -->
     <appender name="PROJECT"
               class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="/Users/renyueliang/Documents/server/switch/logs/project.log" />
+        <param name="file" value="${LOG_DIR}project.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="info" />
@@ -19,7 +19,7 @@
 
     <appender name="EWEB"
               class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="/Users/renyueliang/Documents/server/switch/logs/eweb.log" />
+        <param name="file" value="${LOG_DIR}eweb.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="info" />
@@ -30,7 +30,7 @@
 
     <appender name="REALTIMEPUSH"
               class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="/Users/renyueliang/Documents/server/switch/logs/realtimepush.log" />
+        <param name="file" value="${LOG_DIR}realtimepush.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="info" />
