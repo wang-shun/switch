@@ -6,6 +6,7 @@ import com.bozhong.myredis.MyRedisClusterForHessian;
 import com.bozhong.myswitch.consts.SwitchConstants;
 import com.bozhong.myswitch.domain.AppDO;
 import com.bozhong.myswitch.service.AppService;
+import com.bozhong.myswitch.util.ConfigUtil;
 import com.yx.eweb.main.PipeLineInter;
 import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
@@ -52,14 +53,18 @@ public class SecurityPipeLine implements PipeLineInter {
                 for (AppDO appDO : appDOList) {
                     if (appId.equals(appDO.getAppId())) {
                         appDO.setMainSelectType(true);
+                        httpServletRequest.setAttribute("appDO", appDO);
                         break;
                     }
                 }
             } else if (!CollectionUtils.isEmpty(appDOList)) {
                 appDOList.get(0).setMainSelectType(true);
+                httpServletRequest.setAttribute("appDO", appDOList.get(0));
+
             }
 
             httpServletRequest.setAttribute("appDOList", appDOList);
+            httpServletRequest.setAttribute("isOnline", ConfigUtil.isOnline());
             return true;
         }
 
