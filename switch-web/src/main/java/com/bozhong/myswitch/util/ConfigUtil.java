@@ -37,7 +37,7 @@ public class ConfigUtil {
 
     public static boolean isOnline(){
 
-        if(Environ.ONLINE.name().equals(ENRION) || Environ.UAT.name().equals(ENRION)){
+        if(Environ.ONLINE.getName().equals(ENRION) || Environ.UAT.getName().equals(ENRION)){
             return true;
         }
 
