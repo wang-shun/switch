@@ -38,12 +38,12 @@
 <script>
     $(function () {
         var publicKey = null;
-##        $.post("${ctxPath}/config/configSet/generatePublicKey", null, function (result) {
-##            if (result.success) {
-##                publicKey = result.data;
-##            }
-##
-##        }, "json");
+        $.post("${ctxPath}/myswitch/login/generatePublicKey", null, function (result) {
+            if (result.success) {
+                publicKey = result.data;
+            }
+
+        }, "json");
 
 
         $("#loginBtn").click(function () {
@@ -58,7 +58,7 @@
                     '<a href="#" class="close" data-dismiss="alert"></a>' +
                     '<span>' + "正在登录，请等待..." + '</span>' +
                     '</div>');
-            $.post("${ctxPath}/config/configSet/checkLogin", {
+            $.post("${ctxPath}/myswitch/login/checkLogin", {
                 userName: userName,
                 password: encrypt.encrypt(password)
             }, function (result) {
@@ -68,7 +68,7 @@
                             '<span>' + eval("(" + result + ")").message + '</span>' +
                             '</div>');
                     /* window.location = 'app.htm';*/
-                    window.top.location = '${ctxPath}/bootstrap/main.htm';
+                    window.top.location = '${ctxPath}/manager/managerView.htm';
                 } else {
                     $("#loginTips").html('<div id="myAlert" class="alert alert-danger">' +
                             '<a href="#" class="close" data-dismiss="alert"></a>' +

@@ -8,7 +8,8 @@ public enum SwitchErrorEnum {
     ILL_ARGMENT("ILL_ARGMENT","参数异常"),
     ZK_HOSTS_IS_NULL("ZK_HOSTS_IS_NULL","zkHosts 为空"),
     GET_APP_ZK_NODE_ERROR("GET_APP_ZK_NODE_ERROR","获取zk的节点出错"),
-    ENRION_CODE_ERROR("ENRION_CODE_ERROR","环境配置错误")
+    ENRION_CODE_ERROR("ENRION_CODE_ERROR","环境配置错误"),
+    LOGIN_FAIL_PUBLIC_PRIVATE_KEY_EXPIRE("LOGIN_FAIL_PUBLIC_PRIVATE_KEY_EXPIRE", "用户密码公钥私钥加密策略过期，请重新进入登录页面")
     ;
 
 

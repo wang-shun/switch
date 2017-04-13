@@ -1,8 +1,8 @@
 package com.bozhong.myswitch.view.manager.module.screen;
 
 import com.bozhong.config.util.CookiesUtil;
-import com.bozhong.config.util.LDAPUtil;
 import com.bozhong.myredis.MyRedisClusterForHessian;
+import com.bozhong.myswitch.consts.SwitchConstants;
 import com.yx.eweb.main.EWebContext;
 import com.yx.eweb.main.ScreenInter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class Login implements ScreenInter {
             tokenCookie.setPath("/");
             tokenCookie.setMaxAge(0);
             response.addCookie(tokenCookie);
-            myRedisClusterForHessian.delForStr(LDAPUtil.CONFIG_CENTER_USERNAME_PREFIX+token);
+            myRedisClusterForHessian.delForStr(SwitchConstants.SWITCH_CENTER_USERNAME_PREFIX+token);
         }
 
     }
