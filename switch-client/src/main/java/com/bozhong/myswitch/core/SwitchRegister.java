@@ -151,7 +151,7 @@ public class SwitchRegister {
             String ip = SwitchUtil.getIp();
             String appId = this.appId;
 
-            this.environ = Environ.DEV.name();
+            this.environ = Environ.DEV.getName();
 
         }
 

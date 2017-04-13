@@ -22,12 +22,29 @@ public enum Environ {
     }
 
     public static Environ getEnviron(String name){
+
         for(Environ environ : Environ.values()){
-            if(environ.name().equals(name)){
+            if(environ.getName().equals(name)){
                 return environ;
             }
         }
 
         return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
