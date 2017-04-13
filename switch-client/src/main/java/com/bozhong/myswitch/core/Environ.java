@@ -20,4 +20,14 @@ public enum Environ {
         this.name = name;
         this.desc = desc;
     }
+
+    public static Environ getEnviron(String name){
+        for(Environ environ : Environ.values()){
+            if(environ.name().equals(name)){
+                return environ;
+            }
+        }
+
+        return null;
+    }
 }

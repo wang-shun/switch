@@ -10,12 +10,14 @@ import com.bozhong.myswitch.domain.SwitchNodeDTO;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import com.yx.eweb.main.EWebContext;
 import com.yx.eweb.main.ScreenInter;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 /**
  * Created by renyueliang on 17/4/12.
  */
+@Controller
 public class ManagerView implements ScreenInter {
 
     @Override
@@ -34,7 +36,7 @@ public class ManagerView implements ScreenInter {
             return ;
         }
 
-        if(Environ.valueOf(env)==null){
+        if(Environ.getEnviron(env)==null){
             eWebContext.put("errorCode",SwitchErrorEnum.ENRION_CODE_ERROR.getError());
             return ;
         }

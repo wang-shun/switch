@@ -13,7 +13,7 @@ public class SwitchServerRegister {
     public void init() throws  Throwable{
 
         String path= SwitchConstants.SWITCH_ROOT_PATH+SwitchConstants.SWITCH_SERVER_PATH;
-        if(ZkClient.getInstance().has(path)){
+        if(!ZkClient.getInstance().has(path)){
             ZkClient.getInstance().createPersistent(path);
         }
 

@@ -21,4 +21,6 @@
     <bean class="com.bozhong.myswitch.util.SwitchServerRegister" init-method="init">
 
     </bean>
+
+    <bean id="managerService" class="com.bozhong.myswitch.service.impl.ManagerServiceImpl"/>
 </beans>

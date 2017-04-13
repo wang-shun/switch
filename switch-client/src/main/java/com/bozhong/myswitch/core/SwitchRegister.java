@@ -71,6 +71,9 @@ public class SwitchRegister {
         //
         this.localPath = SwitchUtil.getPath(appId, getEnviron());
 
+        ZkClient.getInstance().connect(this.zkHosts);
+
+
         String environPath =SwitchConstants.SWITCH_ROOT_PATH+SwitchConstants.SLASH+environ;
         //创建appName
         if(!ZkClient.getInstance().has(environPath)){

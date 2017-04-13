@@ -336,7 +336,7 @@ public class SwitchUtil {
 
         initIp();
 
-        return StringUtil.format("/{root}/{environ}/{appId}/{ip}",
+        return StringUtil.format("%s/%s/%s/%s",
                 SwitchConstants.SWITCH_ROOT_PATH,
                 environ,
                 appId,
