@@ -109,8 +109,8 @@
                          aria-labelledby="nav-bar-38" aria-expanded="false">
                         <div class="list-group">
                             #foreach($app in $!appDOList)
-                                <a href="managerView.htm?appId=${app.appId}" #if(${app.mainSelectType}) style="color: blue;"
-                                #end class="list-group-item">${app.appName}</a>
+                                <a href="javascript:void(0);" #if(${app.mainSelectType}) style="color: blue;"
+                                #end class="list-group-item" data-appid="${app.appId}">${app.appName}</a>
                             #end
                         </div>
                     </div>

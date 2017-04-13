@@ -4,12 +4,15 @@ import com.bozhong.common.util.StringUtil;
 import com.bozhong.config.util.CookiesUtil;
 import com.bozhong.myredis.MyRedisClusterForHessian;
 import com.bozhong.myswitch.consts.SwitchConstants;
+import com.bozhong.myswitch.core.Environ;
+import com.bozhong.myswitch.core.FieldType;
 import com.bozhong.myswitch.domain.AppDO;
 import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.util.ConfigUtil;
 import com.yx.eweb.main.PipeLineInter;
 import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +52,7 @@ public class SecurityPipeLine implements PipeLineInter {
             httpServletRequest.setAttribute("uId", uId);
             List<AppDO> appDOList = appService.getAppsByUid(uId);
             String appId = httpServletRequest.getParameter("appId");
+            String env = httpServletRequest.getParameter("env");
             if (!CollectionUtils.isEmpty(appDOList) && StringUtil.isNotBlank(appId)) {
                 for (AppDO appDO : appDOList) {
                     if (appId.equals(appDO.getAppId())) {
@@ -65,6 +69,12 @@ public class SecurityPipeLine implements PipeLineInter {
 
             httpServletRequest.setAttribute("appDOList", appDOList);
             httpServletRequest.setAttribute("isOnline", ConfigUtil.isOnline());
+            if (!StringUtils.hasText(env)){
+                httpServletRequest.setAttribute("env", ConfigUtil.isOnline()? Environ.UAT.getName() :
+                        Environ.DEV.getName());
+            } else {
+                httpServletRequest.setAttribute("env", env);
+            }
             return true;
         }
 

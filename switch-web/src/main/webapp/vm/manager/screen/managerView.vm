@@ -7,24 +7,24 @@
 <div class="col-md-12">
     <ul id="myTab" class="nav nav-tabs">
         #if($isOnline)
-            <li class="active">
-                <a href="#uat" data-toggle="tab">
+            <li #if($env=="uat") class="active" #end >
+                <a href="#uat" data-env="uat" data-toggle="tab">
                     预发环境
                 </a>
             </li>
-            <li>
-                <a href="#online" data-toggle="tab">
+            <li #if($env=="online") class="active" #end >
+                <a href="#online" data-env="online" data-toggle="tab">
                     线上环境
                 </a>
             </li>
         #else
-            <li class="active">
-                <a href="#dev"  data-toggle="tab">
+            <li #if($env=="dev") class="active" #end >
+                <a href="#dev"  data-env="dev" data-toggle="tab">
                     开发环境
                 </a>
             </li>
-            <li>
-                <a href="#sit" data-toggle="tab">
+            <li #if($env=="sit") class="active" #end >
+                <a href="#sit" data-env="sit" data-toggle="tab">
                     测试环境
                 </a>
             </li>
@@ -53,4 +53,13 @@
         <input type="submit" value="submit"/>
     </form>
 </div>
-
+<script>
+    $(function(){
+        //应用菜单单击事件
+        $("#nav-bar-list-38").delegate("a.list-group-item","click", function(){
+            var appid = $(this).attr("data-appid");
+            var env = $("#myTab li.active").children("a").attr("data-env");
+            window.location.href="${ctxPath}/manager/managerView.htm?appId="+appid+"&env="+env;
+        });
+    });
+</script>
