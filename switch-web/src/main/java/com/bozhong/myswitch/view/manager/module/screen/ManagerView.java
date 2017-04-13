@@ -22,7 +22,7 @@ public class ManagerView implements ScreenInter {
 
     @Override
     public void excute(EWebContext eWebContext) {
-
+        eWebContext.put("menu", this.getClass().getSimpleName());
         eWebContext.put("json","{renyl}");
 
         String appId = (String) eWebContext.get("appId");
@@ -58,6 +58,7 @@ public class ManagerView implements ScreenInter {
             SwitchLogger.getLogger().error(SwitchErrorEnum.GET_APP_ZK_NODE_ERROR.getError(),e);
 
         }
+
 
 
     }
