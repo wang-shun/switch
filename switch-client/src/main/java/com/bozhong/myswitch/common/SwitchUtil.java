@@ -8,6 +8,7 @@ import com.bozhong.myswitch.core.AppSwitch;
 import com.bozhong.myswitch.core.FieldType;
 import com.bozhong.myswitch.core.SwitchRegister;
 import com.bozhong.myswitch.domain.SwitchDataDTO;
+import com.bozhong.myswitch.domain.SwitchNodeDTO;
 import com.bozhong.myswitch.exception.SwitchException;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import org.apache.commons.collections.map.HashedMap;
@@ -18,6 +19,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -269,7 +271,7 @@ public class SwitchUtil {
                         return newRealTime;
 
                     }catch (Throwable e){
-                        SwitchLogger.getSysLogger().error(
+                        SwitchLogger.getLogger().error(
                                 StringUtil.format("SwitchUtil.setClazzDataForJson error fieldName:%s val:%s errmsg:%s",field.getName(),val, e.getMessage())
                                , e);
                     }
@@ -282,7 +284,7 @@ public class SwitchUtil {
 
             }
         } catch (Throwable e) {
-            SwitchLogger.getSysLogger().error("json:["+json+"]"+e.getMessage(), e);
+            SwitchLogger.getLogger().error("json:["+json+"]"+e.getMessage(), e);
         }
 
         return null;
@@ -294,6 +296,44 @@ public class SwitchUtil {
                 SwitchConstants.SWITCH_ROOT_PATH,
                 environ,
                 appId);
+    }
+
+
+    public static void changeAllValue(List<SwitchNodeDTO> list,String appPath, String fieldName, String val, String optId){
+        for(SwitchNodeDTO switchNodeDTO : list){
+            try {
+                changeValue(appPath + SwitchConstants.SLASH + switchNodeDTO.getNodeName(), fieldName, val, optId);
+            }catch (Throwable e){
+                SwitchLogger.getLogger().error(
+                        StringUtil.format("SwitchUtil.changeAllValue error ! appPath:%s nodeIp:%s fieldName:%s val%s optId:%s errorMsg:%s",
+                                appPath,switchNodeDTO.getNodeName(),fieldName,val,optId,e.getMessage() )
+                        ,e);
+            }
+        }
+    }
+
+    public static void changeAllValue(String appId,String env, String fieldName, String val, String optId){
+
+        if (StringUtil.isBlank(appId) || StringUtil.isBlank(fieldName) || StringUtil.isBlank(val) || StringUtil.isBlank(optId)) {
+            throw new SwitchException(SwitchErrorEnum.ILL_ARGMENT.getError());
+        }
+
+        try {
+            String appPath = SwitchConstants.SWITCH_ROOT_PATH +SwitchConstants.SLASH + env + SwitchConstants.SLASH + appId;
+
+            List<SwitchNodeDTO> list = ZkClient.getInstance().getChildrenNode(appPath);
+            changeAllValue(list,appPath,fieldName,val,optId);
+
+
+        }catch (Throwable e){
+            SwitchLogger.getLogger().error(StringUtil.format("SwitchUtil.changeAllValue error ! appId:%s env:%s fieldName:%s val%s optId:%s errorMsg:%s",
+                    appId,env,fieldName,val,optId,e.getMessage() ),e);
+
+            throw new  SwitchException(e.getMessage(),e);
+        }
+
+
+
     }
 
     public static void changeValue(String path, String fieldName, String val, String optId) {
