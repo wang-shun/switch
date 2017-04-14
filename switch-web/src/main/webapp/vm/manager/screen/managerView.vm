@@ -32,26 +32,33 @@
     </ul>
     <br/>
     <br/>
-    <br/>
-    errorCode:${errorCode}
-    <BR/>
-    json:${json};
-    <BR/>
-    list:${list};
-    <BR/>
-    switchNodeList:${switchNodeList}
-
-    <form name="districtinfoForm" method="post" action="${ctxPath}/manager/manager.htm" Accept-Encoding="utf-8">
-
-        <input type="hidden" value="managerAction" name="do_action"/>
-        <input type="hidden" value="changeValue" name="do_method"/>
-
-        路径path:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="path"/><br/>
-        字段fieldName:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="fieldName"/><br/>
-        值val:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="val"/><br/>
-
-        <input type="submit" value="submit"/>
-    </form>
+    <table id="appIdEnvIpTable" class="table table-bordered">
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>IP</th>
+            <th>路径</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($switchNode in $!switchNodeList)
+            <tr>
+                <td>$velocityCount</td>
+                <td>${switchNode.nodeName}</td>
+                <td>${switchNode.allPath}</td>
+                <td style="text-align: center;">
+                    <button type="button" class="btn btn-xs btn-info btn-edit launch"
+                            data-nodeName="${switchNode.nodeName}|$velocityCount">展开
+                    </button>
+                </td>
+            </tr>
+            <tr class="hide" data-nodeName="${switchNode.nodeName}|$velocityCount">
+                <td colspan="4">${switchNode.nodeName}</td>
+            </tr>
+            #end
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -65,6 +72,18 @@
                 url = url + "&env=" + env;
             }
             window.location.href = url;
+        });
+
+        //展开事件
+        $("#appIdEnvIpTable").delegate("button.launch", "click", function () {
+            var appIdEnvIpPanel = $(this).parent().parent().next();
+            if (appIdEnvIpPanel.hasClass("hide")) {
+                appIdEnvIpPanel.removeClass("hide");
+                $(this).text("关闭");
+            } else {
+                appIdEnvIpPanel.addClass("hide");
+                $(this).text("展开");
+            }
         });
     });
 </script>

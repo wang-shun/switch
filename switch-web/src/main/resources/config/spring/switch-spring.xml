@@ -14,7 +14,7 @@
     </bean>
 
     <bean class="com.bozhong.myswitch.util.SwitchLoad" init-method="init">
-        <property name="appId" value="23"/>
+        <property name="appId" value="9"/>
         <property name="zkHosts" value="${switch.zkHosts}"/>
     </bean>
 
