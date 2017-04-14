@@ -32,56 +32,62 @@
     </ul>
     <br/>
     <br/>
-    <table id="appIdEnvIpTable" class="table table-bordered">
-        <thead>
-        <tr>
-            <th>序号</th>
-            <th>IP</th>
-            <th>路径</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-            #foreach($switchNode in $!switchNodeList)
+    <div>
+        <table id="appIdEnvIpTable" class="table table-bordered">
+            <thead>
             <tr>
-                <td>$velocityCount</td>
-                <td>${switchNode.nodeName}</td>
-                <td>${switchNode.allPath}</td>
-                <td style="text-align: center;">
-                    <button type="button" class="btn btn-xs btn-info btn-edit launch"
-                            data-nodeName="${switchNode.nodeName}|$velocityCount">展开
-                    </button>
-                </td>
+                <th>序号</th>
+                <th>IP</th>
+                <th>路径</th>
+                <th>操作</th>
             </tr>
-            <tr class="hide" data-nodeName="${switchNode.nodeName}|$velocityCount">
-                <br/>
-                <br/>
-                <td colspan="4">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr class="bg-success">
-                            <th>序号</th>
-                            <th>字段名</th>
-                            <th>修改时间</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            #foreach($switchData in $!switchNode.switchDataList)
-                            <tr>
-                                <td>$velocityCount</td>
-                                <td>$switchData.fieldName</td>
-                                <td>$switchData.value</td>
-                                <td><button type="button" class="btn btn-xs btn-info btn-edit fieldChange">修改</button></td>
-                            </tr>
-                            #end
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            #end
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                #foreach($switchNode in $!switchNodeList)
+                <tr>
+                    <td>$velocityCount</td>
+                    <td>${switchNode.nodeName}</td>
+                    <td>${switchNode.allPath}</td>
+                    <td style="text-align: center;">
+                        <button type="button" class="btn btn-xs btn-info btn-edit launch"
+                                data-nodeName="${switchNode.nodeName}|$velocityCount">展开
+                        </button>
+                    </td>
+                </tr>
+                <tr class="hide" data-nodeName="${switchNode.nodeName}|$velocityCount">
+                    <td colspan="4">
+                        <div>
+                            <br/>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr class="bg-success">
+                                    <th>序号</th>
+                                    <th>字段名</th>
+                                    <th>修改时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    #foreach($switchData in $!switchNode.switchDataList)
+                                    <tr>
+                                        <td>$velocityCount</td>
+                                        <td>$switchData.fieldName</td>
+                                        <td>$switchData.value</td>
+                                        <td style="text-align: center">
+                                            <button type="button" class="btn btn-xs btn-info btn-edit fieldChange">修改
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    #end
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
