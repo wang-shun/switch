@@ -44,7 +44,10 @@
 
     <script type="text/javascript">
         var ctxPath = '$!{ctxPath}';
-        $.jgrid.defaults.width = 860;
+//        $.jgrid.defaults.width = 860;
+        $(function () {
+            $.jgrid.defaults.width = $("#mainWindowPanel").width();
+        });
         //        $(function () {
         //            $('#nav-bar-left-list').affix();
         //        });
@@ -172,7 +175,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="mainWindowPanel">
             #parse("$screen_placeholder")
         </div>
 

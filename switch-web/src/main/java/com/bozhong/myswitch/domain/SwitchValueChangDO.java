@@ -1,5 +1,8 @@
 package com.bozhong.myswitch.domain;
 
+import com.alibaba.fastjson.JSON;
+
+
 /**
  * Created by renyueliang on 17/4/12.
  * 数据更新实体类
@@ -23,7 +26,7 @@ public class SwitchValueChangDO extends BaseDO {
     /**
      * 字段值
      */
-    private String fieldValue;
+    private String val;
 
     /**
      * 操作人
@@ -43,7 +46,7 @@ public class SwitchValueChangDO extends BaseDO {
     /**
      * 同步结果（成功或者事变）
      */
-    private String syncResult;
+    private boolean syncResult;
 
     public String getOptId() {
         return optId;
@@ -69,12 +72,12 @@ public class SwitchValueChangDO extends BaseDO {
         this.fieldName = fieldName;
     }
 
-    public String getFieldValue() {
-        return fieldValue;
+    public String getVal() {
+        return val;
     }
 
-    public void setFieldValue(String fieldValue) {
-        this.fieldValue = fieldValue;
+    public void setVal(String val) {
+        this.val = val;
     }
 
     public String getCreateBy() {
@@ -101,11 +104,16 @@ public class SwitchValueChangDO extends BaseDO {
         this.callbackDT = callbackDT;
     }
 
-    public String getSyncResult() {
+    public boolean getSyncResult() {
         return syncResult;
     }
 
-    public void setSyncResult(String syncResult) {
+    public void setSyncResult(boolean syncResult) {
         this.syncResult = syncResult;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

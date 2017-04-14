@@ -1,14 +1,10 @@
 package com.bozhong.myswitch.view.manager.module.action;
 
-import com.bozhong.common.util.BeanUtil;
 import com.bozhong.common.util.StringUtil;
-import com.bozhong.common.util.UUIDUtil;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
-import com.bozhong.myswitch.domain.ChangeAllSwitchDTO;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
 import com.bozhong.myswitch.service.ManagerService;
 import com.yx.eweb.main.EWebContext;
-import com.yx.eweb.main.EWebRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -28,6 +24,8 @@ public class ManagerAction {
       String  fieldName= (String) eWebContext.get("fieldName");
       String val=(String)eWebContext.get("val");
       String path = (String) eWebContext.get("path");
+      String appId = (String) eWebContext.get("appId");
+      String env = (String) eWebContext.get("env");
 
       if(StringUtil.isBlank(fieldName) || StringUtil.isBlank(val)
               || StringUtil.isBlank(path)){

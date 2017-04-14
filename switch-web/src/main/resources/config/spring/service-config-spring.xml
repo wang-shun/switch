@@ -4,4 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd" default-autowire="byName">
     <bean id="appService" class="com.bozhong.myswitch.service.impl.AppServiceImpl"/>
+    <bean id="mongoService" class="com.bozhong.myswitch.service.impl.MongoServiceImpl"/>
 </beans>
