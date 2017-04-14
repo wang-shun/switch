@@ -11,24 +11,24 @@ public class SettingParam {
      *
      */
     @AppSwitch(type = "string",desc = "姓名")
-    public static String NAME;
+    public static String NAME="RENYL";
 
     /**
      *
      */
-    @AppSwitch(type = "INT",desc = "年龄")
-    public static int AGE;
+    @AppSwitch(type = "int",desc = "年龄year")
+    public static int AGE=34;
 
     /**
      *
      */
-    @AppSwitch(type = "long",desc = "身高")
-    public static long HEIGHT;
+    @AppSwitch(type = "long",desc = "身高cm")
+    public static long HEIGHT=175;
 
     /**
      *
      */
-    @AppSwitch(type = "boolean",desc = "性别")
-    public static boolean SEX;
+    @AppSwitch(type = "boolean",desc = "性别 true男 false 女")
+    public static boolean SEX=true;
 
 }

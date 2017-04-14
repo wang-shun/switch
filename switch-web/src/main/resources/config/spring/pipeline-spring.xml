@@ -8,4 +8,7 @@
        		http://www.taobao.com/hsf/hsf.xsd" default-autowire="byName">
 
         <bean id="securityPipeLine" class="com.bozhong.myswitch.pipeline.SecurityPipeLine"/>
+
+
+        <bean id="velocityPipeLine" class="com.bozhong.myswitch.pipeline.VelocityPipeLine"/>
 </beans>

@@ -25,7 +25,6 @@ public class ManagerView implements ScreenInter {
     @Override
     public void excute(EWebContext eWebContext) {
         eWebContext.put("menu", this.getClass().getSimpleName());
-        eWebContext.put("json","{renyl}");
 
         String appId = (String) eWebContext.get("appId");
         if (!StringUtils.hasText(appId)){
