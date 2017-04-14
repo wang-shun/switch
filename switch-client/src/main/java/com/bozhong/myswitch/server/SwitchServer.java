@@ -1,8 +1,10 @@
 package com.bozhong.myswitch.server;
 
+import com.alibaba.fastjson.JSON;
 import com.bozhong.common.util.CollectionUtil;
 import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchLogger;
+import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.SwitchDataDTO;
 import com.bozhong.myswitch.domain.SwitchNodeDTO;
 import com.bozhong.myswitch.exception.SwitchException;
@@ -42,7 +44,7 @@ public class SwitchServer {
     }
 
 
-    public String getSendIpAndPort()  {
+    public static String getSendIpAndPort()  {
 
         try {
             List<SwitchNodeDTO> list = ZkClient.getInstance().getAllServer();
@@ -74,13 +76,13 @@ public class SwitchServer {
         return "";
     }
 
-    private String getSendChangeToServerUrl(){
+    private static String getSendChangeToServerUrl(){
         String ipAndPort =getSendIpAndPort();
         if(StringUtil.isBlank(ipAndPort)){
             throw new SwitchException("SERVER_IP_PORT_IS_NULL");
         }
 
-    return "http://"+ipAndPort+"/switchweb/switch/mangerRest/callBack";
+    return "http://"+ipAndPort+"/switchweb/myswitch/mangerRest/callBack";
 
     }
 
@@ -88,7 +90,15 @@ public class SwitchServer {
 
 
 
-    public void sendChangeResult(SwitchDataDTO switchDataDTO) {
+    public static void sendChangeResult(SwitchDataDTO switchDataDTO) {
+
+        if(switchDataDTO==null){
+            SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult switchDataDTO is null");
+
+            return ;
+        }
+
+        SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult start switchDataDTO:"+ JSON.toJSONString(switchDataDTO));
 
         String url =getSendChangeToServerUrl();
 
@@ -97,6 +107,7 @@ public class SwitchServer {
         MultivaluedMapImpl params = new MultivaluedMapImpl();
         params.add("optId", switchDataDTO.getOptId());
         params.add("fieldName",switchDataDTO.getFieldName());
+        params.add("ip", SwitchUtil.getIp());
 
 
         String result = resource.queryParams(params).post(String.class);

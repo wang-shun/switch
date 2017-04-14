@@ -25,7 +25,6 @@ public class ManagerAction {
       String val=(String)eWebContext.get("val");
       String path = (String) eWebContext.get("path");
 
-
       if(StringUtil.isBlank(fieldName) || StringUtil.isBlank(val)
               || StringUtil.isBlank(path)){
           eWebContext.put("errorCode", SwitchErrorEnum.ILL_ARGMENT.getError());

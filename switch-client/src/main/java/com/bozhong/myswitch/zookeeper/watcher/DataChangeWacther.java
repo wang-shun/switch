@@ -4,6 +4,7 @@ import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.core.SwitchRegister;
 import com.bozhong.myswitch.domain.SwitchDataDTO;
+import com.bozhong.myswitch.server.SwitchServer;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -34,7 +35,9 @@ public class DataChangeWacther implements Watcher {
                 SwitchLogger.getSysLogger().warn(" SwitchRegister change end ! ");
 
                 //同步到服务端 告诉更新成功
-
+                if(switchDataDTO!=null){
+                    SwitchServer.sendChangeResult(switchDataDTO);
+                }
 
             }
 

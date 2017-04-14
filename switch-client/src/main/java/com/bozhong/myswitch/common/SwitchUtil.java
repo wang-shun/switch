@@ -138,6 +138,8 @@ public class SwitchUtil {
                     realTimeDataDTO.setType(appSwitch.type());
                     realTimeDataDTO.setFormat(appSwitch.format());
                     realTimeDataDTO.setValue(field.get(clazz));
+                    realTimeDataDTO.setFieldName(field.getName());
+
                     realTimeDataDTO.setCurrentDateTime(DateUtil.getCurrentDate());
 
                     jsonMap.put(field.getName(), realTimeDataDTO);
@@ -238,34 +240,44 @@ public class SwitchUtil {
 
                     Object val = newRealTime.getValue();
 
-                    if (swtich.type().equals(FieldType.STRING.getName())) {
-                        field.set(clazz, val);
-                    } else if (swtich.type().equals(FieldType.INT.getName())) {
-                        field.set(clazz, val == null ? 0 : (Integer) val);
-                    } else if (swtich.type().equals(FieldType.BOOLEAN.getName())) {
-                        field.set(clazz, val);
-                    } else if (swtich.type().equals(FieldType.LONG.getName())) {
-                        field.set(clazz, val == null ? 0 : (Long) val);
-                    } else if (swtich.type().equals(FieldType.DOUBLE.getName())) {
-                        if (val instanceof BigDecimal) {
-                            field.set(clazz, val == null ? 0 : ((BigDecimal) val).doubleValue());
-                        } else if (val instanceof Double) {
-                            field.set(clazz, val == null ? 0 : (Double) val);
-                        } else if (val instanceof String) {
-                            field.set(clazz, val == null ? 0 : Double.valueOf((String) val));
+                    try {
+
+                        if (swtich.type().equals(FieldType.STRING.getName())) {
+                            field.set(clazz, val);
+                        } else if (swtich.type().equals(FieldType.INT.getName())) {
+                            field.set(clazz, val == null ? 0 : (Integer) val);
+                        } else if (swtich.type().equals(FieldType.BOOLEAN.getName())) {
+                            field.set(clazz, val);
+                        } else if (swtich.type().equals(FieldType.LONG.getName())) {
+                            field.set(clazz, val == null ? 0 : (Long) val);
+                        } else if (swtich.type().equals(FieldType.DOUBLE.getName())) {
+                            if (val instanceof BigDecimal) {
+                                field.set(clazz, val == null ? 0 : ((BigDecimal) val).doubleValue());
+                            } else if (val instanceof Double) {
+                                field.set(clazz, val == null ? 0 : (Double) val);
+                            } else if (val instanceof String) {
+                                field.set(clazz, val == null ? 0 : Double.valueOf((String) val));
+                            }
                         }
 
+                        realTimeDataDTOMap.put(field.getName(), newRealTime);
+                        return newRealTime;
+
+                    }catch (Throwable e){
+                        SwitchLogger.getSysLogger().error(
+                                StringUtil.format("SwitchUtil.setClazzDataForJson error fieldName:%s val:%s errmsg:%s",field.getName(),val, e.getMessage())
+                               , e);
                     }
 
-                    realTimeDataDTOMap.put(field.getName(), newRealTime);
 
-                    return newRealTime;
+
+
                 }
 
 
             }
         } catch (Throwable e) {
-            SwitchLogger.getSysLogger().error(e.getMessage(), e);
+            SwitchLogger.getSysLogger().error("json:["+json+"]"+e.getMessage(), e);
         }
 
         return null;

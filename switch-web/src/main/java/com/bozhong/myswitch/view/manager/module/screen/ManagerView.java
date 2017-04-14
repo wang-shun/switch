@@ -66,7 +66,6 @@ public class ManagerView implements ScreenInter {
             eWebContext.put("switchNodeList",switchNodeDTOList);
         } catch (Throwable e) {
             SwitchLogger.getLogger().error(SwitchErrorEnum.GET_APP_ZK_NODE_ERROR.getError(),e);
-
         }
 
 

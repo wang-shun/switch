@@ -41,10 +41,10 @@
     <BR/>
     switchNodeList:${switchNodeList}
 
-    <form name="districtinfoForm" method="post" action="${ctxPath}/manager/manager.htm" Accept-Encoding="utf-8">
+    <form name="districtinfoForm" method="post" action="${ctxPath}/manager/managerView.htm" Accept-Encoding="utf-8">
 
         <input type="hidden" value="managerAction" name="do_action"/>
-        <input type="hidden" value="changeValue" name="do_method"/>
+        <input type="hidden" value="changeOneSwitchValue" name="do_method"/>
 
         路径path:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="path"/><br/>
         字段fieldName:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="fieldName"/><br/>

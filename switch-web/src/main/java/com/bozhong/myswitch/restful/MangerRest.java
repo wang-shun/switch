@@ -40,8 +40,8 @@ public class MangerRest {
 
         String optId = (String) EWebServletContext.getEWebContext().get("optId");
         String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
-
-        SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: "+optId+" fieldName:"+fieldName);
+        String ip= (String) EWebServletContext.getEWebContext().get("ip");
+        SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: "+optId+" fieldName:"+fieldName+" ip:"+ip);
         return "callBack";
     }
 
