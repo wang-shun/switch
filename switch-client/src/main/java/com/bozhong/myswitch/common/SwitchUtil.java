@@ -273,7 +273,7 @@ public class SwitchUtil {
     }
 
     public static String createPathForApp(String appId, String environ) {
-        return StringUtil.format("/{root}/{environ}/{appId}",
+        return StringUtil.format("%s/%s/%s",
                 SwitchConstants.SWITCH_ROOT_PATH,
                 environ,
                 appId);

@@ -23,7 +23,7 @@ public class SwitchServerRegister {
         path=path+SwitchConstants.SLASH+ip+":"+ConfigUtil.getPORT();
 
 
-        if(ZkClient.getInstance().has(path)){
+        if(!ZkClient.getInstance().has(path)){
             ZkClient.getInstance().createEphemeral(path);
         }
 

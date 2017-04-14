@@ -23,7 +23,7 @@ public class ManagerServiceImpl implements ManagerService {
         changeSwitchDTO.verification();
 
         //插入一条数据到 开关数据变更记录表 默认初始化
-
+        
 
         //更新switch value 到zk
         SwitchUtil.changeValue(changeSwitchDTO.getPath(),changeSwitchDTO.getFieldName(),changeSwitchDTO.getVal(),changeSwitchDTO.getOptId());
