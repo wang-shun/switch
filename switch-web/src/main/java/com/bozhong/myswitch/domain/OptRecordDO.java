@@ -1,5 +1,10 @@
 package com.bozhong.myswitch.domain;
 
+import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
+
+import java.io.Serializable;
+
 /**
  * Created by renyueliang on 17/4/12.
  * 操作记录实体类
@@ -26,19 +31,19 @@ public class OptRecordDO extends BaseDO {
     private String env;
 
     /**
+     * 路径
+     */
+    private String path;
+
+    /**
      * 字段名称
      */
     private String fieldName;
 
     /**
-     * 之前的字段值
+     * 值
      */
-    private String oldFieldValue;
-
-    /**
-     * 新的字段值
-     */
-    private String newFieldValue;
+    private String val;
 
     /**
      * 操作人
@@ -90,20 +95,12 @@ public class OptRecordDO extends BaseDO {
         this.fieldName = fieldName;
     }
 
-    public String getOldFieldValue() {
-        return oldFieldValue;
+    public String getVal() {
+        return val;
     }
 
-    public void setOldFieldValue(String oldFieldValue) {
-        this.oldFieldValue = oldFieldValue;
-    }
-
-    public String getNewFieldValue() {
-        return newFieldValue;
-    }
-
-    public void setNewFieldValue(String newFieldValue) {
-        this.newFieldValue = newFieldValue;
+    public void setVal(String val) {
+        this.val = val;
     }
 
     public String getCreateBy() {
@@ -120,5 +117,18 @@ public class OptRecordDO extends BaseDO {
 
     public void setCreateDt(String createDt) {
         this.createDt = createDt;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

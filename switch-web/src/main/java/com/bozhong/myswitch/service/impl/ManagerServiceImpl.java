@@ -2,8 +2,12 @@ package com.bozhong.myswitch.service.impl;
 
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
+import com.bozhong.myswitch.domain.AppDO;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
+import com.bozhong.myswitch.domain.OptRecordDO;
+import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.service.ManagerService;
+import com.bozhong.myswitch.service.MongoService;
 
 import java.util.UUID;
 
@@ -12,9 +16,18 @@ import java.util.UUID;
  */
 public class ManagerServiceImpl implements ManagerService {
 
+    private MongoService mongoService;
+
+    private AppService appService;
+
     @Override
-    public void recordOpt() {
+    public void recordOpt(OptRecordDO optRecordDO) {
         SwitchLogger.getLogger().warn(" ManagerServiceImpl.recordOpt has excute ! ");
+
+        AppDO appDO = appService.getAppDOByAppId(optRecordDO.getAppId());
+        optRecordDO.setAppName(appDO.getAppName());
+        mongoService.insertOne(optRecordDO);
+
     }
 
     @Override
@@ -32,4 +45,11 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
 
+    public void setMongoService(MongoService mongoService) {
+        this.mongoService = mongoService;
+    }
+
+    public void setAppService(AppService appService) {
+        this.appService = appService;
+    }
 }

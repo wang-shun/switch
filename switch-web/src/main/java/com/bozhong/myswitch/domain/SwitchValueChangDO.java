@@ -1,5 +1,9 @@
 package com.bozhong.myswitch.domain;
 
+import com.alibaba.fastjson.JSON;
+
+import java.io.Serializable;
+
 /**
  * Created by renyueliang on 17/4/12.
  * 数据更新实体类
@@ -107,5 +111,10 @@ public class SwitchValueChangDO extends BaseDO {
 
     public void setSyncResult(String syncResult) {
         this.syncResult = syncResult;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

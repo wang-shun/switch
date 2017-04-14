@@ -3,8 +3,10 @@ package com.bozhong.myswitch.view.manager.module.action;
 import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
+import com.bozhong.myswitch.domain.OptRecordDO;
 import com.bozhong.myswitch.service.ManagerService;
 import com.yx.eweb.main.EWebContext;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -24,6 +26,8 @@ public class ManagerAction {
       String  fieldName= (String) eWebContext.get("fieldName");
       String val=(String)eWebContext.get("val");
       String path = (String) eWebContext.get("path");
+      String appId = (String) eWebContext.get("appId");
+      String env = (String) eWebContext.get("env");
 
       if(StringUtil.isBlank(fieldName) || StringUtil.isBlank(val)
               || StringUtil.isBlank(path)){
@@ -37,7 +41,11 @@ public class ManagerAction {
         changeSwitchDTO.setPath(path);
         changeSwitchDTO.setVal(val);
 
-        managerService.recordOpt();
+        OptRecordDO optRecordDO = new OptRecordDO();
+        BeanUtils.copyProperties(changeSwitchDTO, optRecordDO);
+        optRecordDO.setAppId(appId);
+        optRecordDO.setEnv(env);
+        managerService.recordOpt(optRecordDO);
         managerService.changeSwitchValue(changeSwitchDTO);
 
     }
