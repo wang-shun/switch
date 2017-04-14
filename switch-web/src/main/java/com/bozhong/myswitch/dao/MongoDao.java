@@ -18,4 +18,19 @@ public interface MongoDao {
      * @param <T>
      */
     <T> void insertMany(List<T> tList, Class<T> tClass);
+
+    /**
+     * @param optId
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> T findOneByOptId(String optId, Class<T> tClass);
+
+    /**
+     * @param optId
+     * @param t
+     * @param <T>
+     */
+    <T> void updateOneByOptId(String optId, T t);
 }

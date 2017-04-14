@@ -5,10 +5,12 @@ import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.AppDO;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
 import com.bozhong.myswitch.domain.OptRecordDO;
+import com.bozhong.myswitch.domain.SwitchValueChangDO;
 import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
 import com.yx.eweb.main.EWebServletContext;
+import org.springframework.beans.BeanUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,17 +39,39 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    public void recordSwitchValueChange(SwitchValueChangDO switchValueChangDO) {
+        switchValueChangDO.setCreateBy((String) EWebServletContext.getRequest().getAttribute("uId"));
+        switchValueChangDO.setCreateDt(SIMPLE_DATE_FORMAT.format(new Date()));
+        switchValueChangDO.setCallbackDT(switchValueChangDO.getCreateDt());
+        mongoService.insertOne(switchValueChangDO);
+    }
+
+    @Override
+    public void updateSwitchValueChange(SwitchValueChangDO switchValueChangDO) {
+        mongoService.updateOneByOptId(switchValueChangDO.getOptId(), switchValueChangDO);
+    }
+
+    @Override
     public void changeSwitchValue(ChangeSwitchDTO changeSwitchDTO) {
 
         changeSwitchDTO.verification();
 
         //插入一条数据到 开关数据变更记录表 默认初始化
-        
+        SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
+        BeanUtils.copyProperties(changeSwitchDTO, switchValueChangDO);
+        try {
+            switchValueChangDO.setIp(changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1));
+        } catch (Throwable e) {
+            SwitchLogger.getLogger().error(e.getMessage());
+        }
+        switchValueChangDO.setSyncResult(false);
+        recordSwitchValueChange(switchValueChangDO);
 
         //更新switch value 到zk
-        SwitchUtil.changeValue(changeSwitchDTO.getPath(),changeSwitchDTO.getFieldName(),changeSwitchDTO.getVal(),changeSwitchDTO.getOptId());
-
-
+        SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+        switchValueChangDO.setSyncResult(true);
+        switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+        updateSwitchValueChange(switchValueChangDO);
     }
 
 

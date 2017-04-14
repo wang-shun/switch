@@ -21,6 +21,17 @@ public class MongoServiceImpl implements MongoService{
         mongoDao.insertMany(list, tClass);
     }
 
+    @Override
+    public <T> T findOneByOptId(String optId, Class<T> tClass) {
+        return mongoDao.findOneByOptId(optId, tClass);
+    }
+
+    @Override
+    public <T> void updateOneByOptId(String optId, T t) {
+        mongoDao.updateOneByOptId(optId, t);
+    }
+
+
     public void setMongoDao(MongoDao mongoDao) {
         this.mongoDao = mongoDao;
     }
