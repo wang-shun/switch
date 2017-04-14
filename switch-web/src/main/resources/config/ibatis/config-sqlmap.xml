@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="configSqlMap">
+
+    <resultMap id="appDOMap" type="appDO">
+        <result column="id" property="appId"/>
+        <result column="name" property="appName"/>
+    </resultMap>
+
+    <resultMap id="envTypeDOMap" type="envTypeDO">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="domain_id" property="domainId" />
+        <result column="cnname" property="cnName"/>
+    </resultMap>
+
+    <sql id="query_sql_fields">
+        p.id as id,
+        p.name as name
+    </sql>
+
+
+    <select id="AppDaoImpl_getAppsByUid" resultMap="appDOMap" parameterType="string">
+        SELECT DISTINCT <include refid="query_sql_fields" /> FROM cmdb_program p
+        INNER JOIN cmdb_program_devs pd on p.id=pd.program_id
+        INNER JOIN cmdb_user u on pd.user_id=u.id WHERE u.uid=#{uId};
+    </select>
+
+    <select id="AppDaoImpl_getAppDOByAppId" resultMap="appDOMap" parameterType="string">
+        SELECT <include refid="query_sql_fields" /> FROM cmdb_program p
+        WHERE p.id=#{appId};
+    </select>
+
+    <select id="AppDaoImpl_getAllEnvTypes" resultMap="envTypeDOMap">
+        SELECT * FROM cmdb_envtype ORDER BY id DESC ;
+    </select>
+
+    <select id="AppDaoImpl_getEnvTypeDOByPrivateIpAndAppId" parameterType="hashmap" resultMap="envTypeDOMap">
+        SELECT DISTINCT et.* FROM cmdb_envtype et INNER JOIN cmdb_platform pf ON et.id=pf.env_id
+        INNER JOIN cmdb_devices d ON pf.id=d.platform_id
+        WHERE d.privateip=#{privateIp} and d.program_id=#{appId};
+    </select>
+
+    <select id="AppDaoImpl_getPrivateIpByAppIdAndEnvType" parameterType="hashmap" resultType="String">
+        SELECT DISTINCT d.privateip FROM  cmdb_devices d INNER JOIN cmdb_platform pf ON  d.platform_id = pf.id
+        INNER JOIN cmdb_envtype et ON et.id = pf.env_id
+        WHERE d.program_id=#{appId} AND et.name=#{envType}
+    </select>
+
+</mapper>

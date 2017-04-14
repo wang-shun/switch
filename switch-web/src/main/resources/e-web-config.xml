@@ -8,6 +8,9 @@
         <ignore page="/error/systemError.htm"></ignore>
         <ignore page="/error/error.htm"></ignore>
         <ignore page="/mangerRest/callBack"></ignore>
+        <ignore page="/login/checkLogin"></ignore>
+        <ignore page="/login/generatePublicKey"></ignore>
+        <ignore page="/manager/login.htm"></ignore>
     </ignores>
     <notIgnores>
         <notIgnore regular="^[\w\W]*/myswitch/[\w\W]*$"></notIgnore>
