@@ -43,4 +43,13 @@
                 <property name="searchFilter" value="${ldap.searchFilter}"></property>
         </bean>
 
+        <!--配置中心MongoDB数据库-->
+        <bean id="mongoDBConfig" class="com.bozhong.config.common.MongoDBConfig" init-method="init">
+                <property name="ip" value="${mongodb.ip}"></property>
+                <property name="port" value="${mongodb.port}"></property>
+                <property name="dbName" value="${mongodb.dbName}"></property>
+                <property name="userName" value="${mongodb.userName}"></property>
+                <property name="password" value="${mongodb.password}"></property>
+        </bean>
+
 </beans>
