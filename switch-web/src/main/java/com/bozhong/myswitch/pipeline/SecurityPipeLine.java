@@ -74,6 +74,8 @@ public class SecurityPipeLine implements PipeLineInter {
             } else {
                 httpServletRequest.setAttribute("env", env);
             }
+
+            httpServletRequest.setAttribute("environMap", Environ.DATA_MAP);
             return true;
         }
 

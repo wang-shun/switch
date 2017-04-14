@@ -14,6 +14,10 @@
 <script>
     $(function () {
         $.jgrid.defaults.width = $("#jqGrid").parent().width();
+        var environMap = new Object();
+        #foreach($member in $environMap.entrySet())
+            environMap["$member.key"]="$member.value";
+        #end
 
         $("#jqGrid").jqGrid({
             url: '${ctxPath}/myswitch/mangerRest/getOptRecordList',
@@ -25,15 +29,23 @@
                     label: '应用', name: 'appName', sortable: false
                 },
                 {
+                    label: '环境', name: 'env', sortable: false, width:"90px", formatter:function (cellvalue, options, rowObject) {
+                    return environMap[cellvalue];
+                }
+                },
+                {
                     label: '操作内容', name: 'optId', formatter: function (cellvalue, options, rowObject) {
                     return rowObject.fieldName + "值改成" + rowObject.val;
                 }, sortable: false
                 },
-                {label: '操作时间', name: 'createDt', sortable: false},
-                {label: '操作人', name: 'createBy', sortable: false},
                 {
-                    label: '操作', name: 'optId', formatter: function (cellvalue, options, rowObject) {
-                    return " <button type='button' class='btn btn-xs btn-info btn-edit'>查看更新的情况</button>";
+                    label: 'PATH', name: 'path', sortable: false
+                },
+                {label: '操作时间', name: 'createDt', sortable: false},
+                {label: '操作人', name: 'createBy', width:"100px", sortable: false},
+                {
+                    label: '操作', name: 'optId', width:"80px", formatter: function (cellvalue, options, rowObject) {
+                    return " <button type='button' class='btn btn-xs btn-info btn-edit'>查看</button>";
                 }, sortable: false
                 }
             ],

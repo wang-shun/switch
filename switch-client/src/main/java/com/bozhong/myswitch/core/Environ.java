@@ -1,5 +1,9 @@
 package com.bozhong.myswitch.core;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by renyueliang on 17/4/10.
  */
@@ -15,6 +19,14 @@ public enum Environ {
     private String name;
 
     private String desc;
+
+    public static final Map<String, String> DATA_MAP = new HashMap<>();
+
+    static {
+        for (Environ environ : EnumSet.allOf(Environ.class)) {
+            DATA_MAP.put(environ.getName(), environ.getDesc());
+        }
+    }
 
     private Environ(String name, String desc) {
         this.name = name;
