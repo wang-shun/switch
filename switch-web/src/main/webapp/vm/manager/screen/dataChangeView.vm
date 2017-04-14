@@ -13,6 +13,7 @@
 
 <script>
     $(function () {
+        $.jgrid.defaults.width = $("#jqGrid").parent().width();
         $("#jqGrid").jqGrid({
             url: '${ctxPath}/myswitch/mangerRest/getSwitchValueChangeList',
             mtype: "POST",
@@ -31,7 +32,7 @@
                 {label: '操作时间', name: 'createDt', sortable: false},
                 {label: '操作人', name: 'createBy', sortable: false},
                 {label: '回调时间', name: 'callbackDT', sortable: false},
-                {label: '回调时间', name: 'syncResult', formatter: function (cellvalue, options, rowObject) {
+                {label: '成功失败', name: 'syncResult', formatter: function (cellvalue, options, rowObject) {
                     return cellvalue?"<span class='text-success'>成功</span>":"<span class='text-danger'>失败</span>";
                 }, sortable: false}
             ],
@@ -39,9 +40,15 @@
             height: "auto",
             rowNum: 20,
             rownumbers: true,
+            autowidth: true,
+            shrinkToFit: true,
             pager: "#jqGridPager"
         });
 
         $("#jqGrid").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'hidden'});
+
+        $(window).resize(function () {          //当浏览器大小变化时
+            $("#jqGrid").setGridWidth($("ol.breadcrumb").width());
+        });
     });
 </script>

@@ -13,6 +13,8 @@
 
 <script>
     $(function () {
+        $.jgrid.defaults.width = $("#jqGrid").parent().width();
+
         $("#jqGrid").jqGrid({
             url: '${ctxPath}/myswitch/mangerRest/getOptRecordList',
             mtype: "POST",
@@ -39,9 +41,15 @@
             height: "auto",
             rowNum: 20,
             rownumbers: true,
+            autowidth: true,
+            shrinkToFit: true,
             pager: "#jqGridPager"
         });
 
         $("#jqGrid").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'hidden'});
+
+        $(window).resize(function () {          //当浏览器大小变化时
+            $("#jqGrid").setGridWidth($("ol.breadcrumb").width());
+        });
     });
 </script>
