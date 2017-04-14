@@ -3,6 +3,7 @@ package com.bozhong.myswitch.restful;
 import com.bozhong.config.domain.JqPage;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.domain.OptRecordDO;
+import com.bozhong.myswitch.domain.SwitchValueChangDO;
 import com.bozhong.myswitch.service.MongoService;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.resource.Singleton;
@@ -66,6 +67,20 @@ public class MangerRest {
         jqPage.setPage(page);
         jqPage.setPageSize(rows);
         return callBack + "(" + gson.toJson(mongoService.getJqPage(jqPage, OptRecordDO.class)) + ")";
+    }
+
+    @POST
+    @Path("getSwitchValueChangeList")
+    public String getSwitchValueChangeList(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders) {
+        Map<String, Object> param = ((EWebRequestDTO) EWebServletContext.getEWebContext().getParam()).getRequestParam();
+        String callBack = param.get("callback").toString();
+        Integer page = Integer.valueOf(param.get("page").toString());
+        Integer rows = Integer.valueOf(param.get("rows").toString());
+        Gson gson = new Gson();
+        JqPage<SwitchValueChangDO> jqPage = new JqPage<SwitchValueChangDO>();
+        jqPage.setPage(page);
+        jqPage.setPageSize(rows);
+        return callBack + "(" + gson.toJson(mongoService.getJqPage(jqPage, SwitchValueChangDO.class)) + ")";
     }
 
 
