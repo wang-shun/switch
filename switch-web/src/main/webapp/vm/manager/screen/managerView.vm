@@ -54,7 +54,30 @@
                 </td>
             </tr>
             <tr class="hide" data-nodeName="${switchNode.nodeName}|$velocityCount">
-                <td colspan="4">${switchNode.nodeName}</td>
+                <br/>
+                <br/>
+                <td colspan="4">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr class="bg-success">
+                            <th>序号</th>
+                            <th>字段名</th>
+                            <th>修改时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            #foreach($switchData in $!switchNode.switchDataList)
+                            <tr>
+                                <td>$velocityCount</td>
+                                <td>$switchData.fieldName</td>
+                                <td>$switchData.value</td>
+                                <td><button type="button" class="btn btn-xs btn-info btn-edit fieldChange">修改</button></td>
+                            </tr>
+                            #end
+                        </tbody>
+                    </table>
+                </td>
             </tr>
             #end
         </tbody>
