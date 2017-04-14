@@ -2,6 +2,7 @@ package com.bozhong.myswitch.domain;
 
 import com.alibaba.fastjson.JSON;
 
+
 /**
  * Created by renyueliang on 17/4/12.
  * 操作记录实体类

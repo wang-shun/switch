@@ -1,5 +1,7 @@
 package com.bozhong.myswitch.dao;
 
+import com.bozhong.config.domain.JqPage;
+
 import java.util.List;
 
 /**
@@ -33,4 +35,12 @@ public interface MongoDao {
      * @param <T>
      */
     <T> void updateOneByOptId(String optId, T t);
+
+    /**
+     * @param jqPage
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> JqPage<T> getJqPage(JqPage<T> jqPage, Class<T> tClass);
 }

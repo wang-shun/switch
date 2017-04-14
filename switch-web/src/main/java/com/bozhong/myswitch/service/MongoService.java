@@ -1,5 +1,7 @@
 package com.bozhong.myswitch.service;
 
+import com.bozhong.config.domain.JqPage;
+
 import java.util.List;
 
 /**
@@ -34,4 +36,12 @@ public interface MongoService {
      * @param <T>
      */
     <T> void updateOneByOptId(String optId, T t);
+
+    /**
+     * @param jqPage
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> JqPage<T> getJqPage(JqPage<T> jqPage, Class<T> tClass);
 }

@@ -1,5 +1,6 @@
 package com.bozhong.myswitch.service.impl;
 
+import com.bozhong.config.domain.JqPage;
 import com.bozhong.myswitch.dao.MongoDao;
 import com.bozhong.myswitch.service.MongoService;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by xiezg@317hu.com on 2017/4/14 0014.
  */
-public class MongoServiceImpl implements MongoService{
+public class MongoServiceImpl implements MongoService {
     private MongoDao mongoDao;
 
     @Override
@@ -29,6 +30,11 @@ public class MongoServiceImpl implements MongoService{
     @Override
     public <T> void updateOneByOptId(String optId, T t) {
         mongoDao.updateOneByOptId(optId, t);
+    }
+
+    @Override
+    public <T> JqPage<T> getJqPage(JqPage<T> jqPage, Class<T> tClass) {
+        return mongoDao.getJqPage(jqPage, tClass);
     }
 
 

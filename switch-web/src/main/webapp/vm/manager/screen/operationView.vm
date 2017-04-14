@@ -5,4 +5,43 @@
     </ol>
 </div>
 <div class="col-md-12">
+    <div style="margin:20px">
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
 </div>
+
+<script>
+    $(function () {
+        $("#jqGrid").jqGrid({
+            url: '${ctxPath}/myswitch/mangerRest/getOptRecordList',
+            mtype: "POST",
+            styleUI: 'Bootstrap',
+            datatype: "jsonp",
+            colModel: [
+                {
+                    label: '应用', name: 'appName', sortable: false
+                },
+                {
+                    label: '操作内容', name: 'optId', formatter: function (cellvalue, options, rowObject) {
+                    return rowObject.fieldName + "值改成" + rowObject.val;
+                }, sortable: false
+                },
+                {label: '操作时间', name: 'createDt', sortable: false},
+                {label: '操作人', name: 'createBy', sortable: false},
+                {
+                    label: '操作', name: 'optId', formatter: function (cellvalue, options, rowObject) {
+                    return " <button type='button' class='btn btn-xs btn-info btn-edit'>查看更新的情况</button>";
+                }, sortable: false
+                }
+            ],
+            viewrecords: true,
+            height: "auto",
+            rowNum: 20,
+            rownumbers: true,
+            pager: "#jqGridPager"
+        });
+
+        $("#jqGrid").closest(".ui-jqgrid-bdiv").css({'overflow-x': 'hidden'});
+    });
+</script>
