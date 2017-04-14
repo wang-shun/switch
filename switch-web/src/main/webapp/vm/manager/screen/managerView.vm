@@ -53,13 +53,4 @@
         <input type="submit" value="submit"/>
     </form>
 </div>
-<script>
-    $(function(){
-        //应用菜单单击事件
-        $("#nav-bar-list-38").delegate("a.list-group-item","click", function(){
-            var appid = $(this).attr("data-appid");
-            var env = $("#myTab li.active").children("a").attr("data-env");
-            window.location.href="${ctxPath}/manager/managerView.htm?appId="+appid+"&env="+env;
-        });
-    });
-</script>
+
