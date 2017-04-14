@@ -10,14 +10,15 @@ import com.bozhong.myswitch.domain.SwitchValueChangDO;
  */
 public interface ManagerService {
 
-    public void recordOpt();
+    public void recordOpt(OptRecordDO optRecordDO);
 
     public void changeSwitchValue(ChangeSwitchDTO changeSwitchDTO);
 
     void updateSwitchValueChange(SwitchValueChangDO switchValueChangDO);
 
-    void changeSwitchValue(ChangeSwitchDTO changeSwitchDTO);
     public void changeAllSwitchValue(ChangeAllSwitchDTO changeAllSwitchDTO ) ;
+
+    public void recordSwitchValueChange(SwitchValueChangDO switchValueChangDO);
 
 
 
