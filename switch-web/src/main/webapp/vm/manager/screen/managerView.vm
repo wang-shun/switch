@@ -63,6 +63,7 @@
                                 <tr class="bg-success">
                                     <th>序号</th>
                                     <th>字段名</th>
+                                    <th>值</th>
                                     <th>修改时间</th>
                                     <th>操作</th>
                                 </tr>
@@ -73,6 +74,7 @@
                                         <td>$velocityCount</td>
                                         <td>$switchData.fieldName</td>
                                         <td>$switchData.value</td>
+                                        <td>$switchData.currentDateTime</td>
                                         <td style="text-align: center">
                                             <button type="button" class="btn btn-xs btn-info btn-edit fieldChange">修改
                                             </button>
@@ -109,9 +111,11 @@
             if (appIdEnvIpPanel.hasClass("hide")) {
                 appIdEnvIpPanel.removeClass("hide");
                 $(this).text("关闭");
+                $(this).removeClass("btn-info").addClass("btn-warning");
             } else {
                 appIdEnvIpPanel.addClass("hide");
                 $(this).text("展开");
+                $(this).removeClass("btn-warning").addClass("btn-info");
             }
         });
     });
