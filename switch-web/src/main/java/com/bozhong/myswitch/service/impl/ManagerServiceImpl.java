@@ -70,9 +70,9 @@ public class ManagerServiceImpl implements ManagerService {
 
         //更新switch value 到zk
         SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
-        switchValueChangDO.setSyncResult(true);
-        switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
-        updateSwitchValueChange(switchValueChangDO);
+        //switchValueChangDO.setSyncResult(true);
+        //switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+        //updateSwitchValueChange(switchValueChangDO);
     }
 
 

@@ -18,6 +18,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -27,6 +29,7 @@ import java.util.Map;
 @Singleton
 @Path("mangerRest")
 public class MangerRest {
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private MongoService mongoService;
@@ -52,6 +55,10 @@ public class MangerRest {
         String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
         String ip= (String) EWebServletContext.getEWebContext().get("ip");
         SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: "+optId+" fieldName:"+fieldName+" ip:"+ip);
+        SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
+        switchValueChangDO.setSyncResult(true);
+        switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+        mongoService.updateOneByOptIdFieldNameIp(optId, fieldName, ip, switchValueChangDO);
         return "callBack";
     }
 

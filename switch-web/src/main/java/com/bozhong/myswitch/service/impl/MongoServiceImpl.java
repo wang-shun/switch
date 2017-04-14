@@ -33,6 +33,11 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
+    public <T> void updateOneByOptIdFieldNameIp(String optId, String fieldName, String ip, T t) {
+        mongoDao.updateOneByOptIdFieldNameIp(optId, fieldName, ip, t);
+    }
+
+    @Override
     public <T> JqPage<T> getJqPage(JqPage<T> jqPage, Class<T> tClass) {
         return mongoDao.getJqPage(jqPage, tClass);
     }

@@ -37,6 +37,16 @@ public interface MongoDao {
     <T> void updateOneByOptId(String optId, T t);
 
     /**
+     *
+     * @param optId
+     * @param fieldName
+     * @param ip
+     * @param t
+     * @param <T>
+     */
+    <T> void updateOneByOptIdFieldNameIp(String optId, String fieldName, String ip, T t);
+
+    /**
      * @param jqPage
      * @param tClass
      * @param <T>
