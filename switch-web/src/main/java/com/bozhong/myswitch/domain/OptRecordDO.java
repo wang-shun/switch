@@ -1,9 +1,6 @@
 package com.bozhong.myswitch.domain;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
-
-import java.io.Serializable;
 
 /**
  * Created by renyueliang on 17/4/12.

@@ -8,13 +8,17 @@ import com.bozhong.myswitch.domain.OptRecordDO;
 import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
+import com.yx.eweb.main.EWebServletContext;
 
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by renyueliang on 17/4/12.
  */
 public class ManagerServiceImpl implements ManagerService {
+
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private MongoService mongoService;
 
@@ -26,6 +30,8 @@ public class ManagerServiceImpl implements ManagerService {
 
         AppDO appDO = appService.getAppDOByAppId(optRecordDO.getAppId());
         optRecordDO.setAppName(appDO.getAppName());
+        optRecordDO.setCreateBy((String) EWebServletContext.getRequest().getAttribute("uId"));
+        optRecordDO.setCreateDt(SIMPLE_DATE_FORMAT.format(new Date()));
         mongoService.insertOne(optRecordDO);
 
     }

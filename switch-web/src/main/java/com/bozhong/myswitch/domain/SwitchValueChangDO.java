@@ -2,8 +2,6 @@ package com.bozhong.myswitch.domain;
 
 import com.alibaba.fastjson.JSON;
 
-import java.io.Serializable;
-
 /**
  * Created by renyueliang on 17/4/12.
  * 数据更新实体类
