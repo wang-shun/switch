@@ -103,7 +103,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab">
                         <h4 class="panel-title">
-                            <a href="javascript:void(0);">开关平台</a>
+                            <a href="javascript:void(0);">开关平台<font size="1px" color="#6495ed">（#if($isOnline) 线上环境 #else 开发环境 #end）</font></a>
                         </h4>
                     </div>
                 </div>

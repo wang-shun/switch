@@ -2,7 +2,7 @@ package com.bozhong.myswitch.view.manager.module.screen;
 
 import com.bozhong.config.util.CookiesUtil;
 import com.bozhong.myredis.MyRedisClusterForHessian;
-import com.bozhong.myswitch.consts.SwitchConstants;
+import com.bozhong.myswitch.common.SwitchConstants;
 import com.yx.eweb.main.EWebContext;
 import com.yx.eweb.main.ScreenInter;
 import org.springframework.beans.factory.annotation.Autowired;

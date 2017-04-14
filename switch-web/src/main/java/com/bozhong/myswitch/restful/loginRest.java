@@ -6,7 +6,7 @@ import com.bozhong.config.common.LDAPConnectionConfig;
 import com.bozhong.config.exception.ConfigCenterLoginCodeEnum;
 import com.bozhong.myredis.MyRedisClusterForHessian;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
-import com.bozhong.myswitch.consts.SwitchConstants;
+import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.util.RSAHelper;
 import com.google.gson.Gson;
 import com.novell.ldap.LDAPException;

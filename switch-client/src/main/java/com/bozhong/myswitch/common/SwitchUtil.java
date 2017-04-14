@@ -141,6 +141,7 @@ public class SwitchUtil {
                     realTimeDataDTO.setFieldName(field.getName());
 
                     realTimeDataDTO.setCurrentDateTime(DateUtil.getCurrentDate());
+                    realTimeDataDTO.setFieldName(field.getName());
 
                     jsonMap.put(field.getName(), realTimeDataDTO);
                     realTimeDataDTOMap.put(field.getName(), realTimeDataDTO);
