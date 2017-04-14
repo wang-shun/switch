@@ -250,7 +250,11 @@ public class SwitchUtil {
                         } else if (swtich.type().equals(FieldType.BOOLEAN.getName())) {
                             field.set(clazz, val);
                         } else if (swtich.type().equals(FieldType.LONG.getName())) {
-                            field.set(clazz, val == null ? 0 : (Long) val);
+                            if(val instanceof  Integer){
+                                field.set(clazz, val == null ? 0 :  ( (Integer )val).longValue());
+                            }else if(val instanceof  Long) {
+                                field.set(clazz, val == null ? 0 : (Long) val);
+                            }
                         } else if (swtich.type().equals(FieldType.DOUBLE.getName())) {
                             if (val instanceof BigDecimal) {
                                 field.set(clazz, val == null ? 0 : ((BigDecimal) val).doubleValue());

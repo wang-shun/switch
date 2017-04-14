@@ -1,0 +1,70 @@
+<div class="col-md-12">
+    <ol class="breadcrumb">
+        <li class="active">应用</li>
+        <li class="active">$!{appDO.appName}</li>
+    </ol>
+</div>
+<div class="col-md-12">
+    <ul id="myTab" class="nav nav-tabs">
+        #if($isOnline)
+            <li #if($env=="uat") class="active" #end>
+                <a href="#uat" data-env="uat" data-toggle="tab">
+                    预发环境
+                </a>
+            </li>
+            <li #if($env=="online") class="active" #end>
+                <a href="#online" data-env="online" data-toggle="tab">
+                    线上环境
+                </a>
+            </li>
+        #else
+            <li #if($env=="dev") class="active" #end>
+                <a href="#dev" data-env="dev" data-toggle="tab">
+                    开发环境
+                </a>
+            </li>
+            <li #if($env=="sit") class="active" #end>
+                <a href="#sit" data-env="sit" data-toggle="tab">
+                    测试环境
+                </a>
+            </li>
+        #end
+    </ul>
+    <br/>
+    <br/>
+    <br/>
+    errorCode:${errorCode}
+    <BR/>
+    json:${json};
+    <BR/>
+    list:${list};
+    <BR/>
+    switchNodeList:${switchNodeList}
+
+    <form name="districtinfoForm" method="post" action="${ctxPath}/manager/managerView.htm" Accept-Encoding="utf-8">
+
+        <input type="hidden" value="managerAction" name="do_action"/>
+        <input type="hidden" value="changeOneSwitchValue" name="do_method"/>
+
+        路径path:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="path"/><br/>
+        字段fieldName:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="fieldName"/><br/>
+        值val:&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="val"/><br/>
+
+        <input type="submit" value="submit"/>
+    </form>
+</div>
+
+<script>
+    $(function () {
+        //tab切换事件
+        $("ul#myTab").delegate("li>a", "click", function () {
+            var appid = $!{appDO.appId};
+            var url = "${ctxPath}/manager/managerView.htm?appId=" + appid
+            var env = $(this).attr("data-env");
+            if (env != undefined) {
+                url = url + "&env=" + env;
+            }
+            window.location.href = url;
+        });
+    });
+</script>
