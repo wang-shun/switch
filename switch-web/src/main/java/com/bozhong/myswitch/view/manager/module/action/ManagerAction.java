@@ -1,10 +1,16 @@
 package com.bozhong.myswitch.view.manager.module.action;
 
+import com.bozhong.common.util.BeanUtil;
 import com.bozhong.common.util.StringUtil;
+import com.bozhong.common.util.UUIDUtil;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
+import com.bozhong.myswitch.domain.ChangeAllSwitchDTO;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
+import com.bozhong.myswitch.domain.OptRecordDO;
 import com.bozhong.myswitch.service.ManagerService;
 import com.yx.eweb.main.EWebContext;
+import com.yx.eweb.main.EWebRequestDTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -39,7 +45,11 @@ public class ManagerAction {
         changeSwitchDTO.setPath(path);
         changeSwitchDTO.setVal(val);
 
-        managerService.recordOpt();
+        OptRecordDO optRecordDO = new OptRecordDO();
+        BeanUtils.copyProperties(changeSwitchDTO, optRecordDO);
+        optRecordDO.setAppId(appId);
+        optRecordDO.setEnv(env);
+        managerService.recordOpt(optRecordDO);
         managerService.changeSwitchValue(changeSwitchDTO);
 
     }
