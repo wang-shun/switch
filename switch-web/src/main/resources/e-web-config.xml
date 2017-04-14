@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <eweb>
     <pipeLines>
-
+        <pipeLine id="securityPipeLine"></pipeLine>
     </pipeLines>
     <ignores>
         <ignore page="/error/timeOut.htm"></ignore>

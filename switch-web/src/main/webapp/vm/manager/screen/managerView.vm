@@ -76,8 +76,11 @@
                                         <td>$switchData.value</td>
                                         <td>$switchData.currentDateTime</td>
                                         <td style="text-align: center">
-                                            <button type="button" class="btn btn-xs btn-info btn-edit fieldChange">修改
-                                            </button>
+                                            <button type="button" data-ipHost="$!{switchNode.nodeName}"
+                                                    data-path="$!{switchNode.allPath}"
+                                                    data-fieldName="$!{switchData.fieldName}"
+                                                    data-val="$!{switchData.value}"
+                                                    class="btn btn-xs btn-info btn-edit fieldChange">修改</button>
                                         </td>
                                     </tr>
                                     #end
@@ -89,6 +92,61 @@
                 #end
             </tbody>
         </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="updateModalLabel">
+                    编辑配置
+                </h4>
+            </div>
+            <div class="modal-body" id="updateModalBody">
+                <form class="form-horizontal" id="districtinfoForm" name="districtinfoForm" role="form"
+                      method="post" action="${ctxPath}/manager/managerView.htm?appId=$!{appDO.appId}&env=$!{env}" Accept-Encoding="utf-8"
+                >
+                    <input type="hidden" value="managerAction" name="do_action"/>
+                    <input type="hidden" value="changeOneSwitchValue" name="do_method"/>
+##                    <input type="hidden" value="$!{appDO.appId}" name="appId" id="appId"/>
+##                    <input type="hidden" value="$!{env}" name="env" id="env" />
+                    <div class="form-group">
+                        <label for="ipHost" class="col-sm-3 control-label">IP</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="ipHost" name="ipHost" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="path" class="col-sm-3 control-label">路径</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="path" name="path" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldName" class="col-sm-3 control-label">字段名</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="fieldName" name="fieldName" readonly="readonly"/>
+                        </div>
+                    </div>
+                    <div class="form-group" id="jqgrid_defAppRunVersion_Panel">
+                        <label for="val" class="col-sm-3 control-label">值</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="val" name="val"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="syncSigleBtn">同步本机</button>
+                <button type="button" class="btn btn-primary" id="syncAllBtn">同步所有</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -117,6 +175,20 @@
                 $(this).text("展开");
                 $(this).removeClass("btn-warning").addClass("btn-info");
             }
+        });
+
+        //修改事件
+        $("#appIdEnvIpTable").delegate("button.fieldChange", "click", function () {
+            $("#ipHost").val($(this).attr("data-ipHost"));
+            $("#path").val($(this).attr("data-path"));
+            $("#fieldName").val($(this).attr("data-fieldName"));
+            $("#val").val($(this).attr("data-val"));
+            $("#updateModal").modal('show');
+        });
+
+        //同步本机
+        $("#syncSigleBtn").on("click", function () {
+            $("#districtinfoForm").submit();
         });
     });
 </script>
