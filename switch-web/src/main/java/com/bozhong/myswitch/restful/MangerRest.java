@@ -59,6 +59,7 @@ public class MangerRest {
         switchValueChangDO.setSyncResult(true);
         switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
         mongoService.updateOneByOptIdFieldNameIp(optId, fieldName, ip, switchValueChangDO);
+        System.out.println("回调");
         return "callBack";
     }
 

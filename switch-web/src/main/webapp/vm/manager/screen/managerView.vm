@@ -117,8 +117,8 @@
                 <form class="form-horizontal" id="districtinfoForm" name="districtinfoForm" role="form"
                       method="post" action="${ctxPath}/manager/managerView.htm?appId=$!{appDO.appId}&env=$!{env}" Accept-Encoding="utf-8"
                 >
-                    <input type="hidden" value="managerAction" name="do_action"/>
-                    <input type="hidden" value="changeOneSwitchValue" name="do_method"/>
+                    <input type="hidden" value="managerAction" name="do_action" id="do_action"/>
+                    <input type="hidden" value="changeOneSwitchValue" name="do_method" id="do_method"/>
 ##                    <input type="hidden" value="$!{appDO.appId}" name="appId" id="appId"/>
 ##                    <input type="hidden" value="$!{env}" name="env" id="env" />
                     <div class="form-group">
@@ -193,6 +193,13 @@
 
         //同步本机
         $("#syncSigleBtn").on("click", function () {
+            $("#do_method").val("changeOneSwitchValue");
+            $("#districtinfoForm").submit();
+        });
+
+        //同步所有
+        $("#syncAllBtn").on("click", function () {
+            $("#do_method").val("changeAllSwitchValue");
             $("#districtinfoForm").submit();
         });
     });
