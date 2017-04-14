@@ -48,6 +48,11 @@ public class SwitchValueChangDO extends BaseDO {
      */
     private boolean syncResult;
 
+    /**
+     * 路径
+     */
+    private String path;
+
     public String getOptId() {
         return optId;
     }
@@ -110,6 +115,18 @@ public class SwitchValueChangDO extends BaseDO {
 
     public void setSyncResult(boolean syncResult) {
         this.syncResult = syncResult;
+    }
+
+    public boolean isSyncResult() {
+        return syncResult;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     @Override

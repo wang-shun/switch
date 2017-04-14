@@ -11,8 +11,11 @@ import com.bozhong.myswitch.service.MongoService;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import com.yx.eweb.main.EWebServletContext;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -70,9 +73,6 @@ public class ManagerServiceImpl implements ManagerService {
 
         //更新switch value 到zk
         SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
-        //switchValueChangDO.setSyncResult(true);
-        //switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
-        //updateSwitchValueChange(switchValueChangDO);
     }
 
 
@@ -94,6 +94,21 @@ public class ManagerServiceImpl implements ManagerService {
 
             List<SwitchNodeDTO> list = ZkClient.getInstance().getChildrenNode(appPath);
             //插入mongoDB
+            if (!CollectionUtils.isEmpty(list)) {
+                List<SwitchValueChangDO> switchValueChangDOList = new ArrayList<>(list.size());
+                for (SwitchNodeDTO switchNodeDTO : list) {
+                    SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
+                    BeanUtils.copyProperties(changeAllSwitchDTO, switchValueChangDO);
+                    switchValueChangDO.setIp(switchNodeDTO.getNodeName());
+                    switchValueChangDO.setPath(switchNodeDTO.getAllPath());
+                    switchValueChangDO.setCreateBy((String) EWebServletContext.getRequest().getAttribute("uId"));
+                    switchValueChangDO.setCreateDt(SIMPLE_DATE_FORMAT.format(new Date()));
+                    switchValueChangDO.setCallbackDT(switchValueChangDO.getCreateDt());
+                    switchValueChangDO.setSyncResult(false);
+                    switchValueChangDOList.add(switchValueChangDO);
+                }
+                mongoService.insertMany(switchValueChangDOList, SwitchValueChangDO.class);
+            }
 
             SwitchUtil.changeAllValue(list,
                     appPath,
