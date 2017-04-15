@@ -52,6 +52,9 @@ public class ManagerAction {
         managerService.recordOpt(optRecordDO);
         managerService.changeSwitchValue(changeSwitchDTO);
 
+        eWebContext.put("optId", changeSwitchDTO.getOptId());
+        eWebContext.put("do_action", eWebContext.get("do_action"));
+        eWebContext.put("do_method", eWebContext.get("do_method"));
     }
 
 
@@ -64,6 +67,10 @@ public class ManagerAction {
         BeanUtils.copyProperties(changeAllSwitchDTO, optRecordDO);
         managerService.recordOpt(optRecordDO);
         managerService.changeAllSwitchValue(changeAllSwitchDTO);
+
+        eWebContext.put("optId", changeAllSwitchDTO.getOptId());
+        eWebContext.put("do_action", eWebContext.get("do_action"));
+        eWebContext.put("do_method", eWebContext.get("do_method"));
 
     }
 

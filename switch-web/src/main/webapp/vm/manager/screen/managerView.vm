@@ -32,6 +32,129 @@
     </ul>
     <br/>
     <br/>
+    #if(${do_action} && ${do_action}=="managerAction" && ${do_method}
+    && (${do_method}=="changeOneSwitchValue" || ${do_method} == "changeAllSwitchValue" ))
+        <div>
+            <div class="panel panel-info">
+                <div class="panel-heading"><a href="#" class="close syncResultClose">
+                    &times;
+                </a>当前操作记录
+                </div>
+                <table class="table">
+                    <thead>
+                    <th>PATH</th>
+                    <th>字段名</th>
+                    <th>值</th>
+                    <th>操作类型</th>
+                    </thead>
+                    <tbody id="operationRecordTbody">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading"><a href="#" class="close syncResultClose">
+                    &times;
+                </a>当前更新记录
+                </div>
+                <table class="table">
+                    <thead>
+                    <th>IP</th>
+                    <th>字段名</th>
+                    <th>值</th>
+                    <th>PATH</th>
+                    <th>回调时间</th>
+                    <th>成功失败</th>
+                    </thead>
+                    <tbody id="switchValueChangeTbody">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+            $(function(){
+                var environMap = new Object();
+                #foreach($member in $environMap.entrySet())
+                    environMap["$member.key"] = "$member.value";
+                #end
+
+                //同步结果面板关闭事件
+                $(".syncResultClose").on("click", function () {
+                    $(this).parent().parent().hide();
+                });
+
+                //当前操作记录
+                $.post("${ctxPath}/myswitch/mangerRest/getOptRecord", {
+                    "appId": "$!{appDO.appId}",
+                    "env": "$!{env}",
+                    "optId": "$!{optId}"
+                }, function (data) {
+                    if (data == undefined || data == null) {
+                        return;
+                    }
+
+                    data.env = environMap[data.env];
+                    if (data.path === undefined)
+                    {
+                        data.path = undefined;
+                    }
+                    $('#operationRecordTbody').html(_.template($('#currentOptRecord_tpl').html())(data));
+                }, "json");
+
+                //当前更新记录
+                $.post("${ctxPath}/myswitch/mangerRest/getSwitchValueChangeByListOptId", {
+                    "optId": "$!{optId}"
+                }, function (data) {
+                    if (data == undefined || data == null) {
+                        return;
+                    }
+
+                    $('#switchValueChangeTbody').html(_.template($('#switchValueChange_tpl2').html(), {variable: 'data'})(data));
+                }, "json");
+            });
+        </script>
+        <script type="text/template" id="currentOptRecord_tpl">
+            <tr>
+                <td>
+                    <% if(typeof path === 'undefined') {%>
+                    <%} else {%>
+                    <%= path %>
+                    <%}%>
+                </td>
+                <td><%= fieldName %></td>
+                <td><%= val %></td>
+                <td>
+                    <% if(typeof path === 'undefined') {%>
+                    同步所有
+                    <%} else {%>
+                    同步本机
+                    <%}%>
+                </td>
+            </tr>
+        </script>
+        <script type="text/template" id="switchValueChange_tpl2">
+                <% _.each(data, function(n){ %>
+                <tr <% if(n.syncResult) %> class="success"  <% else { %>
+                class="danger"
+                <% } %> >
+                <td><%= n.ip %></td>
+                <td><%= n.fieldName %></td>
+                <td><%= n.val %></td>
+                <td><%= n.path %></td>
+                <td><%= n.callbackDT %></td>
+                <td>
+                    <% if(n.syncResult) %>
+                    成功
+                    <% else { %>
+                    失败
+                    <% } %>
+                </td>
+                </tr>
+                <% }); %>
+        </script>
+    #end
+
     <div>
         <table id="appIdEnvIpTable" class="table table-bordered">
             <thead>
@@ -80,7 +203,8 @@
                                                     data-path="$!{switchNode.allPath}"
                                                     data-fieldName="$!{switchData.fieldName}"
                                                     data-val="$!{switchData.value}"
-                                                    class="btn btn-xs btn-info btn-edit fieldChange">修改</button>
+                                                    class="btn btn-xs btn-info btn-edit fieldChange">修改
+                                            </button>
                                         </td>
                                     </tr>
                                     #end
@@ -91,9 +215,9 @@
                 </tr>
                 #end
                 #if(!${switchNodeList} || ${switchNodeList.size()} == 0)
-                    <tr>
-                        <td colspan="4" style="text-align: center;">没有记录！</td>
-                    </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center;">没有记录！</td>
+                </tr>
                 #end
             </tbody>
         </table>
@@ -115,12 +239,13 @@
             </div>
             <div class="modal-body" id="updateModalBody">
                 <form class="form-horizontal" id="districtinfoForm" name="districtinfoForm" role="form"
-                      method="post" action="${ctxPath}/manager/managerView.htm?appId=$!{appDO.appId}&env=$!{env}" Accept-Encoding="utf-8"
+                      method="post" action="${ctxPath}/manager/managerView.htm?appId=$!{appDO.appId}&env=$!{env}"
+                      Accept-Encoding="utf-8"
                 >
                     <input type="hidden" value="managerAction" name="do_action" id="do_action"/>
                     <input type="hidden" value="changeOneSwitchValue" name="do_method" id="do_method"/>
-##                    <input type="hidden" value="$!{appDO.appId}" name="appId" id="appId"/>
-##                    <input type="hidden" value="$!{env}" name="env" id="env" />
+                ##                    <input type="hidden" value="$!{appDO.appId}" name="appId" id="appId"/>
+                ##                    <input type="hidden" value="$!{env}" name="env" id="env" />
                     <div class="form-group">
                         <label for="ipHost" class="col-sm-3 control-label">IP</label>
                         <div class="col-sm-9">
@@ -136,7 +261,8 @@
                     <div class="form-group">
                         <label for="fieldName" class="col-sm-3 control-label">字段名</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="fieldName" name="fieldName" readonly="readonly"/>
+                            <input type="text" class="form-control" id="fieldName" name="fieldName"
+                                   readonly="readonly"/>
                         </div>
                     </div>
                     <div class="form-group" id="jqgrid_defAppRunVersion_Panel">

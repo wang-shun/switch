@@ -103,6 +103,10 @@
                 "env": env,
                 "optId": optId
             }, function (data) {
+                if (data == undefined || data == null) {
+                    return;
+                }
+
                 data.env = environMap[data.env];
                 $('#myModalBody').html(_.template($('#tpl').html())(data));
                 $("#myModal").modal("show");
@@ -115,6 +119,10 @@
             $.post("${ctxPath}/myswitch/mangerRest/getSwitchValueChangeByListOptId", {
                 "optId": optId
             }, function (data) {
+                if (data == undefined || data == null) {
+                    return;
+                }
+
                 $('#myModalBody').html(_.template($('#tpl2').html(), {variable: 'data'})(data));
                 $("#myModal").modal("show");
             }, "json");
@@ -195,6 +203,7 @@
             <th>字段名</th>
             <th>值</th>
             <th>PATH</th>
+##            <th>回调时间</th>
             <th>成功失败</th>
         </tr>
         </thead>
@@ -207,6 +216,7 @@
             <td><%= n.fieldName %></td>
             <td><%= n.val %></td>
             <td><%= n.path %></td>
+##            <td><%= n.callbackDT %></td>
             <td>
                 <% if(n.syncResult) %>
                 成功
