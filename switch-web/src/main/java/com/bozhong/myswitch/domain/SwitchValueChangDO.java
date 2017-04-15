@@ -44,7 +44,7 @@ public class SwitchValueChangDO extends BaseDO {
     private String callbackDT;
 
     /**
-     * 同步结果（成功或者事变）
+     * 同步结果（成功或者失败）
      */
     private boolean syncResult;
 

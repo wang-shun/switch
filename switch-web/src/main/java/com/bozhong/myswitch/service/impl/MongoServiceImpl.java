@@ -33,6 +33,11 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
+    public <T> T findOneByOptIdFieldNameIp(String optId, String fieldName, String ip, Class<T> tClass) {
+        return mongoDao.findOneByOptIdFieldNameIp(optId, fieldName, ip, tClass);
+    }
+
+    @Override
     public <T> void updateOneByOptId(String optId, T t) {
         mongoDao.updateOneByOptId(optId, t);
     }

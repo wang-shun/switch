@@ -10,6 +10,27 @@
         <div id="jqGridPager"></div>
     </div>
 </div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    操作概况
+                </h4>
+            </div>
+            <div class="modal-body" id="myModalBody" style="word-break:break-all; word-wrap:break-all;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 
 <script>
     $(function () {
@@ -34,6 +55,14 @@
                 {label: '回调时间', name: 'callbackDT', sortable: false},
                 {label: '成功失败', name: 'syncResult', formatter: function (cellvalue, options, rowObject) {
                     return cellvalue?"<span class='text-success'>成功</span>":"<span class='text-danger'>失败</span>";
+                }, sortable: false},
+                {label: '操作', name: 'optId', formatter: function (cellvalue, options, rowObject) {
+                    return  " <button type='button' class='btn btn-xs btn-success btn-detail' " +
+                            "data-ip='" + rowObject.ip + "' " +
+                            "data-fieldName='" + rowObject.fieldName + "' " +
+                            "data-optId='" + rowObject.optId + "' " +
+                            ">概况</button>"
+                            ;
                 }, sortable: false}
             ],
             viewrecords: true,
@@ -50,5 +79,89 @@
         $(window).resize(function () {          //当浏览器大小变化时
             $("#jqGrid").setGridWidth($("ol.breadcrumb").width());
         });
+
+        //概况事件
+        $("#jqGrid").delegate(".btn-detail", "click", function () {
+            var optId = $(this).attr("data-optId");
+            var fieldName = $(this).attr("data-fieldName");
+            var ip = $(this).attr("data-ip");
+            $.post("${ctxPath}/myswitch/mangerRest/getSwitchValueChange", {
+                "optId": optId,
+                "fieldName": fieldName,
+                "ip": ip
+            }, function (data) {
+                $('#myModalBody').html(_.template($('#tpl').html())(data));
+                $("#myModal").modal("show");
+            }, "json");
+        });
     });
+</script>
+<script type="text/template" id="tpl">
+    <div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">操作ID</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= optId %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">IP</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= ip %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">字段名称</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= fieldName %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">值</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= val %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">PATH</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><% if(typeof path === 'undefined') {%>
+                        <%} else {%>
+                        <%= path %>
+                        <%}%></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">操作人</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= createBy %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">操作时间</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= createDt %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">回调时间</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><%= callbackDT %></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">同步状态</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <% if(syncResult) %>
+                        成功
+                        <% else { %>
+                        失败
+                        <% } %>
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
 </script>

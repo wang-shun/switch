@@ -41,6 +41,16 @@ public interface MongoDao {
 
     /**
      * @param optId
+     * @param fieldName
+     * @param ip
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> T findOneByOptIdFieldNameIp(String optId, String fieldName, String ip, Class<T> tClass);
+
+    /**
+     * @param optId
      * @param t
      * @param <T>
      */

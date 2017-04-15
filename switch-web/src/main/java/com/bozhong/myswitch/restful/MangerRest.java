@@ -53,8 +53,8 @@ public class MangerRest {
 
         String optId = (String) EWebServletContext.getEWebContext().get("optId");
         String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
-        String ip= (String) EWebServletContext.getEWebContext().get("ip");
-        SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: "+optId+" fieldName:"+fieldName+" ip:"+ip);
+        String ip = (String) EWebServletContext.getEWebContext().get("ip");
+        SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId + " fieldName:" + fieldName + " ip:" + ip);
         SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
         switchValueChangDO.setSyncResult(true);
         switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
@@ -102,5 +102,16 @@ public class MangerRest {
         return optRecordDO.toString();
     }
 
+    @POST
+    @Path("getSwitchValueChange")
+    public String getSwitchValueChange(@Context Request request, @Context UriInfo uriInfo,
+                                       @Context HttpHeaders httpHeaders) {
+        String optId = (String) EWebServletContext.getEWebContext().get("optId");
+        String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
+        String ip = (String) EWebServletContext.getEWebContext().get("ip");
+        SwitchValueChangDO switchValueChangDO = mongoService.findOneByOptIdFieldNameIp(optId, fieldName, ip,
+                SwitchValueChangDO.class);
+        return switchValueChangDO.toString();
+    }
 
 }

@@ -66,6 +66,18 @@ public class MongoDaoImpl implements MongoDao {
     }
 
     @Override
+    public <T> T findOneByOptIdFieldNameIp(String optId, String fieldName, String ip, Class<T> tClass) {
+        Gson gson = new Gson();
+        MongoCollection<Document> mongoCollection = mongoDBConfig.getCollection(tClass);
+        Document document = mongoCollection.find(and(eq("optId", optId), eq("fieldName", fieldName),
+                eq("ip", ip))).first();
+        if (document != null) {
+            return gson.fromJson(document.toJson(), tClass);
+        }
+        return null;
+    }
+
+    @Override
     public <T> void updateOneByOptId(String optId, T t) {
         Gson gson = new Gson();
         Document document = gson.fromJson(t.toString(), Document.class);
