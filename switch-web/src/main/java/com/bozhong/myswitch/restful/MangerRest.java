@@ -1,5 +1,6 @@
 package com.bozhong.myswitch.restful;
 
+import com.alibaba.fastjson.JSON;
 import com.bozhong.config.domain.JqPage;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.domain.OptRecordDO;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -112,6 +114,16 @@ public class MangerRest {
         SwitchValueChangDO switchValueChangDO = mongoService.findOneByOptIdFieldNameIp(optId, fieldName, ip,
                 SwitchValueChangDO.class);
         return switchValueChangDO.toString();
+    }
+
+    @POST
+    @Path("getSwitchValueChangeByListOptId")
+    public String getSwitchValueChangeByListOptId(@Context Request request, @Context UriInfo uriInfo,
+                                              @Context HttpHeaders httpHeaders) {
+        String optId = (String) EWebServletContext.getEWebContext().get("optId");
+        List<SwitchValueChangDO> switchValueChangDOList = mongoService.findListByOptId(optId, SwitchValueChangDO.class);
+        return JSON.toJSONString(switchValueChangDOList);
+
     }
 
 }

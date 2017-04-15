@@ -30,6 +30,14 @@ public interface MongoDao {
     <T> T findOneByOptId(String optId, Class<T> tClass);
 
     /**
+     * @param optId
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> List<T> findListByOptId(String optId, Class<T> tClass);
+
+    /**
      * @param appId
      * @param env
      * @param optId

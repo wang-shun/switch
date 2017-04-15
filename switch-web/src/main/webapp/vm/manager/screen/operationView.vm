@@ -66,7 +66,9 @@
                 {label: '操作人', name: 'createBy', width: "100px", sortable: false},
                 {
                     label: '操作', name: 'optId', width: "80px", formatter: function (cellvalue, options, rowObject) {
-                    return " <button type='button' class='btn btn-xs btn-info btn-edit'>查看</button>"
+                    return " <button type='button' class='btn btn-xs btn-info btn-view'" +
+                            "data-optId='" + rowObject.optId + "' " +
+                            ">查看</button>"
                             + " <button type='button' class='btn btn-xs btn-success btn-detail' " +
                             "data-appId='" + rowObject.appId + "' " +
                             "data-env='" + rowObject.env + "' " +
@@ -106,6 +108,18 @@
                 $("#myModal").modal("show");
             }, "json");
         });
+
+        //查看事件
+        $("#jqGrid").delegate(".btn-view", "click", function () {
+            var optId = $(this).attr("data-optId");
+            $.post("${ctxPath}/myswitch/mangerRest/getSwitchValueChangeByListOptId", {
+                "optId": optId
+            }, function (data) {
+                $('#myModalBody').html(_.template($('#tpl2').html(), {variable: 'data'})(data));
+                $("#myModal").modal("show");
+            }, "json");
+        });
+
     });
 </script>
 <script type="text/template" id="tpl">
@@ -139,7 +153,7 @@
                 <label class="col-sm-2 control-label">PATH</label>
                 <div class="col-sm-10">
                     <p class="form-control-static"><% if(typeof path === 'undefined') {%>
-                            同步所有
+                        同步所有
                         <%} else {%>
                         <%= path %>（同步本机）
                         <%}%></p>
@@ -171,4 +185,35 @@
             </div>
         </form>
     </div>
+</script>
+<script type="text/template" id="tpl2">
+    <table class="table table-striped">
+        <caption>机器同步结果</caption>
+        <thead>
+        <tr>
+            <th>IP</th>
+            <th>字段名</th>
+            <th>值</th>
+            <th>PATH</th>
+            <th>成功失败</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% _.each(data, function(n){ %>
+        <tr>
+            <td><%= n.ip %></td>
+            <td><%= n.fieldName %></td>
+            <td><%= n.val %></td>
+            <td><%= n.path %></td>
+            <td>
+                <% if(n.syncResult) %>
+                成功
+                <% else { %>
+                失败
+                <% } %>
+            </td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
 </script>

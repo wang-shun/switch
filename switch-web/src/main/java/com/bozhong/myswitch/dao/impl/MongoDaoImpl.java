@@ -54,6 +54,21 @@ public class MongoDaoImpl implements MongoDao {
     }
 
     @Override
+    public <T> List<T> findListByOptId(String optId, Class<T> tClass) {
+        MongoCollection<Document> mongoCollection = mongoDBConfig.getCollection(tClass);
+        FindIterable<Document> findIterable = null;
+        findIterable = mongoCollection.find(eq("optId", optId));
+        Iterator<Document> iterator = findIterable.iterator();
+        List<T> rows = new ArrayList<T>();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        while (iterator.hasNext()) {
+            Document document = iterator.next();
+            rows.add(gson.fromJson(document.toJson(), tClass));
+        }
+        return rows;
+    }
+
+    @Override
     public <T> T findOneByAppIdEnvOptId(String appId, String env, String optId, Class<T> tClass) {
         Gson gson = new Gson();
         MongoCollection<Document> mongoCollection = mongoDBConfig.getCollection(tClass);
