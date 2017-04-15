@@ -19,7 +19,7 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    操作概况
+                    更新概况
                 </h4>
             </div>
             <div class="modal-body" id="myModalBody" style="word-break:break-all; word-wrap:break-all;">
