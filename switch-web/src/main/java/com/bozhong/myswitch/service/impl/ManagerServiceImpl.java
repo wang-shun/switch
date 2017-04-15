@@ -64,6 +64,8 @@ public class ManagerServiceImpl implements ManagerService {
         SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
         BeanUtils.copyProperties(changeSwitchDTO, switchValueChangDO);
         try {
+            switchValueChangDO.setAppId((String) EWebServletContext.getEWebContext().get("appId"));
+            switchValueChangDO.setEnv((String) EWebServletContext.getEWebContext().get("env"));
             switchValueChangDO.setIp(changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1));
         } catch (Throwable e) {
             SwitchLogger.getLogger().error(e.getMessage());

@@ -53,6 +53,16 @@ public class SwitchValueChangDO extends BaseDO {
      */
     private String path;
 
+    /**
+     * 应用ID
+     */
+    private String appId;
+
+    /**
+     * 环境
+     */
+    private String env;
+
     public String getOptId() {
         return optId;
     }
@@ -127,6 +137,22 @@ public class SwitchValueChangDO extends BaseDO {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
     }
 
     @Override
