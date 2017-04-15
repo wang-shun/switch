@@ -31,6 +31,16 @@ public interface MongoService {
     <T> T findOneByOptId(String optId, Class<T> tClass);
 
     /**
+     * @param appId
+     * @param env
+     * @param optId
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> T findOneByAppIdEnvOptId(String appId, String env, String optId, Class<T> tClass);
+
+    /**
      * @param optId
      * @param t
      * @param <T>

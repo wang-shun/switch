@@ -30,6 +30,16 @@ public interface MongoDao {
     <T> T findOneByOptId(String optId, Class<T> tClass);
 
     /**
+     * @param appId
+     * @param env
+     * @param optId
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> T findOneByAppIdEnvOptId(String appId, String env, String optId, Class<T> tClass);
+
+    /**
      * @param optId
      * @param t
      * @param <T>
@@ -37,7 +47,6 @@ public interface MongoDao {
     <T> void updateOneByOptId(String optId, T t);
 
     /**
-     *
      * @param optId
      * @param fieldName
      * @param ip

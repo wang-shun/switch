@@ -42,6 +42,9 @@
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="${ctxPath}/webFrame/bootstrap-3.3.5/bootstrap/js/bootstrap.min.js"></script>
 
+    <script src="${ctxPath}/webFrame/underscore-min.js"></script>
+
+
     <script type="text/javascript">
         var ctxPath = '$!{ctxPath}';
 //        $.jgrid.defaults.width = 860;

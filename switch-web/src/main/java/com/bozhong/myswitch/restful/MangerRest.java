@@ -91,5 +91,16 @@ public class MangerRest {
         return callBack + "(" + gson.toJson(mongoService.getJqPage(jqPage, SwitchValueChangDO.class)) + ")";
     }
 
+    @POST
+    @Path("getOptRecord")
+    public String getOptRecord(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders) {
+        Map<String, Object> param = ((EWebRequestDTO) EWebServletContext.getEWebContext().getParam()).getRequestParam();
+        String appId = (String) param.get("appId");
+        String env = (String) param.get("env");
+        String optId = (String) param.get("optId");
+        OptRecordDO optRecordDO = mongoService.findOneByAppIdEnvOptId(appId, env, optId, OptRecordDO.class);
+        return optRecordDO.toString();
+    }
+
 
 }

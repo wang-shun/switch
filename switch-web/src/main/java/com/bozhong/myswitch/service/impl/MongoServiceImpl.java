@@ -28,6 +28,11 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
+    public <T> T findOneByAppIdEnvOptId(String appId, String env, String optId, Class<T> tClass) {
+        return mongoDao.findOneByAppIdEnvOptId(appId, env, optId, tClass);
+    }
+
+    @Override
     public <T> void updateOneByOptId(String optId, T t) {
         mongoDao.updateOneByOptId(optId, t);
     }
