@@ -3,13 +3,17 @@ package com.bozhong.myswitch.dao.impl;
 import com.bozhong.config.common.MongoDBConfig;
 import com.bozhong.config.domain.JqPage;
 import com.bozhong.myswitch.dao.MongoDao;
+import com.bozhong.myswitch.domain.AppDO;
+import com.bozhong.myswitch.service.AppService;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.yx.eweb.main.EWebServletContext;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,6 +28,9 @@ import static com.mongodb.client.model.Sorts.descending;
 public class MongoDaoImpl implements MongoDao {
     @Autowired
     private MongoDBConfig mongoDBConfig;
+
+    @Autowired
+    private AppService appService;
 
     @Override
     public <T> void insertOne(T t) {
@@ -111,9 +118,21 @@ public class MongoDaoImpl implements MongoDao {
 
     @Override
     public <T> JqPage<T> getJqPage(JqPage<T> jqPage, Class<T> tClass) {
+        List<AppDO> appDOList = appService.getAppsByUid((String) EWebServletContext.getRequest().getAttribute("uId"));
+        if (CollectionUtils.isEmpty(appDOList)) {
+            return jqPage;
+        }
+
+        String[] appIdArray = new String[appDOList.size()];
+        int i = 0;
+        for (AppDO appDO : appDOList) {
+            appIdArray[i++] = appDO.getAppId();
+        }
+
         MongoCollection<Document> mongoCollection = mongoDBConfig.getCollection(tClass);
         FindIterable<Document> findIterable = null;
-        findIterable = mongoCollection.find().sort(descending("createDt")).skip(jqPage.getFromIndex()).limit(jqPage.getPageSize());
+        findIterable = mongoCollection.find(in("appId", appIdArray)).sort(descending("createDt")).
+                skip(jqPage.getFromIndex()).limit(jqPage.getPageSize());
         Iterator<Document> iterator = findIterable.iterator();
         List<T> rows = new ArrayList<T>(jqPage.getPageSize());
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
@@ -121,7 +140,7 @@ public class MongoDaoImpl implements MongoDao {
             Document document = iterator.next();
             rows.add(gson.fromJson(document.toJson(), tClass));
         }
-        jqPage.setRecords((int) mongoCollection.count());
+        jqPage.setRecords((int) mongoCollection.count(in("appId", appIdArray)));
         jqPage.setRows(rows);
         return jqPage;
     }
