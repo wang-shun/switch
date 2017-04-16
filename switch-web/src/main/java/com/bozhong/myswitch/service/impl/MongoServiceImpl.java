@@ -57,6 +57,11 @@ public class MongoServiceImpl implements MongoService {
         return mongoDao.getJqPage(jqPage, tClass);
     }
 
+    @Override
+    public <T> JqPage<T> getJqPage(String appId, String fieldName, JqPage<T> jqPage, Class<T> tClass) {
+        return mongoDao.getJqPage(appId, fieldName, jqPage, tClass);
+    }
+
 
     public void setMongoDao(MongoDao mongoDao) {
         this.mongoDao = mongoDao;

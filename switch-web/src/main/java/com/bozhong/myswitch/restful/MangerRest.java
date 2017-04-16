@@ -72,11 +72,13 @@ public class MangerRest {
         String callBack = param.get("callback").toString();
         Integer page = Integer.valueOf(param.get("page").toString());
         Integer rows = Integer.valueOf(param.get("rows").toString());
+        String appId = (String) param.get("appId");
+        String fieldName = (String) param.get("fieldName");
         Gson gson = new Gson();
         JqPage<OptRecordDO> jqPage = new JqPage<OptRecordDO>();
         jqPage.setPage(page);
         jqPage.setPageSize(rows);
-        return callBack + "(" + gson.toJson(mongoService.getJqPage(jqPage, OptRecordDO.class)) + ")";
+        return callBack + "(" + gson.toJson(mongoService.getJqPage(appId, fieldName, jqPage, OptRecordDO.class)) + ")";
     }
 
     @POST

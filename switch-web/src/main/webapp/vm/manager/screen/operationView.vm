@@ -5,6 +5,26 @@
     </ol>
 </div>
 <div class="col-md-12">
+    <div style="margin: 20px;">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label for="appIdInput">应用</label>
+                <select class="form-control" name="appIdInput" id="appIdInput">
+                    #foreach($app in $!appDOList)
+                        <option value="$app.appId">$app.appName</option>
+                    #end
+                </select>
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label for="fieldNameInput">字段名</label>
+                <input type="text" class="form-control" id="fieldNameInput"
+                        name="fieldNameInput">
+            </div>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-default" id="operationViewSearchBtn">查询</button>
+        </form>
+    </div>
     <div style="margin:20px">
         <table id="jqGrid"></table>
         <div id="jqGridPager"></div>
@@ -128,6 +148,15 @@
             }, "json");
         });
 
+        //搜索事件
+        $("#operationViewSearchBtn").on("click", function () {
+            var appIdInputValue = $("#appIdInput").val();
+            var fieldNameInputValue = $("#fieldNameInput").val();
+            $("#jqGrid").jqGrid('setGridParam', {
+                postData: {'appId': appIdInputValue, "fieldName": fieldNameInputValue}, //发送数据
+                page: 1
+            }).trigger("reloadGrid"); //重新载入
+        });
     });
 </script>
 <script type="text/template" id="tpl">
@@ -203,27 +232,28 @@
             <th>字段名</th>
             <th>值</th>
             <th>PATH</th>
-##            <th>回调时间</th>
+        ##            <th>回调时间</th>
             <th>成功失败</th>
         </tr>
         </thead>
         <tbody>
         <% _.each(data, function(n){ %>
-        <tr <% if(n.syncResult) %> class="success"  <% else { %>
-            class="danger"
+        <tr
+        <% if(n.syncResult) %> class="success" <% else { %>
+        class="danger"
         <% } %> >
-            <td><%= n.ip %></td>
-            <td><%= n.fieldName %></td>
-            <td><%= n.val %></td>
-            <td><%= n.path %></td>
-##            <td><%= n.callbackDT %></td>
-            <td>
-                <% if(n.syncResult) %>
-                成功
-                <% else { %>
-                失败
-                <% } %>
-            </td>
+        <td><%= n.ip %></td>
+        <td><%= n.fieldName %></td>
+        <td><%= n.val %></td>
+        <td><%= n.path %></td>
+        ##            <td><%= n.callbackDT %></td>
+        <td>
+            <% if(n.syncResult) %>
+            成功
+            <% else { %>
+            失败
+            <% } %>
+        </td>
         </tr>
         <% }); %>
         </tbody>

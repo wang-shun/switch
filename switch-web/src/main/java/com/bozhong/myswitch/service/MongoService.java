@@ -82,4 +82,13 @@ public interface MongoService {
      * @return
      */
     <T> JqPage<T> getJqPage(JqPage<T> jqPage, Class<T> tClass);
+
+
+    /**
+     * @param jqPage
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> JqPage<T> getJqPage(String appId, String fieldName, JqPage<T> jqPage, Class<T> tClass);
 }

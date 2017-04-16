@@ -12,8 +12,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.yx.eweb.main.EWebServletContext;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -141,6 +143,44 @@ public class MongoDaoImpl implements MongoDao {
             rows.add(gson.fromJson(document.toJson(), tClass));
         }
         jqPage.setRecords((int) mongoCollection.count(in("appId", appIdArray)));
+        jqPage.setRows(rows);
+        return jqPage;
+    }
+
+    @Override
+    public <T> JqPage<T> getJqPage(String appId, String fieldName, JqPage<T> jqPage, Class<T> tClass) {
+        List<AppDO> appDOList = appService.getAppsByUid((String) EWebServletContext.getRequest().getAttribute("uId"));
+        if (CollectionUtils.isEmpty(appDOList)) {
+            return jqPage;
+        }
+
+        String[] appIdArray = new String[appDOList.size()];
+        int i = 0;
+        for (AppDO appDO : appDOList) {
+            appIdArray[i++] = appDO.getAppId();
+        }
+
+        Bson bson = in("appId", appIdArray);
+        if (StringUtils.hasText(appId)) {
+            bson = and(bson, eq("appId", appId));
+        }
+
+        if (StringUtils.hasText(fieldName)) {
+            bson = and(bson, regex("fieldName", "^.*" + fieldName + ".*$"));
+        }
+
+        MongoCollection<Document> mongoCollection = mongoDBConfig.getCollection(tClass);
+        FindIterable<Document> findIterable = null;
+        findIterable = mongoCollection.find(bson).sort(descending("createDt")).
+                skip(jqPage.getFromIndex()).limit(jqPage.getPageSize());
+        Iterator<Document> iterator = findIterable.iterator();
+        List<T> rows = new ArrayList<T>(jqPage.getPageSize());
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        while (iterator.hasNext()) {
+            Document document = iterator.next();
+            rows.add(gson.fromJson(document.toJson(), tClass));
+        }
+        jqPage.setRecords((int) mongoCollection.count(bson));
         jqPage.setRows(rows);
         return jqPage;
     }
