@@ -88,11 +88,14 @@ public class MangerRest {
         String callBack = param.get("callback").toString();
         Integer page = Integer.valueOf(param.get("page").toString());
         Integer rows = Integer.valueOf(param.get("rows").toString());
+        String appId = (String) param.get("appId");
+        String ip = (String) param.get("ip");
+        String fieldName = (String) param.get("fieldName");
         Gson gson = new Gson();
         JqPage<SwitchValueChangDO> jqPage = new JqPage<SwitchValueChangDO>();
         jqPage.setPage(page);
         jqPage.setPageSize(rows);
-        return callBack + "(" + gson.toJson(mongoService.getJqPage(jqPage, SwitchValueChangDO.class)) + ")";
+        return callBack + "(" + gson.toJson(mongoService.getJqPage(appId, fieldName, ip, jqPage, SwitchValueChangDO.class)) + ")";
     }
 
     @POST
@@ -121,7 +124,7 @@ public class MangerRest {
     @POST
     @Path("getSwitchValueChangeByListOptId")
     public String getSwitchValueChangeByListOptId(@Context Request request, @Context UriInfo uriInfo,
-                                              @Context HttpHeaders httpHeaders) {
+                                                  @Context HttpHeaders httpHeaders) {
         String optId = (String) EWebServletContext.getEWebContext().get("optId");
         List<SwitchValueChangDO> switchValueChangDOList = mongoService.findListByOptId(optId, SwitchValueChangDO.class);
         return JSON.toJSONString(switchValueChangDOList);

@@ -149,6 +149,11 @@ public class MongoDaoImpl implements MongoDao {
 
     @Override
     public <T> JqPage<T> getJqPage(String appId, String fieldName, JqPage<T> jqPage, Class<T> tClass) {
+        return getJqPage(appId, fieldName, null, jqPage, tClass);
+    }
+
+    @Override
+    public <T> JqPage<T> getJqPage(String appId, String fieldName, String ip, JqPage<T> jqPage, Class<T> tClass) {
         List<AppDO> appDOList = appService.getAppsByUid((String) EWebServletContext.getRequest().getAttribute("uId"));
         if (CollectionUtils.isEmpty(appDOList)) {
             return jqPage;
@@ -167,6 +172,10 @@ public class MongoDaoImpl implements MongoDao {
 
         if (StringUtils.hasText(fieldName)) {
             bson = and(bson, regex("fieldName", "^.*" + fieldName + ".*$"));
+        }
+
+        if (StringUtils.hasText(ip)) {
+            bson = and(bson, regex("ip", "^.*" + ip + ".*$"));
         }
 
         MongoCollection<Document> mongoCollection = mongoDBConfig.getCollection(tClass);

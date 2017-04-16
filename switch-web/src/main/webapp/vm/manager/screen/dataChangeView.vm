@@ -5,6 +5,33 @@
     </ol>
 </div>
 <div class="col-md-12">
+    <div style="margin: 20px;">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <label for="appIdInput">应用</label>
+                <select class="form-control" name="appIdInput" id="appIdInput">
+                    <option value="">全部</option>
+                    #foreach($app in $!appDOList)
+                        <option value="$app.appId">$app.appName</option>
+                    #end
+                </select>
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label for="ipInput">IP</label>
+                <input type="text" class="form-control" id="ipInput"
+                       name="ipInput">
+            </div>
+            &nbsp;&nbsp;
+            <div class="form-group">
+                <label for="fieldNameInput">字段名</label>
+                <input type="text" class="form-control" id="fieldNameInput"
+                       name="fieldNameInput">
+            </div>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-default" id="switchDataChangeViewSearchBtn">查询</button>
+        </form>
+    </div>
     <div style="margin:20px">
         <table id="jqGrid"></table>
         <div id="jqGridPager"></div>
@@ -53,17 +80,21 @@
                 {label: '操作时间', name: 'createDt', sortable: false},
                 {label: '操作人', name: 'createBy', sortable: false},
                 {label: '回调时间', name: 'callbackDT', sortable: false},
-                {label: '成功失败', name: 'syncResult', formatter: function (cellvalue, options, rowObject) {
-                    return cellvalue?"<span class='text-success'>成功</span>":"<span class='text-danger'>失败</span>";
-                }, sortable: false},
-                {label: '操作', name: 'optId', formatter: function (cellvalue, options, rowObject) {
-                    return  " <button type='button' class='btn btn-xs btn-success btn-detail' " +
+                {
+                    label: '成功失败', name: 'syncResult', formatter: function (cellvalue, options, rowObject) {
+                    return cellvalue ? "<span class='text-success'>成功</span>" : "<span class='text-danger'>失败</span>";
+                }, sortable: false
+                },
+                {
+                    label: '操作', name: 'optId', formatter: function (cellvalue, options, rowObject) {
+                    return " <button type='button' class='btn btn-xs btn-success btn-detail' " +
                             "data-ip='" + rowObject.ip + "' " +
                             "data-fieldName='" + rowObject.fieldName + "' " +
                             "data-optId='" + rowObject.optId + "' " +
                             ">概况</button>"
                             ;
-                }, sortable: false}
+                }, sortable: false
+                }
             ],
             viewrecords: true,
             height: "auto",
@@ -97,6 +128,17 @@
                 $('#myModalBody').html(_.template($('#tpl').html())(data));
                 $("#myModal").modal("show");
             }, "json");
+        });
+
+        //搜索事件
+        $("#switchDataChangeViewSearchBtn").on("click", function () {
+            var appIdInputValue = $("#appIdInput").val();
+            var fieldNameInputValue = $("#fieldNameInput").val();
+            var ipInputValue = $("#ipInput").val();
+            $("#jqGrid").jqGrid('setGridParam', {
+                postData: {'appId': appIdInputValue, "fieldName": fieldNameInputValue, "ip": ipInputValue}, //发送数据
+                page: 1
+            }).trigger("reloadGrid"); //重新载入
         });
     });
 </script>

@@ -88,4 +88,15 @@ public interface MongoDao {
      * @return
      */
     <T> JqPage<T> getJqPage(String appId, String fieldName, JqPage<T> jqPage, Class<T> tClass);
+
+    /**
+     * @param appId
+     * @param fieldName
+     * @param ip
+     * @param jqPage
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    <T> JqPage<T> getJqPage(String appId, String fieldName, String ip, JqPage<T> jqPage, Class<T> tClass);
 }
