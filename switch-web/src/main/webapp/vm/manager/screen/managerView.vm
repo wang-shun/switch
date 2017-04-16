@@ -35,7 +35,7 @@
     #if(${do_action} && ${do_action}=="managerAction" && ${do_method}
     && (${do_method}=="changeOneSwitchValue" || ${do_method} == "changeAllSwitchValue" ))
         <div>
-            <div class="panel panel-info">
+            <div class="panel panel-info" id="optSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
                 </a>当前操作记录
@@ -52,7 +52,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="panel panel-info">
+            <div class="panel panel-info" id="switchValChangeSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
                 </a>当前更新记录
@@ -73,7 +73,7 @@
             </div>
         </div>
         <script>
-            $(function(){
+            $(function () {
                 var environMap = new Object();
                 #foreach($member in $environMap.entrySet())
                     environMap["$member.key"] = "$member.value";
@@ -84,34 +84,45 @@
                     $(this).parent().parent().hide();
                 });
 
-                //当前操作记录
-                $.post("${ctxPath}/myswitch/mangerRest/getOptRecord", {
-                    "appId": "$!{appDO.appId}",
-                    "env": "$!{env}",
-                    "optId": "$!{optId}"
-                }, function (data) {
-                    if (data == undefined || data == null) {
-                        return;
-                    }
+                var intervalObj = setInterval(loadUpdatePanel, 1000);
 
-                    data.env = environMap[data.env];
-                    if (data.path === undefined)
-                    {
-                        data.path = undefined;
+                function loadUpdatePanel() {
+                    //是否停止定时任务
+                    if ($("#switchValChangeSyncPanel").css('display')=="none" &&
+                            $("#optSyncPanel").css('display')=="none") {
+                        clearInterval(intervalObj);
                     }
-                    $('#operationRecordTbody').html(_.template($('#currentOptRecord_tpl').html())(data));
-                }, "json");
+                    //当前操作记录
+                    $.post("${ctxPath}/myswitch/mangerRest/getOptRecord", {
+                        "appId": "$!{appDO.appId}",
+                        "env": "$!{env}",
+                        "optId": "$!{optId}"
+                    }, function (data) {
+                        if (data == undefined || data == null) {
+                            return;
+                        }
 
-                //当前更新记录
-                $.post("${ctxPath}/myswitch/mangerRest/getSwitchValueChangeByListOptId", {
-                    "optId": "$!{optId}"
-                }, function (data) {
-                    if (data == undefined || data == null) {
-                        return;
-                    }
+                        data.env = environMap[data.env];
+                        if (data.path === undefined) {
+                            data.path = undefined;
+                        }
+                        $('#operationRecordTbody').html(_.template($('#currentOptRecord_tpl').html())(data));
+                    }, "json");
 
-                    $('#switchValueChangeTbody').html(_.template($('#switchValueChange_tpl2').html(), {variable: 'data'})(data));
-                }, "json");
+                    //当前更新记录
+                    $.post("${ctxPath}/myswitch/mangerRest/getSwitchValueChangeByListOptId", {
+                        "optId": "$!{optId}"
+                    }, function (data) {
+                        if (data == undefined || data == null) {
+                            return;
+                        }
+
+                        $('#switchValueChangeTbody').html(_.template($('#switchValueChange_tpl2').html(), {variable: 'data'})(data));
+                    }, "json");
+                }
+
+                loadUpdatePanel();
+
             });
         </script>
         <script type="text/template" id="currentOptRecord_tpl">
@@ -134,24 +145,24 @@
             </tr>
         </script>
         <script type="text/template" id="switchValueChange_tpl2">
-                <% _.each(data, function(n){ %>
-                <tr <% if(n.syncResult) %> class="success"  <% else { %>
-                class="danger"
-                <% } %> >
-                <td><%= n.ip %></td>
-                <td><%= n.fieldName %></td>
-                <td><%= n.val %></td>
-                <td><%= n.path %></td>
-                <td><%= n.callbackDT %></td>
-                <td>
-                    <% if(n.syncResult) %>
-                    成功
-                    <% else { %>
-                    失败
-                    <% } %>
-                </td>
-                </tr>
-                <% }); %>
+            <% _.each(data, function(n){ %>
+            <tr <% if(n.syncResult) %> class="success"  <% else { %>
+            class="danger"
+            <% } %> >
+            <td><%= n.ip %></td>
+            <td><%= n.fieldName %></td>
+            <td><%= n.val %></td>
+            <td><%= n.path %></td>
+            <td><%= n.callbackDT %></td>
+            <td>
+                <% if(n.syncResult) %>
+                成功
+                <% else { %>
+                失败
+                <% } %>
+            </td>
+            </tr>
+            <% }); %>
         </script>
     #end
 
