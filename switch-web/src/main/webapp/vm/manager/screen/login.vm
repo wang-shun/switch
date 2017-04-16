@@ -8,9 +8,12 @@
             <div id="loginTips">
 
             </div>
+            <div style="text-align: center">
+                <h2>开关平台</h2>
+            </div>
             <form action="index.html" method="post">
                 <div class="panel loginbox">
-                    <div class="text-center margin-big padding-big-top"><h1>开关平台</h1></div>
+                    <div class="text-center margin-big padding-big-top"><h1><img src="${ctxPath}/webFrame/timg.jpg" width="50" height="50"></h1></div>
                     <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
                         <div class="form-group">
                             <div class="field field-icon-right">
