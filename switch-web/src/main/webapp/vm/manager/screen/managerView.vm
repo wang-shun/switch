@@ -38,7 +38,7 @@
             <div class="panel panel-info" id="optSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
-                </a>当前操作记录
+                </a>当前操作记录（实时刷新）
                 </div>
                 <table class="table">
                     <thead>
@@ -55,7 +55,7 @@
             <div class="panel panel-info" id="switchValChangeSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
-                </a>当前更新记录
+                </a>当前更新记录（实时刷新）
                 </div>
                 <table class="table">
                     <thead>
