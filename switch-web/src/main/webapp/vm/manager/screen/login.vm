@@ -1,4 +1,17 @@
-<div class="bg"></div>
+<nav class="navbar-default navbar-fixed-bottom" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header navbar-right" style="vertical-align: middle">
+            <a class="navbar-brand text-center" style="padding: 5px 15px;"  href="#">
+                <h5>杭州伯仲信息科技有限公司</h5>
+                <h6>云平台部</h6>
+            </a>
+        </div>
+    </div>
+</nav>
+<div>
+<div class="bg">
+
+</div>
 <div class="container">
     <div class="line bouncein">
         <div class="xs6 xm4 xs3-move xm4-move">
@@ -37,6 +50,7 @@
             </form>
         </div>
     </div>
+</div>
 </div>
 <script>
     $(function () {
