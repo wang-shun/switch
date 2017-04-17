@@ -5,8 +5,10 @@ import com.bozhong.common.util.ResultMessageBuilder;
 import com.bozhong.config.domain.JqPage;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
+import com.bozhong.myswitch.domain.ChangeSwitchDTO;
 import com.bozhong.myswitch.domain.OptRecordDO;
 import com.bozhong.myswitch.domain.SwitchValueChangDO;
+import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.resource.Singleton;
@@ -37,6 +39,9 @@ public class MangerRest {
 
     @Autowired
     private MongoService mongoService;
+
+    @Autowired
+    private ManagerService managerService;
 
     @POST
     @Path("doChange")
@@ -136,6 +141,23 @@ public class MangerRest {
         List<SwitchValueChangDO> switchValueChangDOList = mongoService.findListByOptId(optId, SwitchValueChangDO.class);
         return JSON.toJSONString(switchValueChangDOList);
 
+    }
+
+
+    @POST
+    @Path("reSyncSwitchValue")
+    public String reSyncSwitchValue(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders) {
+        String optId = (String) EWebServletContext.getEWebContext().get("optId");
+        String path = (String) EWebServletContext.getEWebContext().get("path");
+        String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
+        String val = (String) EWebServletContext.getEWebContext().get("val");
+        ChangeSwitchDTO changeSwitchDTO = new ChangeSwitchDTO();
+        changeSwitchDTO.setFieldName(fieldName);
+        changeSwitchDTO.setOptId(optId);
+        changeSwitchDTO.setPath(path);
+        changeSwitchDTO.setVal(val);
+        managerService.changeSwitchValue(changeSwitchDTO);
+        return ResultMessageBuilder.build().toJSONString();
     }
 
 }
