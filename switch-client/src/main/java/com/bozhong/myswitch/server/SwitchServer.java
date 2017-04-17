@@ -90,7 +90,7 @@ public class SwitchServer {
 
 
 
-    public static void sendChangeResult(SwitchDataDTO switchDataDTO) {
+    public static void sendChangeResult(SwitchDataDTO switchDataDTO,int callNum) {
 
         if(switchDataDTO==null){
             SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult switchDataDTO is null");
@@ -98,21 +98,34 @@ public class SwitchServer {
             return ;
         }
 
+        if(callNum>3){
+            SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult has excute "+callNum+" time ,cannot excute ! switchDataDTO:"+ JSON.toJSONString(switchDataDTO));
+
+            return ;
+        }
+
         SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult start switchDataDTO:"+ JSON.toJSONString(switchDataDTO));
 
-        String url =getSendChangeToServerUrl();
+        try {
 
-        WebResource resource = getClient().resource(url);
+            String url = getSendChangeToServerUrl();
 
-        MultivaluedMapImpl params = new MultivaluedMapImpl();
-        params.add("optId", switchDataDTO.getOptId());
-        params.add("fieldName",switchDataDTO.getFieldName());
-        params.add("ip", SwitchUtil.getIp());
+            WebResource resource = getClient().resource(url);
+
+            MultivaluedMapImpl params = new MultivaluedMapImpl();
+            params.add("optId", switchDataDTO.getOptId());
+            params.add("fieldName", switchDataDTO.getFieldName());
+            params.add("ip", SwitchUtil.getIp());
 
 
-        String result = resource.queryParams(params).post(String.class);
+            String result = resource.queryParams(params).post(String.class);
 
-        SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :"+result);
+
+
+            SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :" + result);
+        }catch (Throwable e){
+            sendChangeResult(switchDataDTO, callNum++);
+        }
 
     }
 
