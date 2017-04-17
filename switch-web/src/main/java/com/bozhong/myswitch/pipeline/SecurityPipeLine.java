@@ -66,8 +66,10 @@ public class SecurityPipeLine implements PipeLineInter {
 
             } else {
                 try {
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() +
-                            "/manager/empty.htm");
+                    if (!httpServletRequest.getRequestURI().endsWith("/manager/empty.htm")) {
+                        httpServletResponse.sendRedirect(httpServletRequest.getContextPath() +
+                                "/manager/empty.htm");
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
