@@ -40,7 +40,7 @@
                     &times;
                 </a>当前操作记录（实时刷新）
                 </div>
-                <table class="table">
+                <table class="table" style="table-layout:fixed">
                     <thead>
                     <th>PATH</th>
                     <th>字段名</th>
@@ -57,7 +57,7 @@
                     &times;
                 </a>当前更新记录（实时刷新）
                 </div>
-                <table class="table">
+                <table class="table" style="table-layout:fixed">
                     <thead>
                     <th>IP</th>
                     <th>字段名</th>
@@ -127,15 +127,22 @@
         </script>
         <script type="text/template" id="currentOptRecord_tpl">
             <tr>
-                <td>
+                <td title="<% if(typeof path === 'undefined') {%>
+                    <%} else {%>
+                    <%= path %>
+                    <%}%>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
                     <% if(typeof path === 'undefined') {%>
                     <%} else {%>
                     <%= path %>
                     <%}%>
                 </td>
-                <td><%= fieldName %></td>
-                <td><%= val %></td>
-                <td>
+                <td title="<%= fieldName %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= fieldName %></td>
+                <td title="<%= val %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= val %></td>
+                <td title="<% if(typeof path === 'undefined') {%>
+                    同步所有
+                    <%} else {%>
+                    同步本机
+                    <%}%>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
                     <% if(typeof path === 'undefined') {%>
                     同步所有
                     <%} else {%>
@@ -149,12 +156,16 @@
             <tr <% if(n.syncResult) %> class="success"  <% else { %>
             class="danger"
             <% } %> >
-            <td><%= n.ip %></td>
-            <td><%= n.fieldName %></td>
-            <td><%= n.val %></td>
-            <td><%= n.path %></td>
-            <td><%= n.callbackDT %></td>
-            <td>
+            <td title="<%= n.ip %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.ip %></td>
+            <td title="<%= n.fieldName %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.fieldName %></td>
+            <td title="<%= n.val %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.val %></td>
+            <td title="<%= n.path %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.path %></td>
+            <td title="<%= n.callbackDT %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.callbackDT %></td>
+            <td title="<% if(n.syncResult) %>
+                成功
+                <% else { %>
+                失败
+                <% } %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
                 <% if(n.syncResult) %>
                 成功
                 <% else { %>

@@ -86,7 +86,7 @@
                 {label: '操作时间', name: 'createDt', sortable: false},
                 {label: '操作人', name: 'createBy', width: "100px", sortable: false},
                 {
-                    label: '操作', name: 'optId', width: "80px", formatter: function (cellvalue, options, rowObject) {
+                    label: '操作', name: 'optId', width: "100px", align:"center", formatter: function (cellvalue, options, rowObject) {
                     return " <button type='button' class='btn btn-xs btn-info btn-view'" +
                             "data-optId='" + rowObject.optId + "' " +
                             ">查看</button>"
@@ -225,7 +225,7 @@
     </div>
 </script>
 <script type="text/template" id="tpl2">
-    <table class="table table-striped">
+    <table class="table table-striped" style="table-layout:fixed">
         <caption>机器同步结果</caption>
         <thead>
         <tr>
@@ -243,12 +243,16 @@
         <% if(n.syncResult) %> class="success" <% else { %>
         class="danger"
         <% } %> >
-        <td><%= n.ip %></td>
-        <td><%= n.fieldName %></td>
-        <td><%= n.val %></td>
-        <td><%= n.path %></td>
+        <td title="<%= n.ip %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.ip %></td>
+        <td title="<%= n.fieldName %>"  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.fieldName %></td>
+        <td title="<%= n.val %>"  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.val %></td>
+        <td title="<%= n.path %>"  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.path %></td>
         ##            <td><%= n.callbackDT %></td>
-        <td>
+        <td title="<% if(n.syncResult) %>
+            成功
+            <% else { %>
+            失败
+            <% } %>">
             <% if(n.syncResult) %>
             成功
             <% else { %>
