@@ -38,7 +38,8 @@
             <div class="panel panel-info" id="optSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
-                </a>当前操作记录<button id="optSyncReflushBtn" type="button" class="btn btn-xs btn-default">手动刷新</button>
+                </a>当前操作记录
+                    <button id="optSyncReflushBtn" type="button" class="btn btn-xs btn-default">手动刷新</button>
                 </div>
                 <table class="table" style="table-layout:fixed">
                     <thead>
@@ -55,7 +56,9 @@
             <div class="panel panel-info" id="switchValChangeSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
-                </a>当前更新记录<button id="switchValChangeSyncReflushBtn" type="button" class="btn btn-xs btn-default">手动刷新</button>
+                </a>当前更新记录
+                    <button id="switchValChangeSyncReflushBtn" type="button" class="btn btn-xs btn-default">手动刷新
+                    </button>
                 </div>
                 <table class="table" style="table-layout:fixed">
                     <thead>
@@ -65,6 +68,7 @@
                     <th>PATH</th>
                     <th>回调时间</th>
                     <th>成功失败</th>
+                    <th>操作</th>
                     </thead>
                     <tbody id="switchValueChangeTbody">
 
@@ -132,6 +136,23 @@
                 $("#optSyncReflushBtn").click(loadUpdatePanel);
                 $("#switchValChangeSyncReflushBtn").click(loadUpdatePanel);
 
+                //重新同步
+                $("#switchValChangeSyncPanel").delegate(".reSyncSwitchValueBtn", "click", function () {
+                    var optId = $(this).attr("data-optId");
+                    var path = $(this).attr("data-path");
+                    var fieldName = $(this).attr("data-fieldName");
+                    var val = $(this).attr("data-val");
+                    $.post("${ctxPath}/myswitch/mangerRest/reSyncSwitchValue", {
+                        "optId": optId,
+                        "path": path,
+                        "fieldName": fieldName,
+                        "val": val
+                    }, function (data) {
+                        clearInterval(intervalObj);
+                        intervalObj = setInterval(loadUpdatePanel, 1000);
+                    }, "json");
+                });
+
             });
         </script>
         <script type="text/template" id="currentOptRecord_tpl">
@@ -188,6 +209,17 @@
                 成功
                 <% else { %>
                 失败
+                <% } %>
+            </td>
+            <td>
+                <% if(n.syncResult) %>
+                <% else { %>
+                <button type="button" data-optId="$!{optId}" data-path="<%= n.path %>"
+                        data-fieldName="<%= n.fieldName %>"
+                        data-val="<%= n.val %>"
+                        class="btn btn-xs btn-default reSyncSwitchValueBtn">
+                    重新同步
+                </button>
                 <% } %>
             </td>
             </tr>
