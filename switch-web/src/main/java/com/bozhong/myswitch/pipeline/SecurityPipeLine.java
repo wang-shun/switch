@@ -64,12 +64,19 @@ public class SecurityPipeLine implements PipeLineInter {
                 appDOList.get(0).setMainSelectType(true);
                 httpServletRequest.setAttribute("appDO", appDOList.get(0));
 
+            } else {
+                try {
+                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath() +
+                            "/manager/empty.htm");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             httpServletRequest.setAttribute("appDOList", appDOList);
             httpServletRequest.setAttribute("isOnline", ConfigUtil.isOnline());
-            if (!StringUtils.hasText(env)){
-                httpServletRequest.setAttribute("env", ConfigUtil.isOnline()? Environ.UAT.getName() :
+            if (!StringUtils.hasText(env)) {
+                httpServletRequest.setAttribute("env", ConfigUtil.isOnline() ? Environ.UAT.getName() :
                         Environ.DEV.getName());
             } else {
                 httpServletRequest.setAttribute("env", env);

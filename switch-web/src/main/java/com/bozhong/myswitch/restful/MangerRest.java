@@ -1,10 +1,14 @@
 package com.bozhong.myswitch.restful;
 
 import com.alibaba.fastjson.JSON;
+import com.bozhong.common.util.ResultMessageBuilder;
 import com.bozhong.config.domain.JqPage;
+import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
+import com.bozhong.myswitch.domain.ChangeSwitchDTO;
 import com.bozhong.myswitch.domain.OptRecordDO;
 import com.bozhong.myswitch.domain.SwitchValueChangDO;
+import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.resource.Singleton;
@@ -36,6 +40,9 @@ public class MangerRest {
     @Autowired
     private MongoService mongoService;
 
+    @Autowired
+    private ManagerService managerService;
+
     @POST
     @Path("doChange")
     public String change(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeader) {
@@ -52,17 +59,22 @@ public class MangerRest {
     @POST
     @Path("callBack")
     public String callBack(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeader) {
+        try {
+            String optId = (String) EWebServletContext.getEWebContext().get("optId");
+            String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
+            String ip = (String) EWebServletContext.getEWebContext().get("ip");
+            SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId + " fieldName:" + fieldName + " ip:" + ip);
+            SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
+            switchValueChangDO.setSyncResult(true);
+            switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+            mongoService.updateOneByOptIdFieldNameIp(optId, fieldName, ip, switchValueChangDO);
+            System.out.println("回调");
+        } catch (Throwable e) {
+            return ResultMessageBuilder.build(false, SwitchErrorEnum.RUNTIME_EXCEPTION.getError(),
+                    SwitchErrorEnum.RUNTIME_EXCEPTION.getMsg()).toJSONString();
+        }
 
-        String optId = (String) EWebServletContext.getEWebContext().get("optId");
-        String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
-        String ip = (String) EWebServletContext.getEWebContext().get("ip");
-        SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId + " fieldName:" + fieldName + " ip:" + ip);
-        SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
-        switchValueChangDO.setSyncResult(true);
-        switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
-        mongoService.updateOneByOptIdFieldNameIp(optId, fieldName, ip, switchValueChangDO);
-        System.out.println("回调");
-        return "callBack";
+        return ResultMessageBuilder.build("callback").toJSONString();
     }
 
     @POST
@@ -129,6 +141,23 @@ public class MangerRest {
         List<SwitchValueChangDO> switchValueChangDOList = mongoService.findListByOptId(optId, SwitchValueChangDO.class);
         return JSON.toJSONString(switchValueChangDOList);
 
+    }
+
+
+    @POST
+    @Path("reSyncSwitchValue")
+    public String reSyncSwitchValue(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeaders) {
+        String optId = (String) EWebServletContext.getEWebContext().get("optId");
+        String path = (String) EWebServletContext.getEWebContext().get("path");
+        String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
+        String val = (String) EWebServletContext.getEWebContext().get("val");
+        ChangeSwitchDTO changeSwitchDTO = new ChangeSwitchDTO();
+        changeSwitchDTO.setFieldName(fieldName);
+        changeSwitchDTO.setOptId(optId);
+        changeSwitchDTO.setPath(path);
+        changeSwitchDTO.setVal(val);
+        managerService.changeSwitchValue(changeSwitchDTO);
+        return ResultMessageBuilder.build().toJSONString();
     }
 
 }
