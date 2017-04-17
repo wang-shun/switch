@@ -1,7 +1,9 @@
 package com.bozhong.myswitch.restful;
 
 import com.alibaba.fastjson.JSON;
+import com.bozhong.common.util.ResultMessageBuilder;
 import com.bozhong.config.domain.JqPage;
+import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.domain.OptRecordDO;
 import com.bozhong.myswitch.domain.SwitchValueChangDO;
@@ -52,17 +54,22 @@ public class MangerRest {
     @POST
     @Path("callBack")
     public String callBack(@Context Request request, @Context UriInfo uriInfo, @Context HttpHeaders httpHeader) {
+        try {
+            String optId = (String) EWebServletContext.getEWebContext().get("optId");
+            String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
+            String ip = (String) EWebServletContext.getEWebContext().get("ip");
+            SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId + " fieldName:" + fieldName + " ip:" + ip);
+            SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
+            switchValueChangDO.setSyncResult(true);
+            switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+            mongoService.updateOneByOptIdFieldNameIp(optId, fieldName, ip, switchValueChangDO);
+            System.out.println("回调");
+        } catch (Throwable e) {
+            return ResultMessageBuilder.build(false, SwitchErrorEnum.RUNTIME_EXCEPTION.getError(),
+                    SwitchErrorEnum.RUNTIME_EXCEPTION.getMsg()).toJSONString();
+        }
 
-        String optId = (String) EWebServletContext.getEWebContext().get("optId");
-        String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
-        String ip = (String) EWebServletContext.getEWebContext().get("ip");
-        SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId + " fieldName:" + fieldName + " ip:" + ip);
-        SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
-        switchValueChangDO.setSyncResult(true);
-        switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
-        mongoService.updateOneByOptIdFieldNameIp(optId, fieldName, ip, switchValueChangDO);
-        System.out.println("回调");
-        return "callBack";
+        return ResultMessageBuilder.build("callback").toJSONString();
     }
 
     @POST

@@ -38,7 +38,7 @@
             <div class="panel panel-info" id="optSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
-                </a>当前操作记录（实时刷新）
+                </a>当前操作记录<button id="optSyncReflushBtn" type="button" class="btn btn-xs btn-default">手动刷新</button>
                 </div>
                 <table class="table" style="table-layout:fixed">
                     <thead>
@@ -55,7 +55,7 @@
             <div class="panel panel-info" id="switchValChangeSyncPanel">
                 <div class="panel-heading"><a href="#" class="close syncResultClose">
                     &times;
-                </a>当前更新记录（实时刷新）
+                </a>当前更新记录<button id="switchValChangeSyncReflushBtn" type="button" class="btn btn-xs btn-default">手动刷新</button>
                 </div>
                 <table class="table" style="table-layout:fixed">
                     <thead>
@@ -85,11 +85,17 @@
                 });
 
                 var intervalObj = setInterval(loadUpdatePanel, 1000);
+                var currentTimeStamp = new Date().getTime();
 
                 function loadUpdatePanel() {
+
+                    if ((new Date().getTime() - currentTimeStamp) > 5000) {
+                        clearInterval(intervalObj);
+                    }
+
                     //是否停止定时任务
-                    if ($("#switchValChangeSyncPanel").css('display')=="none" &&
-                            $("#optSyncPanel").css('display')=="none") {
+                    if ($("#switchValChangeSyncPanel").css('display') == "none" &&
+                            $("#optSyncPanel").css('display') == "none") {
                         clearInterval(intervalObj);
                     }
                     //当前操作记录
@@ -123,6 +129,9 @@
 
                 loadUpdatePanel();
 
+                $("#optSyncReflushBtn").click(loadUpdatePanel);
+                $("#switchValChangeSyncReflushBtn").click(loadUpdatePanel);
+
             });
         </script>
         <script type="text/template" id="currentOptRecord_tpl">
@@ -136,8 +145,11 @@
                     <%= path %>
                     <%}%>
                 </td>
-                <td title="<%= fieldName %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= fieldName %></td>
-                <td title="<%= val %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= val %></td>
+                <td title="<%= fieldName %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%=
+                    fieldName %>
+                </td>
+                <td title="<%= val %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= val %>
+                </td>
                 <td title="<% if(typeof path === 'undefined') {%>
                     同步所有
                     <%} else {%>
@@ -157,10 +169,16 @@
             class="danger"
             <% } %> >
             <td title="<%= n.ip %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.ip %></td>
-            <td title="<%= n.fieldName %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.fieldName %></td>
-            <td title="<%= n.val %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.val %></td>
-            <td title="<%= n.path %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.path %></td>
-            <td title="<%= n.callbackDT %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.callbackDT %></td>
+            <td title="<%= n.fieldName %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%=
+                n.fieldName %>
+            </td>
+            <td title="<%= n.val %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.val %>
+            </td>
+            <td title="<%= n.path %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.path %>
+            </td>
+            <td title="<%= n.callbackDT %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%=
+                n.callbackDT %>
+            </td>
             <td title="<% if(n.syncResult) %>
                 成功
                 <% else { %>
