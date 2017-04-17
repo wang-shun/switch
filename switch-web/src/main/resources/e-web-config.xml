@@ -11,6 +11,7 @@
         <ignore page="/login/checkLogin"></ignore>
         <ignore page="/login/generatePublicKey"></ignore>
         <ignore page="/manager/login.htm"></ignore>
+        <ignore page="/manager/empty.htm"></ignore>
     </ignores>
     <notIgnores>
         <notIgnore regular="^[\w\W]*/myswitch/[\w\W]*$"></notIgnore>
