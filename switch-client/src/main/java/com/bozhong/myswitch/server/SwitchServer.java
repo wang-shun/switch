@@ -2,7 +2,9 @@ package com.bozhong.myswitch.server;
 
 import com.alibaba.fastjson.JSON;
 import com.bozhong.common.util.CollectionUtil;
+import com.bozhong.common.util.ResultMessageBuilder;
 import com.bozhong.common.util.StringUtil;
+import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.SwitchDataDTO;
@@ -119,8 +121,12 @@ public class SwitchServer {
 
 
             String result = resource.queryParams(params).post(String.class);
-
-
+            ResultMessageBuilder.ResultMessage resultMessage = JSON.parseObject(result,
+                    ResultMessageBuilder.ResultMessage.class);
+            if (!resultMessage.isSuccess()){
+                throw new SwitchException(SwitchErrorEnum.RUNTIME_EXCEPTION.getError(),
+                        SwitchErrorEnum.RUNTIME_EXCEPTION.getMsg());
+            }
 
             SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :" + result);
         }catch (Throwable e){
