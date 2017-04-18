@@ -4,6 +4,10 @@ import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.core.SwitchRegister;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by renyueliang on 17/4/12.
@@ -28,7 +32,13 @@ public class SwitchLoad {
                 while (true) {
                     try {
                         Thread.sleep(3000l);
-                        Field[] fields = dynamicClass.getDeclaredFields();
+                        List<Field> fields = Arrays.asList(dynamicClass.getDeclaredFields());
+                        Collections.sort(fields, new Comparator<Field>() {
+                            @Override
+                            public int compare(Field o1, Field o2) {
+                                return o1.getName().compareTo(o2.getName());
+                            }
+                        });
                         SwitchLogger.getSysLogger().warn("-------start----------");
                         for (Field field : fields) {
                             System.out.println(field.getName() + ":" + field.get(dynamicClass));
