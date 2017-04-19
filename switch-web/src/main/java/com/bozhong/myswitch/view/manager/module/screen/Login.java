@@ -25,10 +25,10 @@ public class Login implements ScreenInter {
         System.out.println("Login当前线程：" + Thread.currentThread().getName());
         HttpServletRequest request = eWebContext.getRequest();
         HttpServletResponse response = eWebContext.getResponse();
-        Cookie tokenCookie = CookiesUtil.getCookieByName(request, "token");
+        Cookie tokenCookie = CookiesUtil.getCookieByName(request, "switch_token");
         if (tokenCookie != null) {
             String token = tokenCookie.getValue();
-            tokenCookie = new Cookie("token", null);
+            tokenCookie = new Cookie("switch_token", null);
             tokenCookie.setPath("/");
             tokenCookie.setMaxAge(0);
             response.addCookie(tokenCookie);

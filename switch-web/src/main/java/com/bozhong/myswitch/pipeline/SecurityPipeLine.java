@@ -33,7 +33,7 @@ public class SecurityPipeLine implements PipeLineInter {
     @Override
     public boolean run(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         logger.warn("SecurityPipeLine has excute ! ");
-        Cookie tokenCookie = CookiesUtil.getCookieByName(httpServletRequest, "token");
+        Cookie tokenCookie = CookiesUtil.getCookieByName(httpServletRequest, "switch_token");
         if (tokenCookie == null) {
             try {
                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath() +

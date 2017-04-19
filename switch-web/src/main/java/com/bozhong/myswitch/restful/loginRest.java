@@ -110,7 +110,7 @@ public class loginRest {
             int expireTimeSecond = 2 * 60 * 60;
             long expireTimeMilSecond = expireTimeSecond * 1000;
             myRedisClusterForHessian.putForStr(SwitchConstants.SWITCH_CENTER_USERNAME_PREFIX + token, userName, expireTimeMilSecond);
-            Cookie cookie = new Cookie("token", token);
+            Cookie cookie = new Cookie("switch_token", token);
             cookie.setMaxAge(expireTimeSecond);
             cookie.setPath("/");
             EWebServletContext.getEWebContext().getResponse().addCookie(cookie);
