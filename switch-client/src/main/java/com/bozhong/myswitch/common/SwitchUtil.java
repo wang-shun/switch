@@ -390,8 +390,8 @@ public class SwitchUtil {
 
 
         } catch (Throwable e) {
-            throw new SwitchException(StringUtil.format(" SwitchUtil.changeValue path:{path} fieldName:{fieldName} val:{val} optId:{optId} " +
-                    "errorMsg:${errorMsg}", path, fieldName, val, optId, e.getMessage()), e);
+            throw new SwitchException(StringUtil.format(" SwitchUtil.changeValue path:%s fieldName:%s val:%s optId:%s " +
+                    "errorMsg:%s", path, fieldName, val, optId, e.getMessage()), e);
         }
 
     }

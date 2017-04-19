@@ -57,7 +57,8 @@ public class DataChangeWacther implements Watcher {
                 if (watchedEvent.getPath() != null &&
                         watchedEvent.getPath().indexOf(SwitchConstants.SWITCH_ROOT_PATH) == 0 &&
                         watchedEvent.getPath().split(SwitchConstants.SLASH).length == 5 &&
-                        Event.EventType.NodeDataChanged.name().equals(watchedEvent.getType().name())
+                        ( Event.EventType.NodeDataChanged.name().equals(watchedEvent.getType().name())
+                                ||  Event.EventType.NodeDeleted.name().equals(watchedEvent.getType().name()) )
                         ) {
                     ZkClient.getInstance().addDataChangeWacther(watchedEvent.getPath(), this);
                 }

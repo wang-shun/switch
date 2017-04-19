@@ -5,6 +5,7 @@ import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.*;
 import com.bozhong.myswitch.exception.SwitchException;
+import com.bozhong.myswitch.server.SwitchServer;
 import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
@@ -74,7 +75,17 @@ public class ManagerServiceImpl implements ManagerService {
         recordSwitchValueChange(switchValueChangDO);
 
         //更新switch value 到zk
-        SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+        try {
+            SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+        }catch (Throwable e) {
+            if (e instanceof SwitchException) {
+                SwitchDataDTO switchDataDTO = new SwitchDataDTO();
+                switchDataDTO.setFieldName(changeSwitchDTO.getFieldName());
+                switchDataDTO.setOptId(changeSwitchDTO.getOptId());
+                SwitchServer.sendChangeResult(switchDataDTO,0, (SwitchException) e);
+            }
+        }
+
     }
 
 
