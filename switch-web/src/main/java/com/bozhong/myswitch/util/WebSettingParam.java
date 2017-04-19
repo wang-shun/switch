@@ -7,8 +7,10 @@ import com.bozhong.myswitch.core.AppSwitch;
  */
 public class WebSettingParam {
 
-    @AppSwitch(type = "string", desc = "网址标题")
-    public static String TITLE="杭州伯仲信息科技有限公司";
-    @AppSwitch(type = "string", desc = "主体内容")
-    public static String BODY = "云平台部";
+    @AppSwitch(type = "string", desc = "公司")
+    public static String CORP = "杭州伯仲信息科技有限公司";
+    @AppSwitch(type = "string", desc = "部门")
+    public static String DEPARTMENT = "云平台部";
+    @AppSwitch(type = "string", desc = "网站标题")
+    public static String HTML_TITLE = "开关平台";
 }

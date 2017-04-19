@@ -8,6 +8,7 @@ import com.bozhong.myswitch.core.Environ;
 import com.bozhong.myswitch.domain.AppDO;
 import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.util.ConfigUtil;
+import com.bozhong.myswitch.util.WebSettingParam;
 import com.yx.eweb.main.PipeLineInter;
 import org.apache.log4j.Logger;
 import org.springframework.util.CollectionUtils;
@@ -32,6 +33,9 @@ public class SecurityPipeLine implements PipeLineInter {
 
     @Override
     public boolean run(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        httpServletRequest.setAttribute("html_title", WebSettingParam.HTML_TITLE);
+        httpServletRequest.setAttribute("switch_crop", WebSettingParam.CORP);
+        httpServletRequest.setAttribute("switch_department", WebSettingParam.DEPARTMENT);
         logger.warn("SecurityPipeLine has excute ! ");
         Cookie tokenCookie = CookiesUtil.getCookieByName(httpServletRequest, "switch_token");
         if (tokenCookie == null) {

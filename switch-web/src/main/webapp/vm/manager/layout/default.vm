@@ -5,7 +5,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-    <title>开关平台</title>
+    <title>${html_title}</title>
     <link rel="Shortcut Icon" href="${ctxPath}/webFrame/bootstrap-3.3.5/bootstrap/images/logo.ico">
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="${ctxPath}/webFrame/bootstrap-3.3.5/bootstrap/css/bootstrap.min.css">
@@ -109,7 +109,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab">
                         <h4 class="panel-title">
-                            <a href="javascript:void(0);">开关平台<font size="1px" color="#6495ed">（#if($isOnline) 线上环境 #else 开发环境 #end）</font></a>
+                            <a href="javascript:void(0);">${html_title}<font size="1px" color="#6495ed">（#if($isOnline) 线上环境 #else 开发环境 #end）</font></a>
                         </h4>
                     </div>
                 </div>
@@ -213,10 +213,10 @@
                 <li>
                     <a class="button button-little bg-red" href="javascript:void(0);">
                         <span class="icon-power-off"></span>
-                        杭州伯仲信息科技有限公司<br/>
+                        ${switch_crop}<br/>
                         &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        云平台部
+                        ${switch_department}
                     </a>
                 </li>
             </ul>

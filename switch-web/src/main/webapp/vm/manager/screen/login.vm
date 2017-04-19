@@ -2,8 +2,8 @@
     <div class="container-fluid">
         <div class="navbar-header navbar-right" style="vertical-align: middle">
             <a class="navbar-brand text-center" style="padding: 5px 15px;"  href="#">
-                <h5>杭州伯仲信息科技有限公司</h5>
-                <h6>云平台部</h6>
+                <h5>${switch_crop}</h5>
+                <h6>${switch_department}</h6>
             </a>
         </div>
     </div>
@@ -22,7 +22,7 @@
 
             </div>
             <div style="text-align: center">
-                <h2>开关平台</h2>
+                <h2>${html_title}</h2>
             </div>
             <form action="index.html" method="post">
                 <div class="panel loginbox">

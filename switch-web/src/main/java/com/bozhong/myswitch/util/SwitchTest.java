@@ -16,8 +16,9 @@ public class SwitchTest {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(WebSettingParam.TITLE);
-                    System.out.println(WebSettingParam.BODY);
+                    System.out.println(WebSettingParam.HTML_TITLE);
+                    System.out.println(WebSettingParam.CORP);
+                    System.out.println(WebSettingParam.DEPARTMENT);
                 }
             }
         });

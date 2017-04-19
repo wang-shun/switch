@@ -3,6 +3,7 @@ package com.bozhong.myswitch.view.manager.module.screen;
 import com.bozhong.config.util.CookiesUtil;
 import com.bozhong.myredis.MyRedisClusterForHessian;
 import com.bozhong.myswitch.common.SwitchConstants;
+import com.bozhong.myswitch.util.WebSettingParam;
 import com.yx.eweb.main.EWebContext;
 import com.yx.eweb.main.ScreenInter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class Login implements ScreenInter {
     private MyRedisClusterForHessian myRedisClusterForHessian;
     @Override
     public void excute(EWebContext eWebContext) {
+        eWebContext.put("html_title", WebSettingParam.HTML_TITLE);
+        eWebContext.put("switch_crop", WebSettingParam.CORP);
+        eWebContext.put("switch_department", WebSettingParam.DEPARTMENT);
         System.out.println("Login当前线程：" + Thread.currentThread().getName());
         HttpServletRequest request = eWebContext.getRequest();
         HttpServletResponse response = eWebContext.getResponse();
