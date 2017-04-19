@@ -127,9 +127,9 @@
                             return;
                         }
 
-                        if (data.errorCode === undefined) {
-                            data.errorCode = undefined;
-                        }
+//                        if (data.errorCode === undefined) {
+//                            data.errorCode = undefined;
+//                        }
 
                         $('#switchValueChangeTbody').html(_.template($('#switchValueChange_tpl2').html(), {variable: 'data'})(data));
                     }, "json");
@@ -205,15 +205,17 @@
                 n.callbackDT %>
             </td>
             <td title="<% if(n.syncResult) %>
-                成功
-                <% else { %>
-                失败
-                <% } %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+            成功
+            <% else { %>
+            <% if(typeof n.errorCode === 'undefined') { %> 失败 <%} else {%>
+            失败<%= n.errorCode %>
+            <% } %>
+            <% } %>" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
                 <% if(n.syncResult) %>
                 成功
                 <% else { %>
-                失败 <% if(typeof errorCode === 'undefined') { } else {%>
-                <%= errorCode %>
+                <% if(typeof n.errorCode === 'undefined') { %> 失败 <%} else {%>
+                失败<%= n.errorCode %>
                 <% } %>
                 <% } %>
             </td>

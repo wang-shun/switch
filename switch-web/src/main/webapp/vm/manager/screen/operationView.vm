@@ -144,9 +144,9 @@
                     return;
                 }
 
-                if (data.errorCode === undefined) {
-                    data.errorCode = undefined;
-                }
+//                if (data.errorCode === undefined) {
+//                    data.errorCode = undefined;
+//                }
 
                 $('#myModalBody').html(_.template($('#tpl2').html(), {variable: 'data'})(data));
                 $("#myModal").modal("show");
@@ -252,18 +252,23 @@
         <td title="<%= n.val %>"  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.val %></td>
         <td title="<%= n.path %>"  style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><%= n.path %></td>
         ##            <td><%= n.callbackDT %></td>
-        <td title="<% if(n.syncResult) %>
+        <td title=" <% if(n.syncResult) %>
             成功
             <% else { %>
-            失败
-            <% } %>">
+            <% if(typeof n.errorCode === 'undefined') { %> 失败 <%} else {%>
+            失败<%= n.errorCode %>
+            <% } %>
+            <% } %>"
+            style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"
+        >
             <% if(n.syncResult) %>
             成功
             <% else { %>
-            失败 <% if(typeof errorCode === 'undefined') { } else {%>
-            <%= errorCode %>
+            <% if(typeof n.errorCode === 'undefined') { %> 失败 <%} else {%>
+            失败<%= n.errorCode %>
             <% } %>
             <% } %>
+
         </td>
         </tr>
         <% }); %>
