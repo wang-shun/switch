@@ -142,8 +142,8 @@ public class SwitchUtil {
                     realTimeDataDTO.setFormat(appSwitch.format());
                     realTimeDataDTO.setValue(field.get(clazz));
                     realTimeDataDTO.setFieldName(field.getName());
-
                     realTimeDataDTO.setCurrentDateTime(DateUtil.getCurrentDate());
+                    realTimeDataDTO.setVersion(0);
                     realTimeDataDTO.setFieldName(field.getName());
 
                     jsonMap.put(field.getName(), realTimeDataDTO);
@@ -174,7 +174,7 @@ public class SwitchUtil {
                             if (val instanceof String) {
                                 field.set(clazz, val == null ? 0 : Integer.valueOf((String) val));
                             } else if (val instanceof Integer) {
-                                field.set(clazz, val == null ? 0 : (Integer) val );
+                                field.set(clazz, val == null ? 0 : (Integer) val);
                             }
                         } else if (swtich.type().equals(FieldType.BOOLEAN.getName())) {
                             if (val instanceof String) {
@@ -205,8 +205,7 @@ public class SwitchUtil {
                 }
             }
         } catch (Throwable e) {
-
-            throw new SwitchException("SwitchUtil.setSwitchClassValue "+e.getMessage(),e);
+            throw new SwitchException("SwitchUtil.setSwitchClassValue " + e.getMessage(), e);
         }
 
     }
@@ -238,8 +237,11 @@ public class SwitchUtil {
                         continue;
                     }
 
-                    if (oldRealTime != null && newRealTime.getCurrentDateTime() <= oldRealTime.getCurrentDateTime()) {
-                        continue;
+//                    if (oldRealTime != null && newRealTime.getCurrentDateTime() <= oldRealTime.getCurrentDateTime()) {
+//                        continue;
+//                    }
+                    if (oldRealTime != null && newRealTime.getVersion() < oldRealTime.getVersion()) {
+                        continue;//改变之后的版本号小于之前的版本，不改动
                     }
 
                     Object val = newRealTime.getValue();
@@ -253,9 +255,9 @@ public class SwitchUtil {
                         } else if (swtich.type().equals(FieldType.BOOLEAN.getName())) {
                             field.set(clazz, val);
                         } else if (swtich.type().equals(FieldType.LONG.getName())) {
-                            if(val instanceof  Integer){
-                                field.set(clazz, val == null ? 0 :  ( (Integer )val).longValue());
-                            }else if(val instanceof  Long) {
+                            if (val instanceof Integer) {
+                                field.set(clazz, val == null ? 0 : ((Integer) val).longValue());
+                            } else if (val instanceof Long) {
                                 field.set(clazz, val == null ? 0 : (Long) val);
                             }
                         } else if (swtich.type().equals(FieldType.DOUBLE.getName())) {
@@ -271,13 +273,11 @@ public class SwitchUtil {
                         realTimeDataDTOMap.put(field.getName(), newRealTime);
                         return newRealTime;
 
-                    }catch (Throwable e){
+                    } catch (Throwable e) {
                         SwitchLogger.getLogger().error(
-                                StringUtil.format("SwitchUtil.setClazzDataForJson error fieldName:%s val:%s errmsg:%s",field.getName(),val, e.getMessage())
-                               , e);
+                                StringUtil.format("SwitchUtil.setClazzDataForJson error fieldName:%s val:%s errmsg:%s", field.getName(), val, e.getMessage())
+                                , e);
                     }
-
-
 
 
                 }
@@ -285,7 +285,7 @@ public class SwitchUtil {
 
             }
         } catch (Throwable e) {
-            SwitchLogger.getLogger().error("json:["+json+"]"+e.getMessage(), e);
+            SwitchLogger.getLogger().error("json:[" + json + "]" + e.getMessage(), e);
         }
 
         return null;
@@ -300,45 +300,44 @@ public class SwitchUtil {
     }
 
 
-    public static void changeAllValue(List<SwitchNodeDTO> list,String appPath, String fieldName, String val, String optId){
-        for(SwitchNodeDTO switchNodeDTO : list){
+    public static void changeAllValue(List<SwitchNodeDTO> list, String appPath, String fieldName, String val, String optId) {
+        for (SwitchNodeDTO switchNodeDTO : list) {
             try {
                 changeValue(appPath + SwitchConstants.SLASH + switchNodeDTO.getNodeName(), fieldName, val, optId);
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 SwitchLogger.getLogger().error(
                         StringUtil.format("SwitchUtil.changeAllValue error ! appPath:%s nodeIp:%s fieldName:%s val%s optId:%s errorMsg:%s",
-                                appPath,switchNodeDTO.getNodeName(),fieldName,val,optId,e.getMessage() )
-                        ,e);
+                                appPath, switchNodeDTO.getNodeName(), fieldName, val, optId, e.getMessage())
+                        , e);
                 if (e instanceof SwitchException) {
                     SwitchDataDTO switchDataDTO = new SwitchDataDTO();
                     switchDataDTO.setFieldName(fieldName);
                     switchDataDTO.setOptId(optId);
-                    SwitchServer.sendChangeResult(switchDataDTO,0, (SwitchException) e);
+                    SwitchServer.sendChangeResult(switchDataDTO, 0, (SwitchException) e);
                 }
             }
         }
     }
 
-    public static void changeAllValue(String appId,String env, String fieldName, String val, String optId){
+    public static void changeAllValue(String appId, String env, String fieldName, String val, String optId) {
 
         if (StringUtil.isBlank(appId) || StringUtil.isBlank(fieldName) || StringUtil.isBlank(val) || StringUtil.isBlank(optId)) {
             throw new SwitchException(SwitchErrorEnum.ILL_ARGMENT.getError());
         }
 
         try {
-            String appPath = SwitchConstants.SWITCH_ROOT_PATH +SwitchConstants.SLASH + env + SwitchConstants.SLASH + appId;
+            String appPath = SwitchConstants.SWITCH_ROOT_PATH + SwitchConstants.SLASH + env + SwitchConstants.SLASH + appId;
 
             List<SwitchNodeDTO> list = ZkClient.getInstance().getChildrenNode(appPath);
-            changeAllValue(list,appPath,fieldName,val,optId);
+            changeAllValue(list, appPath, fieldName, val, optId);
 
 
-        }catch (Throwable e){
+        } catch (Throwable e) {
             SwitchLogger.getLogger().error(StringUtil.format("SwitchUtil.changeAllValue error ! appId:%s env:%s fieldName:%s val%s optId:%s errorMsg:%s",
-                    appId,env,fieldName,val,optId,e.getMessage() ),e);
+                    appId, env, fieldName, val, optId, e.getMessage()), e);
 
-            throw new  SwitchException(e.getMessage(),e);
+            throw new SwitchException(e.getMessage(), e);
         }
-
 
 
     }
@@ -353,7 +352,7 @@ public class SwitchUtil {
             String json = ZkClient.getInstance().getDataForStr(path, -1);
             if (StringUtil.isBlank(json)) {
                 //直接修改本地 然后重新加载
-                setSwitchClassValue(fieldName,val,SwitchRegister.getSwitchRegister().getLocalClazz());
+                setSwitchClassValue(fieldName, val, SwitchRegister.getSwitchRegister().getLocalClazz());
                 SwitchRegister.getSwitchRegister().restartInit();
                 return;
             }
@@ -368,25 +367,26 @@ public class SwitchUtil {
                 throw new SwitchException("CANNOT_FIND_SwitchDataDTO BY fieldName");
             }
 
-            if(switchDataDTO.getType().equals(FieldType.STRING.getName())){
+            if (switchDataDTO.getType().equals(FieldType.STRING.getName())) {
                 switchDataDTO.setValue(val);
-            }else if(switchDataDTO.getType().equals(FieldType.INT.getName())){
+            } else if (switchDataDTO.getType().equals(FieldType.INT.getName())) {
                 switchDataDTO.setValue(Integer.valueOf(val));
-            }else if(switchDataDTO.getType().equals(FieldType.DOUBLE.getName())){
+            } else if (switchDataDTO.getType().equals(FieldType.DOUBLE.getName())) {
                 switchDataDTO.setValue(Double.valueOf(val).doubleValue());
-            }else if(switchDataDTO.getType().equals(FieldType.LONG.getName())){
+            } else if (switchDataDTO.getType().equals(FieldType.LONG.getName())) {
                 switchDataDTO.setValue(Long.valueOf(val));
-            }else if(switchDataDTO.getType().equals(FieldType.BOOLEAN.getName())){
+            } else if (switchDataDTO.getType().equals(FieldType.BOOLEAN.getName())) {
                 switchDataDTO.setValue("true".equals(val));
             }
 
             switchDataDTO.setCurrentDateTime(DateUtil.getCurrentDate());
+            switchDataDTO.setVersion(switchDataDTO.getVersion() + 1);//改变值的时候版本号+1
             switchDataDTO.setOptId(optId);
 
-            map.put(fieldName,switchDataDTO);
+            map.put(fieldName, switchDataDTO);
             json = JSON.toJSON(map).toString();
 
-            ZkClient.getInstance().setDataForStr(path,json,-1);
+            ZkClient.getInstance().setDataForStr(path, json, -1);
 
 
         } catch (Throwable e) {

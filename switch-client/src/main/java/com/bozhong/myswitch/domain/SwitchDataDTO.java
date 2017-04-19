@@ -21,6 +21,8 @@ public class SwitchDataDTO extends BaseDTO {
 
     private String fieldName;
 
+    private long version = 0l;
+
     public Object getValue() {
         return value;
     }
@@ -75,5 +77,13 @@ public class SwitchDataDTO extends BaseDTO {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }
