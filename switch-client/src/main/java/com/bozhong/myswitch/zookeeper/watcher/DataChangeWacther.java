@@ -15,9 +15,22 @@ import org.apache.zookeeper.Watcher;
  */
 public class DataChangeWacther implements Watcher {
 
+    private static DataChangeWacther DATA_CHANGE_WACTHER = null;
+
+    private DataChangeWacther() {
+
+    }
+
+    public final static DataChangeWacther getInstance() {
+        if (DATA_CHANGE_WACTHER == null) {
+            DATA_CHANGE_WACTHER = new DataChangeWacther();
+        }
+        return DATA_CHANGE_WACTHER;
+    }
+
     @Override
     public void process(WatchedEvent watchedEvent) {
-        System.out.println("luoxi:" + JSON.toJSONString(watchedEvent));
+        System.out.println("luoxi:" + this.toString() + JSON.toJSONString(watchedEvent));
         SwitchLogger.getSysLogger().warn(" DataChangeWacther  watchedEvent :" +
                 "path :" + watchedEvent.getPath() + " type :" + watchedEvent.getType().name() + " stateName :" + watchedEvent.getState().name());
 

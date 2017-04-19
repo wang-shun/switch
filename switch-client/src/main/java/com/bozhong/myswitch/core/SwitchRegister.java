@@ -103,7 +103,7 @@ public class SwitchRegister {
         //监听
         ZkClient.getInstance().addDataChangeWacther(
                 localPath,
-                new DataChangeWacther()
+                DataChangeWacther.getInstance()
         );
 
 
@@ -129,7 +129,7 @@ public class SwitchRegister {
             //监听
             ZkClient.getInstance().addDataChangeWacther(
                     localPath,
-                    new DataChangeWacther()
+                    DataChangeWacther.getInstance()
             );
 
         }

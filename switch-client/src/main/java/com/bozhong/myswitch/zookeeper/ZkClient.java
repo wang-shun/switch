@@ -117,7 +117,7 @@ public class ZkClient {
 
         Stat stat1 = new Stat();
         stat1.setAversion(-1);
-        zk.getData(createPath, new DataChangeWacther(), stat);
+        zk.getData(createPath, DataChangeWacther.getInstance(), stat);
     }
 
     public void createPersistentSequential(String groupName) throws KeeperException, InterruptedException, Exception {
@@ -177,8 +177,7 @@ public class ZkClient {
         Stat stat = new Stat();
         stat.setAversion(version);
 
-        return zk.getData(path,false, stat);
-        //return zk.getData(path, new DataChangeWacther(), stat);
+        return zk.getData(path, DataChangeWacther.getInstance(), stat);
     }
 
     public String getDataForStr(String path, int version) throws Exception {
