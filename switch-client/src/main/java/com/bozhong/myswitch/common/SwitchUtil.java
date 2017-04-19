@@ -65,6 +65,7 @@ public class SwitchUtil {
 
 
     public static Map<String, SwitchDataDTO> realTimeDataDTOMap = new HashedMap();
+    public static Map<String, Long> realTimeMap = new HashedMap();
 
     public static boolean firstCharCheck(String path, String hasThisChar) {
 
@@ -136,6 +137,7 @@ public class SwitchUtil {
                 AppSwitch appSwitch = field.getAnnotation(AppSwitch.class);
 
                 if (appSwitch != null) {
+                    Long version = realTimeMap.get(field.getName()) != null ? realTimeMap.get(field.getName()) : 0l;
                     SwitchDataDTO realTimeDataDTO = new SwitchDataDTO();
                     realTimeDataDTO.setDesc(appSwitch.desc());
                     realTimeDataDTO.setType(appSwitch.type());
@@ -143,11 +145,12 @@ public class SwitchUtil {
                     realTimeDataDTO.setValue(field.get(clazz));
                     realTimeDataDTO.setFieldName(field.getName());
                     realTimeDataDTO.setCurrentDateTime(DateUtil.getCurrentDate());
-                    realTimeDataDTO.setVersion(0);
+                    realTimeDataDTO.setVersion(version);
                     realTimeDataDTO.setFieldName(field.getName());
 
                     jsonMap.put(field.getName(), realTimeDataDTO);
                     realTimeDataDTOMap.put(field.getName(), realTimeDataDTO);
+                    realTimeMap.put(field.getName(), version);
                 }
 
             }
@@ -231,18 +234,15 @@ public class SwitchUtil {
                 if (swtich != null) {
 
                     SwitchDataDTO newRealTime = map.get(field.getName());
-                    SwitchDataDTO oldRealTime = realTimeDataDTOMap.get(field.getName());
+                    Long version = realTimeMap.get(field.getName());
 
                     if (newRealTime == null) {
                         continue;
                     }
 
-                    if (oldRealTime != null && newRealTime.getCurrentDateTime() <= oldRealTime.getCurrentDateTime()) {
+                    if (version != null && newRealTime.getVersion() <= version) {
                         continue;
                     }
-//                    if (oldRealTime != null && newRealTime.getVersion() < oldRealTime.getVersion()) {
-//                        continue;//改变之后的版本号小于之前的版本，不改动
-//                    }
 
                     Object val = newRealTime.getValue();
 
@@ -271,6 +271,7 @@ public class SwitchUtil {
                         }
 
                         realTimeDataDTOMap.put(field.getName(), newRealTime);
+                        realTimeMap.put(field.getName(), version);
                         return newRealTime;
 
                     } catch (Throwable e) {
