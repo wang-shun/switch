@@ -1,5 +1,6 @@
 package com.bozhong.myswitch.zookeeper;
 
+import com.alibaba.fastjson.JSON;
 import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
@@ -25,20 +26,20 @@ import java.util.concurrent.CountDownLatch;
 public class ZkClient {
 
 
-    private static  ZkClient zkClient = null;
+    private static ZkClient zkClient = null;
 
     private String hosts;
 
-    private ZkClient(){
+    private ZkClient() {
 
     }
 
-    public static ZkClient getInstance(){
+    public static ZkClient getInstance() {
 
-        if(zkClient==null){
-            synchronized ("lock_zk_sync"){
-                if(zkClient==null){
-                    zkClient=new ZkClient();
+        if (zkClient == null) {
+            synchronized ("lock_zk_sync") {
+                if (zkClient == null) {
+                    zkClient = new ZkClient();
                 }
             }
         }
@@ -54,13 +55,13 @@ public class ZkClient {
     private CountDownLatch countDownLatch = new CountDownLatch(1);//同步计数器
 
 
-    public void connect()  throws Exception{
+    public void connect() throws Exception {
         connect(this.hosts);
     }
 
     public void connect(String hosts) throws Exception {
 
-        if(StringUtil.isBlank(hosts)){
+        if (StringUtil.isBlank(hosts)) {
             throw new SwitchException(SwitchErrorEnum.ILL_ARGMENT.getError(),
                     SwitchErrorEnum.ILL_ARGMENT.getMsg());
         }
@@ -75,7 +76,7 @@ public class ZkClient {
 
                 SwitchLogger.getSysLogger().warn("ZkClient - process excute ! " + "watchEvent path: " + event.getPath() + "  !  stateName:"
                         + event.getState().name() + " eventType:" + event.getType().name());
-
+                System.out.println("xiezg"+JSON.toJSONString(event));
 
                 if (event.getState() == Event.KeeperState.SyncConnected) {
                     countDownLatch.countDown();//计数器减一
@@ -91,14 +92,14 @@ public class ZkClient {
         SwitchLogger.getSysLogger().warn("ZkClient - connect await out ! ZkClient connect zk is success ! ");
         createPersistent(SwitchConstants.SWITCH_ROOT_PATH);
 
-        zk.exists(SwitchConstants.SWITCH_ROOT_PATH,new ConnectWacther());
+        zk.exists(SwitchConstants.SWITCH_ROOT_PATH, new ConnectWacther());
     }
 
     private void create(String groupName, CreateMode createMode) throws KeeperException, InterruptedException, Exception {
 
         String path = SwitchUtil.firstAddChar(groupName);
         Stat stat = zk.exists(path, true);
-        String createPath=path;
+        String createPath = path;
         if (stat == null) {
             createPath = zk.create(path,
                     null,
@@ -142,25 +143,25 @@ public class ZkClient {
         create(groupName, CreateMode.EPHEMERAL_SEQUENTIAL);
     }
 
-    public void addChildrenChangeWacther(String groupName,Watcher watcher) throws KeeperException, InterruptedException, Exception{
-        zk.getChildren(groupName,watcher);
+    public void addChildrenChangeWacther(String groupName, Watcher watcher) throws KeeperException, InterruptedException, Exception {
+        zk.getChildren(groupName, watcher);
     }
 
     public boolean has(String path) throws KeeperException, InterruptedException {
 
-        if(!SwitchUtil.firstCharCheck(path,SwitchConstants.SLASH)){
-            path=SwitchConstants.SLASH+path;
+        if (!SwitchUtil.firstCharCheck(path, SwitchConstants.SLASH)) {
+            path = SwitchConstants.SLASH + path;
         }
         return zk.exists(path, false) != null;
     }
 
-    public void  addDataChangeWacther(String groupName,Watcher watcher) throws KeeperException, InterruptedException, Exception{
+    public void addDataChangeWacther(String groupName, Watcher watcher) throws KeeperException, InterruptedException, Exception {
         groupName = SwitchUtil.firstAddCharDefualt(groupName);
 
         Stat stat = new Stat();
         stat.setAversion(-1);
 
-        zk.getData(groupName,watcher,stat);
+        zk.getData(groupName, watcher, stat);
     }
 
     public void setData(String path, byte[] data, int version) throws Exception {
@@ -176,40 +177,41 @@ public class ZkClient {
         Stat stat = new Stat();
         stat.setAversion(version);
 
-        return zk.getData(path, new DataChangeWacther(), stat);
+        return zk.getData(path,false, stat);
+        //return zk.getData(path, new DataChangeWacther(), stat);
     }
 
     public String getDataForStr(String path, int version) throws Exception {
-        byte[] bytes =  getData(path,version);
+        byte[] bytes = getData(path, version);
 
-        if(bytes==null){
+        if (bytes == null) {
             return "";
         }
 
-        return  new String(bytes,"utf-8").toString();
+        return new String(bytes, "utf-8").toString();
 
     }
 
-    public void setDataForStr(String path, String data ,int version) throws Exception{
+    public void setDataForStr(String path, String data, int version) throws Exception {
 
-        path=SwitchUtil.firstAddCharDefualt(path);
+        path = SwitchUtil.firstAddCharDefualt(path);
 
-        if(StringUtil.isBlank(data)){
-            return ;
+        if (StringUtil.isBlank(data)) {
+            return;
         }
 
-        byte[] bytes =  data.getBytes("utf-8");
+        byte[] bytes = data.getBytes("utf-8");
 
-        setData(path,bytes,version);
+        setData(path, bytes, version);
 
     }
 
 
-    public List<SwitchNodeDTO> getFirstNode() throws KeeperException, InterruptedException, Exception{
+    public List<SwitchNodeDTO> getFirstNode() throws KeeperException, InterruptedException, Exception {
 
         Stat stat = zk.exists(
-                SwitchConstants.SWITCH_ROOT_PATH+
-                        SwitchConstants.SLASH+
+                SwitchConstants.SWITCH_ROOT_PATH +
+                        SwitchConstants.SLASH +
                         SwitchRegister.getSwitchRegister().getEnviron(), false);
         if (stat == null) {
             return new ArrayList<SwitchNodeDTO>();
@@ -218,11 +220,11 @@ public class ZkClient {
         List<String> children = zk.getChildren(SwitchConstants.SWITCH_ROOT_PATH, false);
         Collections.sort(children);
 
-        for(String str : children){
+        for (String str : children) {
             SwitchNodeDTO realTimeNodeDTO = new SwitchNodeDTO();
             realTimeNodeDTO.setNodeName(str);
-            realTimeNodeDTO.setAllPath(SwitchConstants.SWITCH_ROOT_PATH+
-                    SwitchConstants.SLASH+str);
+            realTimeNodeDTO.setAllPath(SwitchConstants.SWITCH_ROOT_PATH +
+                    SwitchConstants.SLASH + str);
             list.add(realTimeNodeDTO);
         }
 
@@ -232,7 +234,7 @@ public class ZkClient {
 
     public List<SwitchNodeDTO> getAllServer() throws Throwable {
 
-        String path = SwitchConstants.SWITCH_ROOT_PATH+SwitchConstants.SWITCH_SERVER_PATH;
+        String path = SwitchConstants.SWITCH_ROOT_PATH + SwitchConstants.SWITCH_SERVER_PATH;
 
         Stat stat = zk.exists(path, false);
 
@@ -244,11 +246,11 @@ public class ZkClient {
         List<String> children = zk.getChildren(path, false);
         Collections.sort(children);
 
-        for(String str : children){
+        for (String str : children) {
             SwitchNodeDTO realTimeNodeDTO = new SwitchNodeDTO();
             realTimeNodeDTO.setNodeName(str);
-            realTimeNodeDTO.setAllPath(path+
-                    SwitchConstants.SLASH+str);
+            realTimeNodeDTO.setAllPath(path +
+                    SwitchConstants.SLASH + str);
             list.add(realTimeNodeDTO);
         }
 
@@ -256,7 +258,7 @@ public class ZkClient {
 
     }
 
-    public List<SwitchNodeDTO> getChildrenNode(String path) throws KeeperException, InterruptedException, Exception{
+    public List<SwitchNodeDTO> getChildrenNode(String path) throws KeeperException, InterruptedException, Exception {
 
         path = SwitchUtil.firstAddCharDefualt(path);
 
@@ -269,11 +271,11 @@ public class ZkClient {
         List<SwitchNodeDTO> list = new ArrayList<>();
         List<String> children = zk.getChildren(path, false);
         Collections.sort(children);
-        for(String str : children){
+        for (String str : children) {
             SwitchNodeDTO realTimeNodeDTO = new SwitchNodeDTO();
             realTimeNodeDTO.setNodeName(str);
-            realTimeNodeDTO.setAllPath(path+SwitchConstants.SLASH+str);
-            String dataJson = getDataForStr(realTimeNodeDTO.getAllPath(),-1);
+            realTimeNodeDTO.setAllPath(path + SwitchConstants.SLASH + str);
+            String dataJson = getDataForStr(realTimeNodeDTO.getAllPath(), -1);
             realTimeNodeDTO.setDataJson(dataJson);
             list.add(realTimeNodeDTO);
         }

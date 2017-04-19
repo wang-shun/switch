@@ -140,6 +140,7 @@ public class SwitchRegister {
 
     public SwitchDataDTO change() throws Throwable {
         String json = ZkClient.getInstance().getDataForStr(localPath, -1);
+        System.out.println("change()" + json);
         return SwitchUtil.setClazzDataForJson(json, localClazz);
     }
 

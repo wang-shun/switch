@@ -16,9 +16,6 @@
     <bean class="com.bozhong.myswitch.util.SwitchLoad" init-method="init">
         <property name="appId" value="9"/>
         <property name="zkHosts" value="${switch.zkHosts}"/>
-        <property name="dynamicClass">
-            <value>com.bozhong.myswitch.util.WebSettingParam</value>
-        </property>
     </bean>
 
     <bean class="com.bozhong.myswitch.util.SwitchServerRegister" init-method="init">

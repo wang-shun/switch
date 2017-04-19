@@ -1,5 +1,6 @@
 package com.bozhong.myswitch.zookeeper.watcher;
 
+import com.alibaba.fastjson.JSON;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.core.SwitchRegister;
 import com.bozhong.myswitch.zookeeper.ZkClient;
@@ -29,6 +30,8 @@ public class ConnectWacther implements Watcher {
 
     @Override
     public void process(WatchedEvent watchedEvent) {
+
+        System.out.println("luotian:" + JSON.toJSONString(watchedEvent));
 
         SwitchLogger.getSysLogger().warn("ConnectWacther  watchedEvent :" +
                 "path :" + watchedEvent.getPath() + " type :" + watchedEvent.getType().name() + " stateName :" + watchedEvent.getState().name());
