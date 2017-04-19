@@ -144,6 +144,10 @@
                     return;
                 }
 
+                if (data.errorCode === undefined) {
+                    data.errorCode = undefined;
+                }
+
                 $('#myModalBody').html(_.template($('#tpl2').html(), {variable: 'data'})(data));
                 $("#myModal").modal("show");
             }, "json");
@@ -256,7 +260,9 @@
             <% if(n.syncResult) %>
             成功
             <% else { %>
-            失败
+            失败 <% if(typeof errorCode === 'undefined') { } else {%>
+            <%= errorCode %>
+            <% } %>
             <% } %>
         </td>
         </tr>

@@ -127,6 +127,10 @@
                             return;
                         }
 
+                        if (data.errorCode === undefined) {
+                            data.errorCode = undefined;
+                        }
+
                         $('#switchValueChangeTbody').html(_.template($('#switchValueChange_tpl2').html(), {variable: 'data'})(data));
                     }, "json");
                 }
@@ -208,7 +212,9 @@
                 <% if(n.syncResult) %>
                 成功
                 <% else { %>
-                失败
+                失败 <% if(typeof errorCode === 'undefined') { } else {%>
+                <%= errorCode %>
+                <% } %>
                 <% } %>
             </td>
             <td>

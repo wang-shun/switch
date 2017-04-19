@@ -26,34 +26,34 @@ public class SwitchLoad {
         SwitchRegister.getSwitchRegister().init(this.appId, dynamicClass, this.zkHosts);
 
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(3000l);
-                        List<Field> fields = Arrays.asList(dynamicClass.getDeclaredFields());
-                        Collections.sort(fields, new Comparator<Field>() {
-                            @Override
-                            public int compare(Field o1, Field o2) {
-                                return o1.getName().compareTo(o2.getName());
-                            }
-                        });
-                        SwitchLogger.getSysLogger().warn("-------start----------");
-                        for (Field field : fields) {
-                            System.out.println(field.getName() + ":" + field.get(dynamicClass));
-                            SwitchLogger.getSysLogger().warn(field.getName() + ":" + field.get(dynamicClass));
-                        }
-                        SwitchLogger.getSysLogger().warn("-------end----------");
-                    } catch (Throwable e) {
-                        SwitchLogger.getSysLogger().error(e.getMessage(), e);
-                    }
-
-                }
-            }
-        });
-
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(3000l);
+//                        List<Field> fields = Arrays.asList(dynamicClass.getDeclaredFields());
+//                        Collections.sort(fields, new Comparator<Field>() {
+//                            @Override
+//                            public int compare(Field o1, Field o2) {
+//                                return o1.getName().compareTo(o2.getName());
+//                            }
+//                        });
+//                        SwitchLogger.getSysLogger().warn("-------start----------");
+//                        for (Field field : fields) {
+//                            System.out.println(field.getName() + ":" + field.get(dynamicClass));
+//                            SwitchLogger.getSysLogger().warn(field.getName() + ":" + field.get(dynamicClass));
+//                        }
+//                        SwitchLogger.getSysLogger().warn("-------end----------");
+//                    } catch (Throwable e) {
+//                        SwitchLogger.getSysLogger().error(e.getMessage(), e);
+//                    }
+//
+//                }
+//            }
+//        });
+//
+//        thread.start();
     }
 
     public String getAppId() {

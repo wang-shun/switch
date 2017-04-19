@@ -63,6 +63,11 @@ public class SwitchValueChangDO extends BaseDO {
      */
     private String env;
 
+    /**
+     * 错误码
+     */
+    private String errorCode;
+
     public String getOptId() {
         return optId;
     }
@@ -153,6 +158,14 @@ public class SwitchValueChangDO extends BaseDO {
 
     public void setEnv(String env) {
         this.env = env;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 
     @Override

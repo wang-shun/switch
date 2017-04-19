@@ -10,6 +10,7 @@ import com.bozhong.myswitch.core.SwitchRegister;
 import com.bozhong.myswitch.domain.SwitchDataDTO;
 import com.bozhong.myswitch.domain.SwitchNodeDTO;
 import com.bozhong.myswitch.exception.SwitchException;
+import com.bozhong.myswitch.server.SwitchServer;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import org.apache.commons.collections.map.HashedMap;
 
@@ -308,6 +309,12 @@ public class SwitchUtil {
                         StringUtil.format("SwitchUtil.changeAllValue error ! appPath:%s nodeIp:%s fieldName:%s val%s optId:%s errorMsg:%s",
                                 appPath,switchNodeDTO.getNodeName(),fieldName,val,optId,e.getMessage() )
                         ,e);
+                if (e instanceof SwitchException) {
+                    SwitchDataDTO switchDataDTO = new SwitchDataDTO();
+                    switchDataDTO.setFieldName(fieldName);
+                    switchDataDTO.setOptId(optId);
+                    SwitchServer.sendChangeResult(switchDataDTO,0, (SwitchException) e);
+                }
             }
         }
     }

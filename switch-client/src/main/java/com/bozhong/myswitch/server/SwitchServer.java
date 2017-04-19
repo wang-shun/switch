@@ -92,7 +92,7 @@ public class SwitchServer {
 
 
 
-    public static void sendChangeResult(SwitchDataDTO switchDataDTO,int callNum) {
+    public static void sendChangeResult(SwitchDataDTO switchDataDTO,int callNum, SwitchException switchException) {
 
         if(switchDataDTO==null){
             SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult switchDataDTO is null");
@@ -118,6 +118,9 @@ public class SwitchServer {
             params.add("optId", switchDataDTO.getOptId());
             params.add("fieldName", switchDataDTO.getFieldName());
             params.add("ip", SwitchUtil.getIp());
+            if (switchException != null) {
+                params.add("errorCode", switchException.getErrorCode());
+            }
 
 
             String result = resource.queryParams(params).post(String.class);
@@ -130,7 +133,7 @@ public class SwitchServer {
 
             SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :" + result);
         }catch (Throwable e){
-            sendChangeResult(switchDataDTO, callNum++);
+            sendChangeResult(switchDataDTO, callNum++, switchException);
         }
 
     }

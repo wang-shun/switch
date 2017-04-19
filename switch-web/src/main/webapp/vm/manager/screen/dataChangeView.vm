@@ -82,11 +82,11 @@
                 {label: '回调时间', name: 'callbackDT', sortable: false},
                 {
                     label: '成功失败', name: 'syncResult', formatter: function (cellvalue, options, rowObject) {
-                    return cellvalue ? "<span class='text-success'>成功</span>" : "<span class='text-danger'>失败</span>";
+                    return cellvalue ? "<span class='text-success'>成功</span>" : "<span class='text-danger'>失败" + (rowObject.errorCode != undefined ? rowObject.errorCode : "") + "</span>";
                 }, sortable: false
                 },
                 {
-                    label: '操作', name: 'optId', align:"center", formatter: function (cellvalue, options, rowObject) {
+                    label: '操作', name: 'optId', align: "center", formatter: function (cellvalue, options, rowObject) {
                     return " <button type='button' class='btn btn-xs btn-success btn-detail' " +
                             "data-ip='" + rowObject.ip + "' " +
                             "data-fieldName='" + rowObject.fieldName + "' " +
@@ -123,6 +123,10 @@
             }, function (data) {
                 if (data == undefined || data == null) {
                     return;
+                }
+
+                if (data.errorCode === undefined) {
+                    data.errorCode = undefined;
                 }
 
                 $('#myModalBody').html(_.template($('#tpl').html())(data));
@@ -203,7 +207,9 @@
                         <% if(syncResult) %>
                         成功
                         <% else { %>
-                        失败
+                        失败 <% if(typeof errorCode === 'undefined') { } else {%>
+                        <%= errorCode %>
+                        <% } %>
                         <% } %>
                     </p>
                 </div>
