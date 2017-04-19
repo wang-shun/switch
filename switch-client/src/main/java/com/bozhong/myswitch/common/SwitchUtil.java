@@ -271,7 +271,7 @@ public class SwitchUtil {
                         }
 
                         realTimeDataDTOMap.put(field.getName(), newRealTime);
-                        realTimeMap.put(field.getName(), version);
+                        realTimeMap.put(field.getName(), newRealTime.getVersion());
                         return newRealTime;
 
                     } catch (Throwable e) {
