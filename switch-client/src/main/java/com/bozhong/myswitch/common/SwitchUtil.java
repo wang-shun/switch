@@ -237,12 +237,12 @@ public class SwitchUtil {
                         continue;
                     }
 
-//                    if (oldRealTime != null && newRealTime.getCurrentDateTime() <= oldRealTime.getCurrentDateTime()) {
-//                        continue;
-//                    }
-                    if (oldRealTime != null && newRealTime.getVersion() < oldRealTime.getVersion()) {
-                        continue;//改变之后的版本号小于之前的版本，不改动
+                    if (oldRealTime != null && newRealTime.getCurrentDateTime() <= oldRealTime.getCurrentDateTime()) {
+                        continue;
                     }
+//                    if (oldRealTime != null && newRealTime.getVersion() < oldRealTime.getVersion()) {
+//                        continue;//改变之后的版本号小于之前的版本，不改动
+//                    }
 
                     Object val = newRealTime.getValue();
 
