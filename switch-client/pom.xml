@@ -140,6 +140,10 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.bozhong</groupId>
+            <artifactId>configCenter-client</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

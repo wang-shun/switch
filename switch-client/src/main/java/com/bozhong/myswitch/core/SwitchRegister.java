@@ -1,6 +1,8 @@
 package com.bozhong.myswitch.core;
 
 import com.bozhong.common.util.StringUtil;
+import com.bozhong.config.common.ConfigCenterHttpClient;
+import com.bozhong.config.domain.EnvType;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
@@ -52,7 +54,7 @@ public class SwitchRegister {
     }
 
 
-    public void init(String appId, Class clazz, String zkHosts) throws Throwable{
+    public void init(String appId, Class clazz, String zkHosts) throws Throwable {
 
         if (StringUtil.isBlank(appId) ||
                 clazz == null ||
@@ -74,32 +76,30 @@ public class SwitchRegister {
         ZkClient.getInstance().connect(this.zkHosts);
 
 
-        String environPath =SwitchConstants.SWITCH_ROOT_PATH+SwitchConstants.SLASH+environ;
+        String environPath = SwitchConstants.SWITCH_ROOT_PATH + SwitchConstants.SLASH + environ;
         //创建appName
-        if(!ZkClient.getInstance().has(environPath)){
+        if (!ZkClient.getInstance().has(environPath)) {
             ZkClient.getInstance().createPersistent(environPath);
         }
 
-        String appPath =environPath+SwitchConstants.SLASH+appId;
+        String appPath = environPath + SwitchConstants.SLASH + appId;
         //创建appName
-        if(!ZkClient.getInstance().has(appPath)){
+        if (!ZkClient.getInstance().has(appPath)) {
             ZkClient.getInstance().createPersistent(appPath);
         }
 
 
-        if(!ZkClient.getInstance().has(localPath)){
+        if (!ZkClient.getInstance().has(localPath)) {
             ZkClient.getInstance().createEphemeral(localPath);
         }
         String json = SwitchUtil.getJsonFromClazz(localClazz);
-        ZkClient.getInstance().setDataForStr(localPath,json,-1);
+        ZkClient.getInstance().setDataForStr(localPath, json, -1);
 
         //监听
         ZkClient.getInstance().addDataChangeWacther(
                 localPath,
                 new DataChangeWacther()
         );
-
-
 
 
     }
@@ -118,7 +118,7 @@ public class SwitchRegister {
             ZkClient.getInstance().setDataForStr(localPath, json, -1);
         } catch (Throwable e) {
 
-            SwitchLogger.getSysLogger().error(" SwitchRegister.restartInit error ! "+e.getMessage(),e);
+            SwitchLogger.getSysLogger().error(" SwitchRegister.restartInit error ! " + e.getMessage(), e);
 
         } finally {
             //监听
@@ -135,28 +135,42 @@ public class SwitchRegister {
 
     public SwitchDataDTO change() throws Throwable {
         String json = ZkClient.getInstance().getDataForStr(localPath, -1);
-       return SwitchUtil.setClazzDataForJson(json, localClazz);
+        return SwitchUtil.setClazzDataForJson(json, localClazz);
     }
-
-
 
 
     public String getEnviron() {
 
-        if(StringUtil.isBlank(this.environ)){
-            /**
-             * 这里根据
-             */
-
-            String ip = SwitchUtil.getIp();
+        if (StringUtil.isBlank(this.environ)) {
             String appId = this.appId;
+            try {
+                EnvType envType = ConfigCenterHttpClient.getEnvTypeWithAppIdAndHostIp(appId);
+                if (envType == null) {
+                    this.environ = Environ.DEV.getName();
+                }
 
-            this.environ = Environ.DEV.getName();
-
+                switch (envType.getName()) {
+                    case "DEV":
+                        this.environ = Environ.DEV.getName();
+                        break;
+                    case "SIT":
+                        this.environ = Environ.SIT.getName();
+                        break;
+                    case "UAT":
+                        this.environ = Environ.UAT.getName();
+                        break;
+                    case "PRD":
+                        this.environ = Environ.ONLINE.getName();
+                        break;
+                    default:
+                        this.environ = Environ.DEV.getName();
+                }
+            } catch (Throwable e) {
+                SwitchLogger.getSysLogger().error(e.getMessage());
+            }
         }
 
         return this.environ;
-
 
 
     }
