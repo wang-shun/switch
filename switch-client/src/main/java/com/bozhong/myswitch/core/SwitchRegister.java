@@ -1,8 +1,7 @@
 package com.bozhong.myswitch.core;
 
+import com.alibaba.fastjson.JSON;
 import com.bozhong.common.util.StringUtil;
-import com.bozhong.config.common.ConfigCenterHttpClient;
-import com.bozhong.config.domain.EnvType;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
@@ -11,6 +10,12 @@ import com.bozhong.myswitch.domain.SwitchDataDTO;
 import com.bozhong.myswitch.exception.SwitchException;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import com.bozhong.myswitch.zookeeper.watcher.DataChangeWacther;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by renyueliang on 17/4/10.
@@ -144,12 +149,7 @@ public class SwitchRegister {
         if (StringUtil.isBlank(this.environ)) {
             String appId = this.appId;
             try {
-                EnvType envType = ConfigCenterHttpClient.getEnvTypeWithAppIdAndHostIp(appId);
-                if (envType == null) {
-                    this.environ = Environ.DEV.getName();
-                }
-
-                switch (envType.getName()) {
+                switch (getEnvTypeWithAppIdAndHostIp(appId, SwitchUtil.getIp())) {
                     case "DEV":
                         this.environ = Environ.DEV.getName();
                         break;
@@ -173,6 +173,29 @@ public class SwitchRegister {
         return this.environ;
 
 
+    }
+
+    private String getEnvTypeWithAppIdAndHostIp(String appId, String hostIp) {
+        try {
+            String e = "http://config.317hu.com/configcenter/config/configSet/getEnvType";
+            HttpClient client = new HttpClient();
+            PostMethod method = new PostMethod(e);
+            NameValuePair appIdPair = new NameValuePair("appId", appId);
+            NameValuePair appKeyPair = new NameValuePair("appKey", "c7b950537c5e48288923348cb61bfe75");
+            NameValuePair ipPair = new NameValuePair("hostIp", hostIp);
+            method.setRequestBody(new NameValuePair[]{appIdPair, appKeyPair, ipPair});
+            client.executeMethod(method);
+            String responseBodyString = new String(method.getResponseBodyAsString().getBytes("ISO-8859-1"), "UTF-8");
+            Map map = new HashMap();
+            if (method.getStatusCode() == 200) {
+                map = JSON.parseObject(responseBodyString, Map.class);
+            }
+            return (String) map.get("name");
+        } catch (Throwable e) {
+            SwitchLogger.getSysLogger().error(e.getMessage());
+        }
+
+        return null;
     }
 
 
