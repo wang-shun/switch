@@ -25,8 +25,9 @@ public class SwitchTest {
             }
         });
         thread.start();
+        SwitchRegister.getSwitchRegister().init("9", WebSettingParam.class, "172.16.150.151:2181,172.16.150.151:2182,172.16.150.151:2183");
+
         while (true) {
-            SwitchRegister.getSwitchRegister().init("9", SettingParam.class, "172.16.150.151:2181,172.16.150.151:2182,172.16.150.151:2183");
         }
     }
 }
