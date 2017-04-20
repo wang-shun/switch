@@ -60,7 +60,8 @@ public class ManagerAction {
 
     public void changeAllSwitchValue(EWebContext eWebContext){
 
-        ChangeAllSwitchDTO changeAllSwitchDTO =  BeanUtil.mapToObject(((EWebRequestDTO)eWebContext.getParam()).getRequestParam(),ChangeAllSwitchDTO.class);
+        ChangeAllSwitchDTO changeAllSwitchDTO =  BeanUtil.mapToObject(((EWebRequestDTO)eWebContext.getParam())
+                .getRequestParam(),ChangeAllSwitchDTO.class);
         changeAllSwitchDTO.setOptId(UUIDUtil.getUUID(true));
 
         OptRecordDO optRecordDO = new OptRecordDO();

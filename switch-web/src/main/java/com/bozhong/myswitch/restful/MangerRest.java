@@ -71,7 +71,8 @@ public class MangerRest {
             String fieldName = (String) EWebServletContext.getEWebContext().get("fieldName");
             String ip = (String) EWebServletContext.getEWebContext().get("ip");
             String errorCode = (String) EWebServletContext.getEWebContext().get("errorCode");
-            SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId + " fieldName:" + fieldName + " ip:" + ip);
+            SwitchLogger.getSysLogger().warn("MangerRest.callBack has excute ! optId: " + optId
+                    + " fieldName:" + fieldName + " ip:" + ip);
             SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
             switchValueChangDO.setSyncResult(true);
             switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
@@ -119,7 +120,8 @@ public class MangerRest {
         JqPage<SwitchValueChangDO> jqPage = new JqPage<SwitchValueChangDO>();
         jqPage.setPage(page);
         jqPage.setPageSize(rows);
-        return callBack + "(" + gson.toJson(mongoService.getJqPage(appId, fieldName, ip, jqPage, SwitchValueChangDO.class)) + ")";
+        return callBack + "(" + gson.toJson(mongoService.getJqPage(appId, fieldName, ip,
+                jqPage, SwitchValueChangDO.class)) + ")";
     }
 
     @POST
@@ -169,14 +171,16 @@ public class MangerRest {
         changeSwitchDTO.setPath(path);
         changeSwitchDTO.setVal(val);
         try {
-            SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+            SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(),
+                    changeSwitchDTO.getOptId());
         } catch (Throwable e) {
             SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
             switchValueChangDO.setSyncResult(false);
             switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
             switchValueChangDO.setErrorCode(e.getMessage());
             mongoService.updateOneByOptIdFieldNameIp(changeSwitchDTO.getOptId(), changeSwitchDTO.getFieldName(),
-                    changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/") + 1), switchValueChangDO);
+                    changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/") + 1),
+                    switchValueChangDO);
         }
 
         return ResultMessageBuilder.build().toJSONString();

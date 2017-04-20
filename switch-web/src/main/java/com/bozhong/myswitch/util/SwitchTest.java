@@ -2,8 +2,6 @@ package com.bozhong.myswitch.util;
 
 import com.bozhong.myswitch.core.SwitchRegister;
 
-import java.util.Set;
-
 /**
  * Created by xiezg@317hu.com on 2017/4/19 0019.
  */

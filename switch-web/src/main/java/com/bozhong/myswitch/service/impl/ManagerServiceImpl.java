@@ -1,12 +1,10 @@
 package com.bozhong.myswitch.service.impl;
 
-import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.*;
 import com.bozhong.myswitch.exception.SwitchException;
-import com.bozhong.myswitch.server.SwitchServer;
 import com.bozhong.myswitch.service.AppService;
 import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
@@ -17,7 +15,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -77,14 +74,16 @@ public class ManagerServiceImpl implements ManagerService {
 
         //更新switch value 到zk
         try {
-            SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+            SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(),
+                    changeSwitchDTO.getOptId());
         }catch (Throwable e) {
             switchValueChangDO = new SwitchValueChangDO();
             switchValueChangDO.setSyncResult(false);
             switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
             switchValueChangDO.setErrorCode(e.getMessage());
             mongoService.updateOneByOptIdFieldNameIp(changeSwitchDTO.getOptId(), changeSwitchDTO.getFieldName(),
-                    changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1), switchValueChangDO);
+                    changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1),
+                    switchValueChangDO);
             SwitchLogger.getLogger().error(e.getMessage(),e);
         }
 
