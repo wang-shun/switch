@@ -1,5 +1,6 @@
 package com.bozhong.myswitch.service.impl;
 
+import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
@@ -78,12 +79,13 @@ public class ManagerServiceImpl implements ManagerService {
         try {
             SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
         }catch (Throwable e) {
-            if (e instanceof SwitchException) {
-                SwitchDataDTO switchDataDTO = new SwitchDataDTO();
-                switchDataDTO.setFieldName(changeSwitchDTO.getFieldName());
-                switchDataDTO.setOptId(changeSwitchDTO.getOptId());
-                SwitchServer.sendChangeResult(switchValueChangDO.getIp(), switchDataDTO,0, (SwitchException) e);
-            }
+            switchValueChangDO = new SwitchValueChangDO();
+            switchValueChangDO.setSyncResult(false);
+            switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+            switchValueChangDO.setErrorCode(e.getMessage());
+            mongoService.updateOneByOptIdFieldNameIp(changeSwitchDTO.getOptId(), changeSwitchDTO.getFieldName(),
+                    changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1), switchValueChangDO);
+            SwitchLogger.getLogger().error(e.getMessage(),e);
         }
 
     }

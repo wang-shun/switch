@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -310,12 +311,10 @@ public class SwitchUtil {
                         StringUtil.format("SwitchUtil.changeAllValue error ! appPath:%s nodeIp:%s fieldName:%s val%s optId:%s errorMsg:%s",
                                 appPath, switchNodeDTO.getNodeName(), fieldName, val, optId, e.getMessage())
                         , e);
-                if (e instanceof SwitchException) {
-                    SwitchDataDTO switchDataDTO = new SwitchDataDTO();
-                    switchDataDTO.setFieldName(fieldName);
-                    switchDataDTO.setOptId(optId);
-                    SwitchServer.sendChangeResult(switchNodeDTO.getNodeName(), switchDataDTO, 0, (SwitchException) e);
-                }
+                SwitchDataDTO switchDataDTO = new SwitchDataDTO();
+                switchDataDTO.setFieldName(fieldName);
+                switchDataDTO.setOptId(optId);
+                SwitchServer.sendChangeResult(switchNodeDTO.getNodeName(), switchDataDTO, 0, e.getMessage());
             }
         }
     }

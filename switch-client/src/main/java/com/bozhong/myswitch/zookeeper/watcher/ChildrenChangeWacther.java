@@ -18,7 +18,11 @@ public class ChildrenChangeWacther implements Watcher {
 
     public static final ChildrenChangeWacther getInstance() {
         if (CHILDREN_CHANGE_WACTHER == null) {
-            CHILDREN_CHANGE_WACTHER = new ChildrenChangeWacther();
+            synchronized (ChildrenChangeWacther.class) {
+                if (CHILDREN_CHANGE_WACTHER == null) {
+                    CHILDREN_CHANGE_WACTHER = new ChildrenChangeWacther();
+                }
+            }
         }
         return CHILDREN_CHANGE_WACTHER;
     }

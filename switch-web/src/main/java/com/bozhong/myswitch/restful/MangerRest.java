@@ -170,13 +170,13 @@ public class MangerRest {
         changeSwitchDTO.setVal(val);
         try {
             SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
-        }catch (Throwable e) {
-            if (e instanceof SwitchException) {
-                SwitchDataDTO switchDataDTO = new SwitchDataDTO();
-                BeanUtils.copyProperties(changeSwitchDTO, switchDataDTO);
-                SwitchServer.sendChangeResult(changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1),
-                        switchDataDTO, 0, (SwitchException) e);
-            }
+        } catch (Throwable e) {
+            SwitchValueChangDO switchValueChangDO = new SwitchValueChangDO();
+            switchValueChangDO.setSyncResult(false);
+            switchValueChangDO.setCallbackDT(SIMPLE_DATE_FORMAT.format(new Date()));
+            switchValueChangDO.setErrorCode(e.getMessage());
+            mongoService.updateOneByOptIdFieldNameIp(changeSwitchDTO.getOptId(), changeSwitchDTO.getFieldName(),
+                    changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/") + 1), switchValueChangDO);
         }
 
         return ResultMessageBuilder.build().toJSONString();

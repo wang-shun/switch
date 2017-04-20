@@ -23,7 +23,11 @@ public class DataChangeWacther implements Watcher {
 
     public final static DataChangeWacther getInstance() {
         if (DATA_CHANGE_WACTHER == null) {
-            DATA_CHANGE_WACTHER = new DataChangeWacther();
+            synchronized (DataChangeWacther.class){
+                if(DATA_CHANGE_WACTHER == null){
+                    DATA_CHANGE_WACTHER = new DataChangeWacther();
+                }
+            }
         }
         return DATA_CHANGE_WACTHER;
     }
@@ -66,10 +70,7 @@ public class DataChangeWacther implements Watcher {
                 if (watchedEvent.getPath() != null &&
                         watchedEvent.getPath().indexOf(SwitchConstants.SWITCH_ROOT_PATH) == 0 &&
                         watchedEvent.getPath().split(SwitchConstants.SLASH).length == 5 &&
-                        Event.EventType.NodeDeleted.name().equals(watchedEvent.getType().name())
-                        ) {
-                    SwitchRegister.getSwitchRegister().restartInit();
-                } else {
+                        (Event.EventType.NodeDataChanged.name().equals(watchedEvent.getType().name()) || Event.EventType.NodeDeleted.name().equals(watchedEvent.getType().name()))) {
                     ZkClient.getInstance().addDataChangeWacther(watchedEvent.getPath(), this);
                 }
             } catch (Throwable e1) {
