@@ -76,7 +76,7 @@ public class ZkClient {
                 SwitchLogger.getSysLogger().warn("ZkClient - process excute ! " + "watchEvent path: " + event.getPath() + "  !  stateName:"
                         + event.getState().name() + " eventType:" + event.getType().name());
 
-                if (event.getState() == Event.KeeperState.SyncConnected) {
+                if (event.getState() == Event.KeeperState.SyncConnected && event.getType() == Event.EventType.None) {
                     countDownLatch.countDown();//计数器减一
                     countDownLatch = new CountDownLatch(1);
                     SwitchLogger.getSysLogger().warn("ZkClient - countDownLatch.countDown excute ! ");
