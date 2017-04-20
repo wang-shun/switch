@@ -1,6 +1,5 @@
 package com.bozhong.myswitch.zookeeper.watcher;
 
-import com.alibaba.fastjson.JSON;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.core.SwitchRegister;
@@ -13,23 +12,23 @@ import org.apache.zookeeper.Watcher;
 /**
  * Created by renyueliang on 17/4/12.
  */
-public class DataChangeWacther implements Watcher {
+public class DataChangeWatcher implements Watcher {
 
-    private static DataChangeWacther DATA_CHANGE_WACTHER = null;
+    private static DataChangeWatcher DATA_CHANGE_WATCHER = null;
 
-    private DataChangeWacther() {
+    private DataChangeWatcher() {
 
     }
 
-    public final static DataChangeWacther getInstance() {
-        if (DATA_CHANGE_WACTHER == null) {
-            synchronized (DataChangeWacther.class){
-                if(DATA_CHANGE_WACTHER == null){
-                    DATA_CHANGE_WACTHER = new DataChangeWacther();
+    public final static DataChangeWatcher getInstance() {
+        if (DATA_CHANGE_WATCHER == null) {
+            synchronized (DataChangeWatcher.class){
+                if(DATA_CHANGE_WATCHER == null){
+                    DATA_CHANGE_WATCHER = new DataChangeWatcher();
                 }
             }
         }
-        return DATA_CHANGE_WACTHER;
+        return DATA_CHANGE_WATCHER;
     }
 
     @Override

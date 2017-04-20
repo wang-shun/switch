@@ -9,7 +9,7 @@ import org.apache.zookeeper.Watcher;
 /**
  * Created by renyueliang on 17/4/11.
  */
-public class ConnectWacther implements Watcher {
+public class ConnectWatcher implements Watcher {
 
     private static String lock = "jka_dsqeqe_sfsg";
 

@@ -9,8 +9,8 @@ import com.bozhong.myswitch.core.SwitchRegister;
 import com.bozhong.myswitch.domain.SwitchNodeDTO;
 import com.bozhong.myswitch.exception.SwitchException;
 import com.bozhong.myswitch.zookeeper.watcher.ChildrenChangeWacther;
-import com.bozhong.myswitch.zookeeper.watcher.ConnectWacther;
-import com.bozhong.myswitch.zookeeper.watcher.DataChangeWacther;
+import com.bozhong.myswitch.zookeeper.watcher.ConnectWatcher;
+import com.bozhong.myswitch.zookeeper.watcher.DataChangeWatcher;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
@@ -80,7 +80,7 @@ public class ZkClient {
                     countDownLatch.countDown();//计数器减一
                     countDownLatch = new CountDownLatch(1);
                     SwitchLogger.getSysLogger().warn("ZkClient - countDownLatch.countDown excute ! ");
-                    ConnectWacther.unlock();
+                    ConnectWatcher.unlock();
                 }
             }
         });
@@ -90,7 +90,7 @@ public class ZkClient {
         SwitchLogger.getSysLogger().warn("ZkClient - connect await out ! ZkClient connect zk is success ! ");
         createPersistent(SwitchConstants.SWITCH_ROOT_PATH);
 
-        zk.exists(SwitchConstants.SWITCH_ROOT_PATH, new ConnectWacther());
+        zk.exists(SwitchConstants.SWITCH_ROOT_PATH, new ConnectWatcher());
     }
 
     private void create(String groupName, CreateMode createMode) throws KeeperException, InterruptedException, Exception {
@@ -115,7 +115,7 @@ public class ZkClient {
 
         Stat stat1 = new Stat();
         stat1.setAversion(-1);
-        zk.getData(createPath, DataChangeWacther.getInstance(), stat);
+        zk.getData(createPath, DataChangeWatcher.getInstance(), stat);
     }
 
     public void createPersistentSequential(String groupName) throws KeeperException, InterruptedException, Exception {
@@ -175,7 +175,7 @@ public class ZkClient {
         Stat stat = new Stat();
         stat.setAversion(version);
 
-        return zk.getData(path, DataChangeWacther.getInstance(), stat);
+        return zk.getData(path, DataChangeWatcher.getInstance(), stat);
     }
 
     public String getDataForStr(String path, int version) throws Exception {

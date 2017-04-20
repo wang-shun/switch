@@ -9,7 +9,7 @@ import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.SwitchDataDTO;
 import com.bozhong.myswitch.exception.SwitchException;
 import com.bozhong.myswitch.zookeeper.ZkClient;
-import com.bozhong.myswitch.zookeeper.watcher.DataChangeWacther;
+import com.bozhong.myswitch.zookeeper.watcher.DataChangeWatcher;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -103,7 +103,7 @@ public class SwitchRegister {
         //监听
         ZkClient.getInstance().addDataChangeWacther(
                 localPath,
-                DataChangeWacther.getInstance()
+                DataChangeWatcher.getInstance()
         );
 
 
@@ -129,7 +129,7 @@ public class SwitchRegister {
             //监听
             ZkClient.getInstance().addDataChangeWacther(
                     localPath,
-                    DataChangeWacther.getInstance()
+                    DataChangeWatcher.getInstance()
             );
 
         }
