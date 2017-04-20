@@ -9,17 +9,13 @@ import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
 import com.bozhong.myswitch.domain.OptRecordDO;
-import com.bozhong.myswitch.domain.SwitchDataDTO;
 import com.bozhong.myswitch.domain.SwitchValueChangDO;
-import com.bozhong.myswitch.exception.SwitchException;
-import com.bozhong.myswitch.server.SwitchServer;
 import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.resource.Singleton;
 import com.yx.eweb.main.EWebRequestDTO;
 import com.yx.eweb.main.EWebServletContext;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
