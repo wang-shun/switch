@@ -10,16 +10,29 @@ import org.apache.zookeeper.Watcher;
  */
 public class ChildrenChangeWacther implements Watcher {
 
+    private static ChildrenChangeWacther CHILDREN_CHANGE_WACTHER = null;
+
+    private ChildrenChangeWacther() {
+
+    }
+
+    public static final ChildrenChangeWacther getInstance() {
+        if (CHILDREN_CHANGE_WACTHER == null) {
+            CHILDREN_CHANGE_WACTHER = new ChildrenChangeWacther();
+        }
+        return CHILDREN_CHANGE_WACTHER;
+    }
+
     @Override
     public void process(WatchedEvent watchedEvent) {
 
         SwitchLogger.getSysLogger().warn("watchedEvent :" +
-                "path :"+watchedEvent.getPath()+" type :"+watchedEvent.getType().name()+" stateName :"+watchedEvent.getState().name());
+                "path :" + watchedEvent.getPath() + " type :" + watchedEvent.getType().name() + " stateName :" + watchedEvent.getState().name());
 
         try {
             ZkClient.getInstance().addChildrenChangeWacther(watchedEvent.getPath(), this);
-        }catch (Throwable e){
-            SwitchLogger.getSysLogger().error(e.getMessage(),e);
+        } catch (Throwable e) {
+            SwitchLogger.getSysLogger().error(e.getMessage(), e);
         }
 
     }

@@ -76,7 +76,7 @@ public class ZkClient {
 
                 SwitchLogger.getSysLogger().warn("ZkClient - process excute ! " + "watchEvent path: " + event.getPath() + "  !  stateName:"
                         + event.getState().name() + " eventType:" + event.getType().name());
-                System.out.println("xiezg"+JSON.toJSONString(event));
+                System.out.println("xiezg" + JSON.toJSONString(event));
 
                 if (event.getState() == Event.KeeperState.SyncConnected) {
                     countDownLatch.countDown();//计数器减一
@@ -113,7 +113,7 @@ public class ZkClient {
             SwitchLogger.getSysLogger().warn(" ZkClient regist server exists :" + createPath);
         }
 
-        zk.getChildren(createPath, new ChildrenChangeWacther());
+        zk.getChildren(createPath, ChildrenChangeWacther.getInstance());
 
         Stat stat1 = new Stat();
         stat1.setAversion(-1);
