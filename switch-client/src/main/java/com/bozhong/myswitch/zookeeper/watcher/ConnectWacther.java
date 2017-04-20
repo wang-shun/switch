@@ -13,6 +13,8 @@ public class ConnectWacther implements Watcher {
 
     private static String lock = "jka_dsqeqe_sfsg";
 
+    private static volatile boolean connectSuccess = true;
+
     public static void unlock() {
         try {
             if (isLock) {
@@ -25,7 +27,7 @@ public class ConnectWacther implements Watcher {
         }
     }
 
-    private static boolean isLock = false;
+    private static volatile boolean isLock = false;
 
     @Override
     public void process(WatchedEvent watchedEvent) {
@@ -38,12 +40,17 @@ public class ConnectWacther implements Watcher {
         }
 
         if (Watcher.Event.KeeperState.Disconnected.name().equals(watchedEvent.getState().name())) {
+            connectSuccess=false;
             try {
                 synchronized (lock) {
                     isLock = true;
+                    if(connectSuccess){
+                        return ;
+                    }
                     ZkClient.getInstance().connect();
                     SwitchRegister.getSwitchRegister().restartInit();
                     lock.wait();
+                    connectSuccess=true;
                 }
 
                 SwitchLogger.getSysLogger().warn(" ConnectWacther  SwitchRegister.restartInit success !");
