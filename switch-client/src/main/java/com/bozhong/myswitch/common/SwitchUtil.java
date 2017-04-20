@@ -314,7 +314,7 @@ public class SwitchUtil {
                     SwitchDataDTO switchDataDTO = new SwitchDataDTO();
                     switchDataDTO.setFieldName(fieldName);
                     switchDataDTO.setOptId(optId);
-                    SwitchServer.sendChangeResult(switchDataDTO, 0, (SwitchException) e);
+                    SwitchServer.sendChangeResult(switchNodeDTO.getNodeName(), switchDataDTO, 0, (SwitchException) e);
                 }
             }
         }

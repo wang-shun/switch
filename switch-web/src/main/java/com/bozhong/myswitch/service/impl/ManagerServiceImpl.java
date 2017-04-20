@@ -82,7 +82,7 @@ public class ManagerServiceImpl implements ManagerService {
                 SwitchDataDTO switchDataDTO = new SwitchDataDTO();
                 switchDataDTO.setFieldName(changeSwitchDTO.getFieldName());
                 switchDataDTO.setOptId(changeSwitchDTO.getOptId());
-                SwitchServer.sendChangeResult(switchDataDTO,0, (SwitchException) e);
+                SwitchServer.sendChangeResult(switchValueChangDO.getIp(), switchDataDTO,0, (SwitchException) e);
             }
         }
 

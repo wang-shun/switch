@@ -9,13 +9,17 @@ import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
 import com.bozhong.myswitch.domain.ChangeSwitchDTO;
 import com.bozhong.myswitch.domain.OptRecordDO;
+import com.bozhong.myswitch.domain.SwitchDataDTO;
 import com.bozhong.myswitch.domain.SwitchValueChangDO;
+import com.bozhong.myswitch.exception.SwitchException;
+import com.bozhong.myswitch.server.SwitchServer;
 import com.bozhong.myswitch.service.ManagerService;
 import com.bozhong.myswitch.service.MongoService;
 import com.google.gson.Gson;
 import com.sun.jersey.spi.resource.Singleton;
 import com.yx.eweb.main.EWebRequestDTO;
 import com.yx.eweb.main.EWebServletContext;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -164,7 +168,17 @@ public class MangerRest {
         changeSwitchDTO.setOptId(optId);
         changeSwitchDTO.setPath(path);
         changeSwitchDTO.setVal(val);
-        SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+        try {
+            SwitchUtil.changeValue(changeSwitchDTO.getPath(), changeSwitchDTO.getFieldName(), changeSwitchDTO.getVal(), changeSwitchDTO.getOptId());
+        }catch (Throwable e) {
+            if (e instanceof SwitchException) {
+                SwitchDataDTO switchDataDTO = new SwitchDataDTO();
+                BeanUtils.copyProperties(changeSwitchDTO, switchDataDTO);
+                SwitchServer.sendChangeResult(changeSwitchDTO.getPath().substring(changeSwitchDTO.getPath().lastIndexOf("/")+1),
+                        switchDataDTO, 0, (SwitchException) e);
+            }
+        }
+
         return ResultMessageBuilder.build().toJSONString();
     }
 

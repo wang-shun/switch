@@ -50,7 +50,7 @@ public class DataChangeWacther implements Watcher {
 
                 //同步到服务端 告诉更新成功
                 if (switchDataDTO != null) {
-                    SwitchServer.sendChangeResult(switchDataDTO, 0, null);
+                    SwitchServer.sendChangeResult(null, switchDataDTO, 0, null);
                 }
 
             }

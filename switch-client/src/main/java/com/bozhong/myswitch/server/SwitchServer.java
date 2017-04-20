@@ -37,7 +37,7 @@ public class SwitchServer {
             cc.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, 10 * 1000);
             //      Client实例很消耗系统资源，需要重用
             //      创建web资源，创建请求，接受响应都是线程安全的
-                //      所以Client实例和WebResource实例可以在多个线程间安全的共享
+            //      所以Client实例和WebResource实例可以在多个线程间安全的共享
             client = Client.create(cc);
         }
 
@@ -46,67 +46,64 @@ public class SwitchServer {
     }
 
 
-    public static String getSendIpAndPort()  {
+    public static String getSendIpAndPort() {
 
         try {
             List<SwitchNodeDTO> list = ZkClient.getInstance().getAllServer();
 
-            if(CollectionUtil.isEmpty(list)){
+            if (CollectionUtil.isEmpty(list)) {
                 return null;
             }
 
             int size = list.size();
 
-            if(size==1){
+            if (size == 1) {
                 return list.get(0).getNodeName();
             }
 
-            if(index>=size){
-                index=0;
+            if (index >= size) {
+                index = 0;
             }
 
             return list.get(index).getNodeName();
 
 
-        }catch (Throwable e){
+        } catch (Throwable e) {
 
-            SwitchLogger.getSysLogger().error(e.getMessage(),e);
+            SwitchLogger.getSysLogger().error(e.getMessage(), e);
 
-        }finally {
+        } finally {
             index++;
         }
         return "";
     }
 
-    private static String getSendChangeToServerUrl(){
-        String ipAndPort =getSendIpAndPort();
-        if(StringUtil.isBlank(ipAndPort)){
+    private static String getSendChangeToServerUrl() {
+        String ipAndPort = getSendIpAndPort();
+        if (StringUtil.isBlank(ipAndPort)) {
             throw new SwitchException("SERVER_IP_PORT_IS_NULL");
         }
 
-    return "http://"+ipAndPort+"/switchweb/myswitch/mangerRest/callBack";
+        return "http://" + ipAndPort + "/switchweb/myswitch/mangerRest/callBack";
 
     }
 
 
+    public static void sendChangeResult(String ip, SwitchDataDTO switchDataDTO, int callNum, SwitchException switchException) {
 
-
-
-    public static void sendChangeResult(SwitchDataDTO switchDataDTO,int callNum, SwitchException switchException) {
-
-        if(switchDataDTO==null){
+        if (switchDataDTO == null) {
             SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult switchDataDTO is null");
 
-            return ;
+            return;
         }
 
-        if(callNum>3){
-            SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult has excute "+callNum+" time ,cannot excute ! switchDataDTO:"+ JSON.toJSONString(switchDataDTO));
+        if (callNum > 3) {
+            SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult has excute " + callNum + " time ,cannot excute ! switchDataDTO:" + JSON.toJSONString(switchDataDTO));
 
-            return ;
+            return;
         }
 
-        SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult start switchDataDTO:"+ JSON.toJSONString(switchDataDTO));
+        SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult start switchDataDTO:" + JSON.toJSONString(switchDataDTO));
 
         try {
 
@@ -117,7 +114,12 @@ public class SwitchServer {
             MultivaluedMapImpl params = new MultivaluedMapImpl();
             params.add("optId", switchDataDTO.getOptId());
             params.add("fieldName", switchDataDTO.getFieldName());
-            params.add("ip", SwitchUtil.getIp());
+            if (StringUtil.isBlank(ip)) {
+                params.add("ip", SwitchUtil.getIp());
+            } else {
+                params.add("ip", ip);
+            }
+
             if (switchException != null) {
                 params.add("errorCode", switchException.getErrorCode());
             }
@@ -126,14 +128,14 @@ public class SwitchServer {
             String result = resource.queryParams(params).post(String.class);
             ResultMessageBuilder.ResultMessage resultMessage = JSON.parseObject(result,
                     ResultMessageBuilder.ResultMessage.class);
-            if (!resultMessage.isSuccess()){
+            if (!resultMessage.isSuccess()) {
                 throw new SwitchException(SwitchErrorEnum.RUNTIME_EXCEPTION.getError(),
                         SwitchErrorEnum.RUNTIME_EXCEPTION.getMsg());
             }
 
             SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :" + result);
-        }catch (Throwable e){
-            sendChangeResult(switchDataDTO, callNum++, switchException);
+        } catch (Throwable e) {
+            sendChangeResult(ip, switchDataDTO, callNum++, switchException);
         }
 
     }
