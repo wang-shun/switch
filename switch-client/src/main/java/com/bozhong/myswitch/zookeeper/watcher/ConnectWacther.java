@@ -31,8 +31,6 @@ public class ConnectWacther implements Watcher {
     @Override
     public void process(WatchedEvent watchedEvent) {
 
-        System.out.println("luotian:" + JSON.toJSONString(watchedEvent));
-
         SwitchLogger.getSysLogger().warn("ConnectWacther  watchedEvent :" +
                 "path :" + watchedEvent.getPath() + " type :" + watchedEvent.getType().name() + " stateName :" + watchedEvent.getState().name());
 

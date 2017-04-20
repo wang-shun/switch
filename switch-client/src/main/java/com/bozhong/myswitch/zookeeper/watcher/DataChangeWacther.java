@@ -30,7 +30,6 @@ public class DataChangeWacther implements Watcher {
 
     @Override
     public void process(WatchedEvent watchedEvent) {
-        System.out.println("luoxi:" + this.toString() + JSON.toJSONString(watchedEvent));
         SwitchLogger.getSysLogger().warn(" DataChangeWacther  watchedEvent :" +
                 "path :" + watchedEvent.getPath() + " type :" + watchedEvent.getType().name() + " stateName :" + watchedEvent.getState().name());
 
@@ -42,11 +41,7 @@ public class DataChangeWacther implements Watcher {
                     Event.EventType.NodeDataChanged.name().equals(watchedEvent.getType().name())
                     ) {
 
-                System.out.println(" SwitchRegister change start ! ");
-
                 SwitchDataDTO switchDataDTO = SwitchRegister.getSwitchRegister().change();
-
-                System.out.println(" SwitchRegister change end ! ");
 
                 //同步到服务端 告诉更新成功
                 if (switchDataDTO != null) {
@@ -65,7 +60,6 @@ public class DataChangeWacther implements Watcher {
             }
 
         } catch (Throwable e) {
-            System.out.println("luoxi1:" + e.getMessage());
             SwitchLogger.getSysLogger().error(" DataChangeWacther.process error ! " + e.getMessage(), e);
         } finally {
             try {
@@ -79,7 +73,6 @@ public class DataChangeWacther implements Watcher {
                     ZkClient.getInstance().addDataChangeWacther(watchedEvent.getPath(), this);
                 }
             } catch (Throwable e1) {
-                System.out.println("luoxi1:" + e1.getMessage());
                 SwitchLogger.getSysLogger().error(" DataChangeWacther.process addDataChangeWacther error ! " + e1.getMessage(), e1);
             }
         }
