@@ -1,6 +1,5 @@
 package com.bozhong.myswitch.zookeeper;
 
-import com.alibaba.fastjson.JSON;
 import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchErrorEnum;

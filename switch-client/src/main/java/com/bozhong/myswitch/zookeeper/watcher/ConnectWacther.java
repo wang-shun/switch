@@ -1,6 +1,5 @@
 package com.bozhong.myswitch.zookeeper.watcher;
 
-import com.alibaba.fastjson.JSON;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.core.SwitchRegister;
 import com.bozhong.myswitch.zookeeper.ZkClient;
