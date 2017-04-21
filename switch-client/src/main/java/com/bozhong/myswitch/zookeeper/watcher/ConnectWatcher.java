@@ -48,9 +48,9 @@ public class ConnectWatcher implements Watcher {
                         return ;
                     }
                     ZkClient.getInstance().connect();
-                    SwitchRegister.getSwitchRegister().restartInit();
-                    lock.wait();
                     connectSuccess=true;
+                    SwitchRegister.getSwitchRegister().restartInit();
+
                 }
 
                 SwitchLogger.getSysLogger().warn(" ConnectWacther  SwitchRegister.restartInit success !");

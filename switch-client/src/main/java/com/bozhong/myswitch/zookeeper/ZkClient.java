@@ -80,7 +80,6 @@ public class ZkClient {
                     countDownLatch.countDown();//计数器减一
                     countDownLatch = new CountDownLatch(1);
                     SwitchLogger.getSysLogger().warn("ZkClient - countDownLatch.countDown excute ! ");
-                    ConnectWatcher.unlock();
                 }
             }
         });
