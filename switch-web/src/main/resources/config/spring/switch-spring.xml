@@ -14,8 +14,8 @@
     </bean>
 
     <bean class="com.bozhong.myswitch.util.SwitchLoad" init-method="init">
-        <property name="appId" value="10"/>
-        <property name="zkHosts" value="172.16.110.73:2181,172.16.110.73:2182,172.16.110.73:2183"/>
+        <property name="appId" value="23"/>
+        <property name="zkHosts" value="${switch.zkHosts}"/>
     </bean>
 
     <bean class="com.bozhong.myswitch.util.SwitchServerRegister" init-method="init">
