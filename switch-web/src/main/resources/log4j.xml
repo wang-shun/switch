@@ -8,6 +8,8 @@
               class="org.apache.log4j.RollingFileAppender">
         <param name="file" value="${LOG_DIR}project.log" />
         <param name="append" value="true" />
+        <param name="maxFileSize" value="204800000" />
+        <param name="maxBackupIndex" value="14"/>
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="info" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -21,6 +23,8 @@
               class="org.apache.log4j.RollingFileAppender">
         <param name="file" value="${LOG_DIR}eweb.log" />
         <param name="append" value="true" />
+        <param name="maxFileSize" value="204800000" />
+        <param name="maxBackupIndex" value="14"/>
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="info" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -28,10 +32,12 @@
         </layout>
     </appender>
 
-    <appender name="REALTIMEPUSH"
+    <appender name="SWITCHLOG"
               class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="${LOG_DIR}realtimepush.log" />
+        <param name="file" value="${LOG_DIR}switch.log" />
         <param name="append" value="true" />
+        <param name="maxFileSize" value="204800000" />
+        <param name="maxBackupIndex" value="14"/>
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="info" />
         <layout class="org.apache.log4j.PatternLayout">
@@ -51,9 +57,9 @@
 
 
 
-    <logger name="realtimepushLog" additivity="false">
+    <logger name="switch" additivity="false">
         <level value="warn" />
-        <appender-ref ref="REALTIMEPUSH" />
+        <appender-ref ref="SWITCHLOG" />
     </logger>
 
     <!-- ===================================================================== -->

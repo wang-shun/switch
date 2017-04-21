@@ -1,5 +1,6 @@
 package com.bozhong.myswitch.zookeeper.watcher;
 
+import com.bozhong.common.util.StringUtil;
 import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 import org.apache.zookeeper.WatchedEvent;
@@ -34,7 +35,11 @@ public class ChildrenChangeWacther implements Watcher {
                 "path :" + watchedEvent.getPath() + " type :" + watchedEvent.getType().name() + " stateName :" + watchedEvent.getState().name());
 
         try {
-            ZkClient.getInstance().addChildrenChangeWacther(watchedEvent.getPath(), this);
+            if(watchedEvent.getType().name().equals(Event.EventType.NodeChildrenChanged.name())
+                    && StringUtil.isNotBlank(watchedEvent.getPath())){
+                ZkClient.getInstance().addChildrenChangeWacther(watchedEvent.getPath(), this);
+            }
+
         } catch (Throwable e) {
             SwitchLogger.getSysLogger().error(e.getMessage(), e);
         }

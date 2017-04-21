@@ -36,7 +36,8 @@
 	</bean>
 
 	<bean id="unifiedLogAdvisor" class="com.bozhong.unifiedLog.advisor.UnifiedLogAdvisor">
-		<property name="localAppName" value="realTimePushPlatform-web"/>
+		<property name="localAppName" value="switch-web"/>
+		<property name="maxFileSize" value="14"/>
 	</bean>
 
 

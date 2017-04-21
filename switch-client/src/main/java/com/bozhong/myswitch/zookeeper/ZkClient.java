@@ -80,6 +80,7 @@ public class ZkClient {
                     countDownLatch.countDown();//计数器减一
                     countDownLatch = new CountDownLatch(1);
                     SwitchLogger.getSysLogger().warn("ZkClient - countDownLatch.countDown excute ! ");
+                    ConnectWatcher.unlock();
                 }
             }
         });
@@ -89,7 +90,7 @@ public class ZkClient {
         SwitchLogger.getSysLogger().warn("ZkClient - connect await out ! ZkClient connect zk is success ! ");
         createPersistent(SwitchConstants.SWITCH_ROOT_PATH);
 
-        zk.exists(SwitchConstants.SWITCH_ROOT_PATH, new ConnectWatcher());
+        zk.exists(SwitchConstants.SWITCH_ROOT_PATH, ConnectWatcher.getConnectWatcher());
     }
 
     private void create(String groupName, CreateMode createMode) throws KeeperException, InterruptedException, Exception {

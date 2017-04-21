@@ -39,14 +39,13 @@ public class SwitchLoad {
                                 return o1.getName().compareTo(o2.getName());
                             }
                         });
-                        SwitchLogger.getSysLogger().warn("-------start----------");
+                        SwitchLogger.getLogger().warn("-------start----------");
                         for (Field field : fields) {
-                            System.out.println(field.getName() + ":" + field.get(dynamicClass));
-                            SwitchLogger.getSysLogger().warn(field.getName() + ":" + field.get(dynamicClass));
+                            SwitchLogger.getLogger().warn(field.getName() + ":" + field.get(dynamicClass));
                         }
-                        SwitchLogger.getSysLogger().warn("-------end----------");
+                        SwitchLogger.getLogger().warn("-------end----------");
                     } catch (Throwable e) {
-                        SwitchLogger.getSysLogger().error(e.getMessage(), e);
+                        SwitchLogger.getLogger().error(e.getMessage(), e);
                     }
 
                 }
