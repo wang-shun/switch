@@ -12,9 +12,7 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<bean id="configSetPropertyHolder" class="com.bozhong.config.common.ConfigSetPropertyHolder" init-method="init">
-		<property name="appId" value="23"/>
-	</bean>
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" />
 
 	<!-- extend -->
 	<bean id="springApplicationContextHolder" class="com.yx.eweb.handler.SpringApplicationContextHolder"

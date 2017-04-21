@@ -8,6 +8,10 @@
         <param-value>switch-web</param-value>
     </context-param>
     <context-param>
+        <param-name>appId</param-name>
+        <param-value>23</param-value>
+    </context-param>
+    <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:applicationContext-basic.xml
@@ -46,13 +50,18 @@
 
 
 
+    <listener>
+        <listener-class>com.bozhong.config.ConfigLoadListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
+
 
     <!--
         The HttpSessionEventPublisher will publish
