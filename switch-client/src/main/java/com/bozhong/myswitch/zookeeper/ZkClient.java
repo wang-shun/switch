@@ -153,6 +153,12 @@ public class ZkClient {
         return zk.exists(path, false) != null;
     }
 
+
+    public void addExistsWacther(String groupName, Watcher watcher) throws Exception{
+        groupName = SwitchUtil.firstAddCharDefualt(groupName);
+        zk.exists(groupName, watcher);
+    }
+
     public void addDataChangeWacther(String groupName, Watcher watcher) throws KeeperException, InterruptedException, Exception {
         groupName = SwitchUtil.firstAddCharDefualt(groupName);
 

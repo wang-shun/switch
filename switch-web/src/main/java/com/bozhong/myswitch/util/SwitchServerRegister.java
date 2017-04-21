@@ -1,7 +1,9 @@
 package com.bozhong.myswitch.util;
 
 import com.bozhong.myswitch.common.SwitchConstants;
+import com.bozhong.myswitch.common.SwitchLogger;
 import com.bozhong.myswitch.common.SwitchUtil;
+import com.bozhong.myswitch.watcher.SyncServerIpWatcher;
 import com.bozhong.myswitch.zookeeper.ZkClient;
 
 /**
@@ -10,8 +12,7 @@ import com.bozhong.myswitch.zookeeper.ZkClient;
 public class SwitchServerRegister {
 
 
-    public void init() throws  Throwable{
-
+    public static void registSerer() throws  Throwable{
         String path= SwitchConstants.SWITCH_ROOT_PATH+SwitchConstants.SWITCH_SERVER_PATH;
         if(!ZkClient.getInstance().has(path)){
             ZkClient.getInstance().createPersistent(path);
@@ -26,6 +27,17 @@ public class SwitchServerRegister {
         if(!ZkClient.getInstance().has(path)){
             ZkClient.getInstance().createEphemeral(path);
         }
+
+        ZkClient.getInstance().addExistsWacther(SwitchConstants.SWITCH_ROOT_PATH, SyncServerIpWatcher.getSyncServerIpWatcher());
+
+        SwitchLogger.getSysLogger().warn(" SwitchServerRegister.registSerer success !  ");
+
+    }
+
+
+    public void init() throws  Throwable{
+        SwitchServerRegister.registSerer();
+
 
     }
 

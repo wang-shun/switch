@@ -85,7 +85,6 @@ public class ConnectWatcher implements Watcher {
                 SwitchRegister.getSwitchRegister().restartInit();
             }catch (Throwable e){
                 SwitchLogger.getSysLogger().error("Expired_CONNECT_ERROR "+e.getMessage(), e);
-
             }
         }
         else if(Event.KeeperState.SyncConnected.name().equals(watchedEvent.getState().name())){

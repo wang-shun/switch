@@ -93,8 +93,17 @@ public class SwitchServer {
 
         if (switchDataDTO == null) {
             SwitchLogger.getSysLogger().warn(" SwitchServer.sendChangeResult switchDataDTO is null");
-
             return;
+        }
+
+        if(callNum>0 && callNum<=3){
+            try {
+                SwitchLogger.getSysLogger().warn("SwitchServer.sendChangeResult sleep start ! ");
+                Thread.sleep(1000 * callNum);
+                SwitchLogger.getSysLogger().warn("SwitchServer.sendChangeResult sleep end ! ");
+            }catch (Throwable sleepe){
+                SwitchLogger.getSysLogger().error("SwitchServer.sendChangeResult error ! ",sleepe);
+            }
         }
 
         if (callNum > 3) {
@@ -135,7 +144,7 @@ public class SwitchServer {
 
             SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :" + result);
         } catch (Throwable e) {
-            sendChangeResult(ip, switchDataDTO, callNum++, errorCode);
+            sendChangeResult(ip, switchDataDTO, ++callNum, errorCode);
         }
 
     }
