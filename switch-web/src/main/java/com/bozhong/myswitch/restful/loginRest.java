@@ -37,7 +37,7 @@ import java.util.*;
 @Controller
 @Singleton
 @Path("login")
-public class loginRest {
+public class LoginRest {
 
     private static final Logger logger = Logger.getRootLogger();
     @Autowired
