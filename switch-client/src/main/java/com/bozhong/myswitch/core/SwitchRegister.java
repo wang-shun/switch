@@ -167,6 +167,8 @@ public class SwitchRegister {
                 }
             } catch (Throwable e) {
                 SwitchLogger.getSysLogger().error(e.getMessage());
+                throw new SwitchException(SwitchErrorEnum.CONFIG_NETWORK_ERROR.getError(),
+                        SwitchErrorEnum.CONFIG_NETWORK_ERROR.getMsg());
             }
         }
 
@@ -193,9 +195,9 @@ public class SwitchRegister {
             return (String) map.get("name");
         } catch (Throwable e) {
             SwitchLogger.getSysLogger().error(e.getMessage());
+            throw new SwitchException(SwitchErrorEnum.CONFIG_NETWORK_ERROR.getError(),
+                    SwitchErrorEnum.CONFIG_NETWORK_ERROR.getMsg());
         }
-
-        return null;
     }
 
 
