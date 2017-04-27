@@ -1,6 +1,5 @@
-package com.bozhong.myswitch.util;
-
 import com.bozhong.myswitch.core.SwitchRegister;
+import com.bozhong.myswitch.util.WebSettingParam;
 
 /**
  * Created by xiezg@317hu.com on 2017/4/19 0019.
