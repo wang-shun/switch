@@ -241,7 +241,7 @@ public class SwitchUtil {
                         continue;
                     }
 
-                    if (version != null && newRealTime.getVersion() != version) {
+                    if (version != null && newRealTime.getVersion() == version) {
                         continue;
                     }
 
