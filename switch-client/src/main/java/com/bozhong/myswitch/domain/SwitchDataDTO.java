@@ -1,5 +1,7 @@
 package com.bozhong.myswitch.domain;
 
+import java.util.UUID;
+
 /**
  * Created by renyueliang on 17/4/12.
  */
@@ -21,7 +23,7 @@ public class SwitchDataDTO extends BaseDTO {
 
     private String fieldName;
 
-    private long version = 0l;
+    private String version = UUID.randomUUID().toString();
 
     public Object getValue() {
         return value;
@@ -79,11 +81,11 @@ public class SwitchDataDTO extends BaseDTO {
         this.fieldName = fieldName;
     }
 
-    public long getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(long version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 }

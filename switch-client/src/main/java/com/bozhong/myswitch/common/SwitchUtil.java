@@ -19,10 +19,7 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by renyueliang on 17/4/10.
@@ -66,7 +63,7 @@ public class SwitchUtil {
 
 
     public static Map<String, SwitchDataDTO> realTimeDataDTOMap = new HashedMap();
-    public static Map<String, Long> realTimeMap = new HashedMap();
+    public static Map<String, String> realTimeMap = new HashedMap();
 
     public static boolean firstCharCheck(String path, String hasThisChar) {
 
@@ -138,7 +135,7 @@ public class SwitchUtil {
                 AppSwitch appSwitch = field.getAnnotation(AppSwitch.class);
 
                 if (appSwitch != null) {
-                    Long version = realTimeMap.get(field.getName()) != null ? realTimeMap.get(field.getName()) : 0l;
+                    String version = realTimeMap.get(field.getName()) != null ? realTimeMap.get(field.getName()) : UUID.randomUUID().toString();
                     SwitchDataDTO realTimeDataDTO = new SwitchDataDTO();
                     realTimeDataDTO.setDesc(appSwitch.desc());
                     realTimeDataDTO.setType(appSwitch.type());
@@ -235,13 +232,13 @@ public class SwitchUtil {
                 if (swtich != null) {
 
                     SwitchDataDTO newRealTime = map.get(field.getName());
-                    Long version = realTimeMap.get(field.getName());
+                    String version = realTimeMap.get(field.getName());
 
                     if (newRealTime == null) {
                         continue;
                     }
 
-                    if (version != null && newRealTime.getVersion() == version) {
+                    if (version != null && newRealTime.getVersion().equals(version)) {
                         continue;
                     }
 
@@ -380,7 +377,7 @@ public class SwitchUtil {
             }
 
             switchDataDTO.setCurrentDateTime(DateUtil.getCurrentDate());
-            switchDataDTO.setVersion(switchDataDTO.getVersion() + 1);//改变值的时候版本号+1
+            switchDataDTO.setVersion(UUID.randomUUID().toString());//改变值的时候版本号+1
             switchDataDTO.setOptId(optId);
 
             map.put(fieldName, switchDataDTO);
