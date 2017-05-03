@@ -84,7 +84,7 @@ public class SwitchServer {
             throw new SwitchException("SERVER_IP_PORT_IS_NULL");
         }
 
-        return "http://" + ipAndPort + "/switchweb/myswitch/mangerRest/callBack";
+        return "http://" + ipAndPort + "/switch-web/myswitch/mangerRest/callBack";
 
     }
 
