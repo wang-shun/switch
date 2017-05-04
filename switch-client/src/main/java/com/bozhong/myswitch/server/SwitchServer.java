@@ -144,6 +144,7 @@ public class SwitchServer {
 
             SwitchLogger.getSysLogger().warn(" sendChangeResult callBack :" + result);
         } catch (Throwable e) {
+            SwitchLogger.getSysLogger().error(e.getMessage(), e);
             sendChangeResult(ip, switchDataDTO, ++callNum, errorCode);
         }
 
