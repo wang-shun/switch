@@ -275,8 +275,8 @@
                                     #foreach($switchData in $!switchNode.switchDataList)
                                     <tr>
                                         <td>$velocityCount</td>
-                                        <td>$switchData.fieldName</td>
-                                        <td>$switchData.value</td>
+                                        <td style="max-width:200px;"><div style="word-wrap: break-word;word-break: normal; ">$switchData.fieldName</div></td>
+                                        <td style="max-width:200px;"><div style="word-wrap: break-word;word-break: normal; ">$switchData.value</div></td>
                                         <td>$switchData.currentDateTime</td>
                                         <td style="text-align: center">
                                             <button type="button" data-ipHost="$!{switchNode.nodeName}"
