@@ -20,7 +20,7 @@ public class SwitchLoad {
 
     public void init() throws Throwable {
         if (dynamicClass == null) {
-            dynamicClass = SettingParam.class;
+            dynamicClass = WebSettingParam.class;
         }
 
         SwitchRegister.getSwitchRegister().init(this.appId, dynamicClass, this.zkHosts);
