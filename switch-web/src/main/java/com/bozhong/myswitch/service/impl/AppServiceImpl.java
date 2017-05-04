@@ -1,11 +1,16 @@
 package com.bozhong.myswitch.service.impl;
 
+import com.bozhong.myswitch.core.Environ;
 import com.bozhong.myswitch.dao.AppDao;
 import com.bozhong.myswitch.domain.AppDO;
 import com.bozhong.myswitch.domain.EnvTypeDO;
 import com.bozhong.myswitch.service.AppService;
+import com.bozhong.myswitch.util.ConfigUtil;
+import com.bozhong.myswitch.util.SwitchHttpUtil;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +24,13 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public List<AppDO> getAppsByUid(String uId) {
+        if (Environ.DEV.getName().equals(ConfigUtil.getENRION()) || Environ.SIT.getName().equals(ConfigUtil.getENRION())) {
+            try {
+                return SwitchHttpUtil.getAppDOList(uId);
+            } catch (IOException e) {
+                return new ArrayList<>();
+            }
+        }
         return appDao.getAppsByUid(uId);
     }
 
