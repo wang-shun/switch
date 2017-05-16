@@ -144,6 +144,10 @@
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.bozhong</groupId>
+            <artifactId>configCenter-client</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

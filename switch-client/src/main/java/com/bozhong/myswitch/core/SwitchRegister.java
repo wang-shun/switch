@@ -2,6 +2,7 @@ package com.bozhong.myswitch.core;
 
 import com.alibaba.fastjson.JSON;
 import com.bozhong.common.util.StringUtil;
+import com.bozhong.config.util.CookiesUtil;
 import com.bozhong.myswitch.common.SwitchConstants;
 import com.bozhong.myswitch.common.SwitchErrorEnum;
 import com.bozhong.myswitch.common.SwitchLogger;
@@ -149,7 +150,7 @@ public class SwitchRegister {
         if (StringUtil.isBlank(this.environ)) {
             String appId = this.appId;
             try {
-                switch (getEnvTypeWithAppIdAndHostIp(appId, SwitchUtil.getIp())) {
+                switch (getEnvTypeWithAppIdAndHostIp(appId, CookiesUtil.getLocalIP())) {
                     case "DEV":
                         this.environ = Environ.DEV.getName();
                         break;
