@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/switch.iml" filepath="$PROJECT_DIR$/.idea/switch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/switch-client/switch-client.iml" filepath="$PROJECT_DIR$/switch-client/switch-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/switch-web/switch-web.iml" filepath="$PROJECT_DIR$/switch-web/switch-web.iml" />
+    </modules>
+  </component>
+</project>

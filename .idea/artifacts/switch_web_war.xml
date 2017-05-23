@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="switch-web:war">
+    <output-path>$PROJECT_DIR$/switch-web/target</output-path>
+    <root id="archive" name="switch-web.war">
+      <element id="artifact" artifact-name="switch-web:war exploded" />
+    </root>
+  </artifact>
+</component>
