@@ -12,7 +12,7 @@ public class SwitchConstants {
     public final static String SLASH= "/" ;
 
     /**
-     * 公钥 秘钥
+     * 公钥 秘钥1
      */
     public static final String SWITCH_CENTER_PUBLIC_PRIVATE_KEY = "SWITCH_CENTER_PUBLIC_PRIVATE_KEY";
     public static final String PUBLIC_KEY = "PUBLIC_KEY";
